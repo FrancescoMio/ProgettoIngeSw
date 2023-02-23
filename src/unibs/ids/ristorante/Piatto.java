@@ -1,13 +1,23 @@
 package unibs.ids.ristorante;
 
-public class Piatto {//deve implementare ordinabile
+import java.util.Date;
+
+public class Piatto implements Ordinabile {//deve implementare ordinabile
     private String denominazione;
     private boolean disponibile;
-    private Ricetta ricetta = new Ricetta();//inizializza ricetta a 0
+    private Ricetta ricetta;
+    private Date dataInizio;
+    private Date dataFine;
 
-    public Piatto(String denominazione, boolean disponibile, Ricetta ricetta) {
+
+    public Piatto(String denominazione, boolean disponibile, Ricetta ricetta, Date inizio, Date fine) {
         this.denominazione = denominazione;
-        this.disponibile = disponibile;
         this.ricetta = ricetta;
+        this.dataInizio = inizio;
+        this.dataFine = fine;
+        if(Libreria.MyUtil.controlloData(inizio, fine))
+            this.disponibile = disponibile;
+        else
+            this.disponibile = false;
     }
 }

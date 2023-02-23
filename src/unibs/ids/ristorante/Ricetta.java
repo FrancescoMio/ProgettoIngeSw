@@ -13,9 +13,4 @@ public class Ricetta {
         this.caricoDiLavoroXPorzione = caricoDiLavoroXPorzione;
     }
 
-    public Ricetta(){//per inizializzare a 0
-        this.ingredienti = new HashMap<>();
-        this.numeroPorzioni = 0;
-        this.caricoDiLavoroXPorzione = 0;
-    }
 }
