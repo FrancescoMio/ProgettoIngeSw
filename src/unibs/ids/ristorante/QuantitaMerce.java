@@ -8,18 +8,31 @@ public class QuantitaMerce {
 
     public QuantitaMerce(int quantita, String unitaMisura) {//Costruttore
         this.quantita = quantita;
-        this.unitaMisura = unitaMisura;
+        this.unitaMisura = controlloUnitaMisura(unitaMisura);
     }
 
     /**
-     * controllo unita di misura inserita, si potrebbe estendere
+     * controllo unita di misura inserita, se non è valida chiede di inserirla di nuovo
      * @return the quantita
      */
-    private void controlloUnitaMisura(String unitaMisura) {
+    private String controlloUnitaMisura(String unitaMisura) {
         if (unitaMisura.equals("kg") || unitaMisura.equals("hg")|| unitaMisura.equals("dg")|| unitaMisura.equals("g") || unitaMisura.equals("l") || unitaMisura.equals("hl")|| unitaMisura.equals("dl")|| unitaMisura.equals("ml")) {
-            this.unitaMisura = unitaMisura;
+            return unitaMisura;
         } else {
-            System.out.println("Unità di misura non valida");
+            while(!unitaMisura.equals("kg") || !unitaMisura.equals("hg")|| !unitaMisura.equals("dg")|| !unitaMisura.equals("g") || !unitaMisura.equals("l") || !unitaMisura.equals("hl")|| !unitaMisura.equals("dl")|| !unitaMisura.equals("ml")) {
+                System.out.println("Unità di misura non valida");
+                unitaMisura = Libreria.InputDati.leggiStringa("Inserire unità di misura valida: ");
+            }
+            return unitaMisura;
         }
     }
+
+    public int getQuantita() {
+        return quantita;
+    }
+
+    public String getUnitaMisura() {
+        return unitaMisura;
+    }
+
 }

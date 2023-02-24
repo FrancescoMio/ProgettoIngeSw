@@ -1,5 +1,7 @@
 package Libreria;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -183,4 +185,28 @@ public class InputDati {
         char valoreLetto = leggiUpperChar(mioMessaggio, var10001 + "N");
         return valoreLetto == 'S';
     }
+
+    public static Date leggiData(String messaggio) {
+        boolean finito = false;
+        Date data = null;
+        String valoreLetto= null;
+
+        do {
+            System.out.print(messaggio);
+
+            try {
+                valoreLetto = lettore.next();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                data = dateFormat.parse(valoreLetto);
+                System.out.println("Data inserita: " + data);
+                finito = true;  //se non viene lanciata eccezione, la data e' corretta
+            } catch (Exception var5) {
+                System.out.println("formato data non valido");
+                String var4 = lettore.next();
+            }
+        } while(!finito);
+
+        return data;
+    }
+
 }

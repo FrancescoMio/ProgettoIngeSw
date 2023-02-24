@@ -8,5 +8,21 @@ public class ListaSpesa {
     public ListaSpesa() {//costruttore
         listaSpesa = new HashMap<String, QuantitaMerce>();
     }
-    //da estendere
+
+    public void aggiungiMerce(String nome, QuantitaMerce merce) {
+        listaSpesa.put(nome, merce);
+    }
+
+    public void rimuoviMerce(String nome) {
+        if(listaSpesa.containsKey(nome))
+            listaSpesa.remove(nome);
+        else
+            System.out.println("Merce non presente nella lista");
+    }
+
+    public void visualizzaLista() {
+        for(String nome : listaSpesa.keySet()) {
+            System.out.println("Nome: " + nome + " Quantità: " + listaSpesa.get(nome).getQuantita() + listaSpesa.get(nome).getUnitaMisura());
+        }
+    }
 }
