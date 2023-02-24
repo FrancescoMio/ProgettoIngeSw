@@ -8,4 +8,12 @@ public class Utente {
         this.nome = nome;
         this.cognome = cognome;
     }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public String getNome() {
+        return nome;
+    }
 }

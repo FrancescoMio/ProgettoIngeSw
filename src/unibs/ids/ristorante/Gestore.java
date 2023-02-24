@@ -8,34 +8,33 @@ import java.util.HashMap;
 
 public class Gestore extends Utente {
 
-    private Ristorante ristorante;
-
     public Gestore(String nome, String cognome) {//Costruttore
         super(nome, cognome);
     }
 
+    //possibile cambiamento: non creare il ristorante in gestore, ma creare gestore in ristorante
     /**
      * inizializza tutte le variabili ( Ristorante)
      */
-    private void inizializzaRistorante(){
+    public ArrayList<Piatto> inizializzaPiatti(){
         ArrayList<Piatto> piatti = new ArrayList<>();
 
-        System.out.println("Buongiorno gestore, le chiediamo gentilmente di inserire i dati per il suo ristorante: ");
-        String nome = InputDati.leggiStringa("Inserire nome ristorante: ");
-        int caricoXpersona = InputDati.leggiIntero("Inserire carico medio per persona:");
-        int posti = InputDati.leggiIntero("Inserire posti a sedere");
-        //ora inserisco i piatti
-        piatti = inserisciPiatti();//metodo per inserire piatti a mano, da fare quello che li inserisce da file
-
-
-        //inserire insieme bevande, fare metodo, magari metodo unico va bene se si fanno i controlli nelle rispettive classi
-        //inserire insieme generi extra, fare metodo
-        //inserire consumo procapire bevande
-        //inserire consumo procapite beni extra
+        return inserisciPiatti();//metodo per inserire piatti a mano, da fare quello che li inserisce da file
     }
 
-    private String getCaricoXPersona(Ristorante rist){
-        return "Carico per persona: " + rist.getCaricoXPersona();
+    public String getNomeRistorante() {
+        String nome = InputDati.leggiStringa("Inserire nome ristorante: ");
+        return nome;
+    }
+
+    public int caricoXpersona() {
+        int carico = InputDati.leggiIntero("Inserire carico medio per persona:");
+        return carico;
+    }
+
+    public int postiASedere() {
+        int posti = InputDati.leggiIntero("Inserire posti a sedere");
+        return posti;
     }
 
     /**
@@ -94,4 +93,5 @@ public class Gestore extends Utente {
         Ricetta ricetta = new Ricetta(ingredienti, numeroPorzioni, caricoXPorzione);
         return ricetta;
     }
+
 }
