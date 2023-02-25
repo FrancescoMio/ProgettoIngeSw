@@ -1,5 +1,8 @@
 package unibs.ids.ristorante;
 
+import Libreria.ServizioFile;
+
+import java.io.File;
 import java.util.HashMap;
 
 public class ListaSpesa {
@@ -8,6 +11,10 @@ public class ListaSpesa {
     public ListaSpesa() {//costruttore
         listaSpesa = new HashMap<String, QuantitaMerce>();
     }
+
+    /*public ListaSpesa(File file){
+        this.listaSpesa = ServizioFile.leggiListaSpesa(file);
+    }*/
 
     public void aggiungiMerce(String nome, QuantitaMerce merce) {
         listaSpesa.put(nome, merce);

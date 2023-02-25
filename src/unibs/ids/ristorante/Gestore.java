@@ -12,12 +12,12 @@ public class Gestore extends Utente {
         super(nome, cognome);
     }
 
-    //possibile cambiamento: non creare il ristorante in gestore, ma creare gestore in ristorante
+    //metodi da aggiungere
+
     /**
-     * inizializza tutte le variabili ( Ristorante)
+     * inizializza tutte le variabili (Ristorante)
      */
     public ArrayList<Piatto> inizializzaPiatti(){
-        ArrayList<Piatto> piatti = new ArrayList<>();
 
         return inserisciPiatti();//metodo per inserire piatti a mano, da fare quello che li inserisce da file
     }
@@ -56,6 +56,7 @@ public class Gestore extends Utente {
 
             Piatto piatto = new Piatto(nome, ricetta, inizio, fine);
             piatti.add(piatto);
+            scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
         } while (scelta);
         return piatti;
     }
@@ -90,8 +91,17 @@ public class Gestore extends Utente {
         }//se non esiste la ricetta, la creo e la ritorno per la creazione del piatto
         int numeroPorzioni = InputDati.leggiIntero("Inserire numero porzioni che derivano dalla preparazione della ricetta: ");
         double caricoXPorzione = InputDati.leggiDouble("Inserire carico di lavoro per porzione: ");//DA METTERE A POSTO, DEVE ESSERE UNA PORZIONE DI CARICO DI LAVORO PER PERSONA
+        boolean ok = false;
+        do{
+            if(caricoXPorzione < Ristorante.getCaricoXPersona()){
+                ok = true;
+            }
+            else{
+                System.out.println("Carico di lavoro per porzione non valido, deve essere minore del carico di lavoro per persona");
+                caricoXPorzione = InputDati.leggiDouble("Inserire carico di lavoro per porzione: ");
+            }
+        }while(!ok);
         Ricetta ricetta = new Ricetta(ingredienti, numeroPorzioni, caricoXPorzione);
         return ricetta;
     }
-
 }

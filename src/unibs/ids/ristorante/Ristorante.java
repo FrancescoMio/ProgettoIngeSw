@@ -5,10 +5,11 @@ import Libreria.InputDati;
 import java.util.ArrayList;
 
 public class Ristorante {
-    private String nome;
-    private int postiASedere;
-    private int caricoDiLavoroSostenibile;//sarà da ricavare  moltiplicando il carico di lavoro per persona per i posti per 120/100
-    private int caricoDiLavoroXPersona;//impegno richiesto per preparare cibo per una persona in un singolo pasto
+    //dichiaro static perchè sono proprietà del ristorante che non vengono modificate
+    private static String nome;
+    private static int postiASedere;
+    private static int caricoDiLavoroSostenibile;//sarà da ricavare  moltiplicando il carico di lavoro per persona per i posti per 120/100
+    private static int caricoDiLavoroXPersona;//impegno richiesto per preparare cibo per una persona in un singolo pasto
     private ArrayList<Piatto> piatti;//lista di piatti che il ristorante può offrire
 
     public Ristorante() {
@@ -25,7 +26,7 @@ public class Ristorante {
         this.caricoDiLavoroXPersona = gestore.caricoXpersona();
         this.caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
     }
-    public int getCaricoXPersona() {
+    public static int getCaricoXPersona() {
         return caricoDiLavoroXPersona;
     }
     public int getPostiASedere() {

@@ -26,4 +26,8 @@ public class Piatto implements Ordinabile {
     public Ricetta getRicetta() {
         return ricetta;
     }
+
+    public String toString(){
+        return "Il piatto e' " + denominazione + ",\n la ricetta e' " + ricetta + ",\n la disponibilita' e' " + disponibile + ",\n la data di inizio e' " + dataInizio + ",\n la data di fine e' " + dataFine + ",\n il carico di lavoro e' " + caricoLavoro;
+    }
 }

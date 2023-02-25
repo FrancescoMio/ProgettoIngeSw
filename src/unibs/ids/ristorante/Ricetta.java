@@ -30,4 +30,7 @@ public class Ricetta {
         return caricoDiLavoroXPorzione;
     }
 
+    public String toString(){
+        return "La ricetta e' composta dai seguenti ingreedienti: " + ingredienti + ",\n le porzioni disponibili sono: " + numeroPorzioni + ",\n il carico di lavoro per ogni porzione e': " + caricoDiLavoroXPorzione;
+    }
 }

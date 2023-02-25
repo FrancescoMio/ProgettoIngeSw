@@ -200,7 +200,7 @@ public class InputDati {
                 data = dateFormat.parse(valoreLetto);
                 System.out.println("Data inserita: " + data);
                 finito = true;  //se non viene lanciata eccezione, la data e' corretta
-            } catch (Exception var5) {
+            } catch (Exception e) {
                 System.out.println("formato data non valido");
                 String var4 = lettore.next();
             }
