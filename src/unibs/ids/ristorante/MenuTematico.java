@@ -4,44 +4,23 @@ import java.util.Set;
 
 public class MenuTematico extends Menu implements Ordinabile{
 
-    private boolean disponibile;
-    private double caricoLavoro;
-    private Date dataInizio;
-    private Date  dataFine;
+    private double caricoLavoroMenuTematico;
 
-    public MenuTematico (Set<Piatto> elencoPiatti) {//Costruttore
-        super(elencoPiatti);
+    public MenuTematico (String nome,Set<Piatto> elencoPiatti, Date dataInizio, Date dataFine) {
+        super(nome,elencoPiatti,dataInizio,dataFine);
+
     }
 
-    public boolean isDisponibile() {
-        return disponibile;
-    }
-
-    public void setDisponibile(boolean disponibile) {
-        this.disponibile = disponibile;
+    public void addPiatto(Piatto piatto){
+        this.elencoPiatti.add(piatto);
     }
 
     public double getCaricoLavoro() {
-        return caricoLavoro;
+        return caricoLavoroMenuTematico;
     }
 
     public void setCaricoLavoro(double caricoLavoro) {
-        this.caricoLavoro = caricoLavoro;
+        this.caricoLavoroMenuTematico = caricoLavoro;
     }
 
-    public Date getDataInizio() {
-        return dataInizio;
-    }
-
-    public void setDataInizio(Date dataInizio) {
-        this.dataInizio = dataInizio;
-    }
-
-    public Date getDataFine() {
-        return dataFine;
-    }
-
-    public void setDataFine(Date dataFine) {
-        this.dataFine = dataFine;
-    }
 }
