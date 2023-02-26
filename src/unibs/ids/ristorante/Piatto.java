@@ -4,22 +4,16 @@ import java.util.Date;
 
 public class Piatto implements Ordinabile {
     private String denominazione;
-    private boolean disponibile;
+    //private boolean disponibile;
     private Ricetta ricetta = new Ricetta();
-    private Date dataInizio;
-    private Date dataFine;
+    private int tempoPreparazione;//in minuti
     private double caricoLavoro;
 
     //Costruttore
-    public Piatto(String denominazione, Ricetta ricetta, Date inizio, Date fine) {
+    public Piatto(String denominazione, Ricetta ricetta, int tempoPreparazione) {
         this.denominazione = denominazione;
         this.ricetta = ricetta;
-        this.dataInizio = inizio;
-        this.dataFine = fine;
-        if(Libreria.MyUtil.controlloData(inizio, fine))//controllo le date per vedere se piatto è disponibile
-            this.disponibile = true;
-        else
-            this.disponibile = false;
+        this.tempoPreparazione = tempoPreparazione;
         this.caricoLavoro = ricetta.getCaricoLavoro();//setto il carico di lavoro del piatto come quello della ricetta corrispondente
     }
 
@@ -41,10 +35,8 @@ public class Piatto implements Ordinabile {
     public String toString() {
         return "Piatto{" +
                 "denominazione='" + denominazione + '\'' +
-                ", disponibile=" + disponibile +
                 ", ricetta=" + ricetta +
-                ", dataInizio=" + dataInizio +
-                ", dataFine=" + dataFine +
+                ", tempo di perparazione=" + tempoPreparazione +
                 ", caricoLavoro=" + caricoLavoro +
                 '}';
     }

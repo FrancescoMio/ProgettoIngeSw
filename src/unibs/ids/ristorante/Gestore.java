@@ -45,14 +45,13 @@ public class Gestore extends Utente {
         boolean scelta = true;
         do {
             String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
-            Date inizio = InputDati.leggiData("Inserire data inizio disponibilità nel formato dd/MM/yyyy: ");
-            Date fine = InputDati.leggiData("Inserire data fine disponibilità nel formato dd/MM/yyyy: ");
+            int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione del piatto: ");
 
             HashMap<String, Integer> ingredienti = inserisciIngredienti();
 
             Ricetta ricetta = controlloRicetta(ingredienti, piatti);//se ricetta esiste già, uso quella già presente, altrimenti la creo
 
-            Piatto piatto = new Piatto(nome, ricetta, inizio, fine);
+            Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione);
             piatti.add(piatto);
             scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
         } while (scelta);
@@ -186,6 +185,14 @@ public class Gestore extends Utente {
 
     public void visualizzaMenuAllaCarta(MenuCarta menuAllaCarta){
         System.out.println(menuAllaCarta.toString());
+    }
+
+    public void visualizzaMagazzino(RegistroMagazzino magazzino){
+        magazzino.visualizzaMagazzino();
+    }
+
+    public void inizializzaBevande(RegistroMagazzino magazzino){
+
     }
 
 }

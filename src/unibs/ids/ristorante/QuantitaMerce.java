@@ -35,4 +35,10 @@ public class QuantitaMerce {
         return unitaMisura;
     }
 
+    public void setQuantita(int quantita) {
+        if(quantita < 0)
+            this.quantita = 0;
+        else
+            this.quantita = quantita;
+    }
 }
