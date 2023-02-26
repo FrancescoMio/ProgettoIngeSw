@@ -1,6 +1,7 @@
 package unibs.ids.ristorante;
 import Libreria.MyUtil;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -8,8 +9,8 @@ public class MenuTematico extends Menu implements Ordinabile{
 
     private double caricoLavoroMenuTematico;
     private boolean disponibile;
-    private Date dataInizio;
-    private Date dataFine;
+    private LocalDate dataInizio;
+    private LocalDate dataFine;
 
     /**
      * Costruttore del menù tematico
@@ -18,7 +19,7 @@ public class MenuTematico extends Menu implements Ordinabile{
      * @param dataInizio  data di inzio disponibilità del menù tematico
      * @param dataFine data di fine disponibilità del menù tematico
      */
-    public MenuTematico (String nome,Set<Piatto> elencoPiatti, Date dataInizio, Date dataFine,double caricoLavoro) {
+    public MenuTematico (String nome,Set<Piatto> elencoPiatti, LocalDate dataInizio, LocalDate dataFine,double caricoLavoro) {
         super(nome,elencoPiatti);
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
@@ -44,20 +45,7 @@ public class MenuTematico extends Menu implements Ordinabile{
     public void setCaricoLavoro(double caricoLavoro) {
         this.caricoLavoroMenuTematico = caricoLavoro;
     }
-    public Date getDataInizio() {
-        return dataInizio;
-    }
 
-    public Date getDataFine() {
-        return dataFine;
-    }
-    public void setDataInizio(Date dataInizio) {
-        this.dataInizio = dataInizio;
-    }
-
-    public void setDataFine(Date dataFine) {
-        this.dataFine = dataFine;
-    }
 
     /**
      * metodo per il controllo della disponibilità del menù
@@ -65,10 +53,25 @@ public class MenuTematico extends Menu implements Ordinabile{
      * @param dataFine
      * @return
      */
-    public boolean isDisponibile(Date dataInizio, Date dataFine){
+    public boolean isDisponibile(LocalDate dataInizio, LocalDate dataFine){
         if(MyUtil.controlloData(dataInizio,dataFine))
             return true;
         return false;
+    }
+    public LocalDate getDataInizio() {
+        return dataInizio;
+    }
+
+    public LocalDate getDataFine() {
+        return dataFine;
+    }
+
+    public void setDataInizio(LocalDate dataInizio) {
+        this.dataInizio = dataInizio;
+    }
+
+    public void setDataFine(LocalDate dataFine) {
+        this.dataFine = dataFine;
     }
 
     @Override

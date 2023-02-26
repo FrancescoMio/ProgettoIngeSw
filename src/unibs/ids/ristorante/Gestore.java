@@ -2,6 +2,7 @@ package unibs.ids.ristorante;
 
 import Libreria.InputDati;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static unibs.ids.ristorante.Stringhe.*;
@@ -45,7 +46,9 @@ public class Gestore extends Utente {
         boolean scelta = true;
         do {
             String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
-            int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione del piatto: ");
+            int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione: ");
+            LocalDate inizio = InputDati.leggiData("Inserire data inizio disponibilità nel formato dd/MM/yyyy: ");
+            LocalDate fine = InputDati.leggiData("Inserire data fine disponibilità nel formato dd/MM/yyyy: ");
 
             HashMap<String, Integer> ingredienti = inserisciIngredienti();
 
@@ -113,7 +116,7 @@ public class Gestore extends Utente {
         boolean scelta = true;
         do {
             String nome = InputDati.leggiStringaConSpazi(nomeMenuTematico);
-            ArrayList<Date> date = inserisciDate();
+            ArrayList<LocalDate> date = inserisciDate();
             Set<Piatto> piattiDelMenu = new HashSet<>();
             piattiDelMenu = inserisciPiattiMenuTematico(piattiDisponibili);
             double caricoLavoroMenu = calcoloLavoroMenuTematico(piattiDelMenu);
@@ -153,7 +156,7 @@ public class Gestore extends Utente {
     }
 
     /**
-     * Metodo per il calcolo del carico di lavoro del menù tematico
+     * Metodc per il calcolo del carico di lavoro del menù tematico
      * @param piattiDelMenuTematico
      * @return
      */
@@ -168,11 +171,11 @@ public class Gestore extends Utente {
      * metodo per l'inserimento delle date in cui è disponibile un menù tematico
      * @return
      */
-    public ArrayList<Date> inserisciDate(){
-        ArrayList<Date> date = new ArrayList<>();
+    public ArrayList<LocalDate> inserisciDate(){
+        ArrayList<LocalDate> date = new ArrayList<>();
         //String scelta = InputDati.leggiStringa(inserimentoData);
-        Date dataInizio = InputDati.leggiData(inserisciDataInizio);
-        Date dataFine = InputDati.leggiData(inserisciDataFine);
+        LocalDate dataInizio = InputDati.leggiData(inserisciDataInizio);
+        LocalDate dataFine = InputDati.leggiData(inserisciDataFine);
         date.add(dataInizio);
         date.add(dataFine);
         return date;
@@ -185,24 +188,6 @@ public class Gestore extends Utente {
 
     public void visualizzaMenuAllaCarta(MenuCarta menuAllaCarta){
         System.out.println(menuAllaCarta.toString());
-    }
-
-    public void visualizzaMagazzino(RegistroMagazzino magazzino){
-        magazzino.visualizzaMagazzino();
-    }
-
-    public Consumo inizializzaBevande(RegistroMagazzino magazzino){
-        System.out.println("Le chiediamo di seguito di inserire le bevande presenti nel suo ristorante");
-        while(InputDati.yesOrNo("Vuole inserire una nuova bevanda?")){
-            String nome = InputDati.leggiStringaConSpazi("Inserire il nome della bevanda: ");
-            int quantita = InputDati.leggiIntero("Inserire la quantità di bevanda tipicamente consumata: ");
-            Bevanda bevanda = new Bevanda(nome);
-            QuantitaMerce quantitaMerce = new QuantitaMerce(quantita, "l");
-            Consumo consumoBevande = new Consumo(bevanda, quantitaMerce);
-            //da finire, bisogna decidere come gestire maagzzino e bevande+ extra
-            //magazzino.aggiungiBevanda(new Bevanda(nome,consumoBevande));
-        }
-        return null;//da togliere
     }
 
 }

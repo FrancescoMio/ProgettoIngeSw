@@ -8,10 +8,10 @@ import java.util.HashMap;
  */
 public class Prenotazione {
     private int numeroCoperti;
-    private Date dataPrenotazione;
+    private LocalDate dataPrenotazione;
     private HashMap<Ordinabile,Integer> ordine; //Integer rappresenta il numero di persone che hanno scelto il menuTematico o il piatto che costituisce la chive
 
-    public Prenotazione(int numeroCoperti, Date dataPrenotazione, HashMap<Ordinabile,Integer> ordine){
+    public Prenotazione(int numeroCoperti, LocalDate dataPrenotazione, HashMap<Ordinabile,Integer> ordine){
         this.numeroCoperti = numeroCoperti;
         this.dataPrenotazione = dataPrenotazione;
         this.ordine = new HashMap<>();
@@ -26,11 +26,11 @@ public class Prenotazione {
         this.numeroCoperti = numeroCoperti;
     }
 
-    public Date getDataPrenotazione() {
+    public LocalDate getDataPrenotazione() {
         return dataPrenotazione;
     }
 
-    public void setDataPrenotazione(Date dataPrenotazione) {
+    public void setDataPrenotazione(LocalDate dataPrenotazione) {
         this.dataPrenotazione = dataPrenotazione;
     }
 
