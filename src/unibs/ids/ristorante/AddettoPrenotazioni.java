@@ -3,6 +3,7 @@ package unibs.ids.ristorante;
 import Libreria.InputDati;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 
 public class AddettoPrenotazioni extends Utente {
@@ -14,7 +15,7 @@ public class AddettoPrenotazioni extends Utente {
     public Prenotazione creaPrenotazione(){
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
         int numeroCoperti = InputDati.leggiIntero("Inserire numero coperti: ");
-        LocalDate dataPrenotazione = LocalDate.now();
+        Date dataPrenotazione = InputDati.leggiData("Inserire data prenotazione: ");
         ordine = chiediOrdine();
         Prenotazione prenotazione = new Prenotazione(numeroCoperti, dataPrenotazione, ordine);
         return prenotazione;
