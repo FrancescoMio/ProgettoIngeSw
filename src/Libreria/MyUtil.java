@@ -2,6 +2,8 @@ package Libreria;
 
 import java.time.Instant;
 import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class MyUtil {
     public static boolean controlloData(Date inizio, Date fine){
@@ -12,5 +14,10 @@ public class MyUtil {
         else{
             return false;
         }
+    }
+
+    public static LocalDate getDataOdierna(){
+        LocalDate oggi = LocalDate.now();
+        return oggi;
     }
 }
