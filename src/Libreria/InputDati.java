@@ -28,6 +28,12 @@ public class InputDati {
         return lettore.next();
     }
 
+    public static String leggiStringaConSpazi(String messaggio){
+        System.out.print(messaggio);
+        Scanner scanner = creaScanner();
+        return scanner.nextLine();
+    }
+
     public static String leggiStringaNonVuota(String messaggio) {
         boolean finito = false;
         String lettura = null;

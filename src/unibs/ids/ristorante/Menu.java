@@ -9,7 +9,7 @@ public class Menu {
 
     public Menu(String nome,Set<Piatto> elencoPiatti){
         this.nomeMenu = nome;
-        elencoPiatti = new HashSet<>();
+        this.elencoPiatti = new HashSet<>();
         this.elencoPiatti = elencoPiatti;
     }
 

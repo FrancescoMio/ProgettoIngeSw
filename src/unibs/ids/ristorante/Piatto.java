@@ -5,7 +5,7 @@ import java.util.Date;
 public class Piatto implements Ordinabile {
     private String denominazione;
     private boolean disponibile;
-    private Ricetta ricetta;
+    private Ricetta ricetta = new Ricetta();
     private Date dataInizio;
     private Date dataFine;
     private double caricoLavoro;
@@ -27,9 +27,6 @@ public class Piatto implements Ordinabile {
         return ricetta;
     }
 
-    public String toString(){
-        return "Il piatto e' " + denominazione + ",\n la ricetta e' " + ricetta + ",\n la disponibilita' e' " + disponibile + ",\n la data di inizio e' " + dataInizio + ",\n la data di fine e' " + dataFine + ",\n il carico di lavoro e' " + caricoLavoro;
-    }
     public String getDenominazione(){
         return this.denominazione;
     }
@@ -38,5 +35,17 @@ public class Piatto implements Ordinabile {
     }
     public void setCaricoLavoro(double caricoLavoro) {
         this.caricoLavoro = caricoLavoro;
+    }
+
+    @Override
+    public String toString() {
+        return "Piatto{" +
+                "denominazione='" + denominazione + '\'' +
+                ", disponibile=" + disponibile +
+                ", ricetta=" + ricetta +
+                ", dataInizio=" + dataInizio +
+                ", dataFine=" + dataFine +
+                ", caricoLavoro=" + caricoLavoro +
+                '}';
     }
 }

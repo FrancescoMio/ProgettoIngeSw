@@ -11,11 +11,19 @@ public class MenuTematico extends Menu implements Ordinabile{
     private Date dataInizio;
     private Date dataFine;
 
-    public MenuTematico (String nome,Set<Piatto> elencoPiatti, Date dataInizio, Date dataFine) {
+    /**
+     * Costruttore del menù tematico
+     * @param nome nome del menù tematico
+     * @param elencoPiatti elenco di piatti che costituiscono il menù tematico
+     * @param dataInizio  data di inzio disponibilità del menù tematico
+     * @param dataFine data di fine disponibilità del menù tematico
+     */
+    public MenuTematico (String nome,Set<Piatto> elencoPiatti, Date dataInizio, Date dataFine,double caricoLavoro) {
         super(nome,elencoPiatti);
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
         this.disponibile = isDisponibile(dataInizio,dataFine);
+        this.caricoLavoroMenuTematico = caricoLavoro;
     }
 
     public void addPiatto(Piatto piatto){
@@ -63,4 +71,15 @@ public class MenuTematico extends Menu implements Ordinabile{
         return false;
     }
 
+    @Override
+    public String toString() {
+        return "MenuTematico{" +
+                ", nomeMenu='" + nomeMenu + '\'' +
+                "caricoLavoroMenuTematico=" + caricoLavoroMenuTematico +
+                ", disponibile=" + disponibile +
+                ", dataInizio=" + dataInizio +
+                ", dataFine=" + dataFine +
+                ", elencoPiatti=" + elencoPiatti +
+                '}';
+    }
 }

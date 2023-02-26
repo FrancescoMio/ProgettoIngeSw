@@ -12,14 +12,12 @@ public class Gestore extends Utente {
         super(nome, cognome);
     }
 
-    //metodi da aggiungere
-
     /**
-     * inizializza tutte le variabili (Ristorante)
+     * metodo per inserire piatti a mano
+     * @return
      */
     public Set<Piatto> inizializzaPiatti() {
-
-        return inserisciPiatti();//metodo per inserire piatti a mano, da fare quello che li inserisce da file
+        return inserisciPiatti();
     }
 
     public String getNomeRistorante() {
@@ -33,7 +31,7 @@ public class Gestore extends Utente {
     }
 
     public int postiASedere() {
-        int posti = InputDati.leggiIntero("Inserire posti a sedere");
+        int posti = InputDati.leggiIntero("Inserire posti a sedere: ");
         return posti;
     }
 
@@ -46,8 +44,7 @@ public class Gestore extends Utente {
         Set<Piatto> piatti = new HashSet<>();
         boolean scelta = true;
         do {
-            System.out.println("Inserire piatto: ");
-            String nome = InputDati.leggiStringa("Inserire nome piatto: ");
+            String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
             Date inizio = InputDati.leggiData("Inserire data inizio disponibilità nel formato dd/MM/yyyy: ");
             Date fine = InputDati.leggiData("Inserire data fine disponibilità nel formato dd/MM/yyyy: ");
 
@@ -96,7 +93,7 @@ public class Gestore extends Utente {
         double caricoXPorzione = InputDati.leggiDouble("Inserire carico di lavoro per porzione: ");//DA METTERE A POSTO, DEVE ESSERE UNA PORZIONE DI CARICO DI LAVORO PER PERSONA
         boolean ok = false;
         do {
-            if (caricoXPorzione < Ristorante.getCaricoXPersona()) {
+            if (caricoXPorzione < 10000) {  //Ristorante.getCaricoXPersona()
                 ok = true;
             } else {
                 System.out.println("Carico di lavoro per porzione non valido, deve essere minore del carico di lavoro per persona");
@@ -114,12 +111,14 @@ public class Gestore extends Utente {
      */
     public Set<MenuTematico> creaMenuTematici(Set<Piatto> piattiDisponibili) {
         Set<MenuTematico> menuTematici = new HashSet<>();
-        Piatto[] piatti = piattiDisponibili.toArray(new Piatto[piattiDisponibili.size()]);
         boolean scelta = true;
         do {
-            String nome = InputDati.leggiStringa(nomeMenuTematico);
+            String nome = InputDati.leggiStringaConSpazi(nomeMenuTematico);
             ArrayList<Date> date = inserisciDate();
-            MenuTematico myMenu = new MenuTematico(nome, inserisciPiattiMenuTematico(piattiDisponibili),date.get(0),date.get(1));
+            Set<Piatto> piattiDelMenu = new HashSet<>();
+            piattiDelMenu = inserisciPiattiMenuTematico(piattiDisponibili);
+            double caricoLavoroMenu = calcoloLavoroMenuTematico(piattiDelMenu);
+            MenuTematico myMenu = new MenuTematico(nome, piattiDelMenu,date.get(0),date.get(1),caricoLavoroMenu);
             menuTematici.add(myMenu);
             scelta = InputDati.yesOrNo(nuovoMenuTematico);
         } while (scelta);
@@ -155,16 +154,38 @@ public class Gestore extends Utente {
     }
 
     /**
+     * Metodc per il calcolo del carico di lavoro del menù tematico
+     * @param piattiDelMenuTematico
+     * @return
+     */
+    public double calcoloLavoroMenuTematico(Set<Piatto> piattiDelMenuTematico){
+        double somma = 0;
+        for (Piatto piatto: piattiDelMenuTematico)
+            somma += piatto.getCaricoLavoro();
+        return somma;
+    }
+
+    /**
      * metodo per l'inserimento delle date in cui è disponibile un menù tematico
      * @return
      */
     public ArrayList<Date> inserisciDate(){
         ArrayList<Date> date = new ArrayList<>();
-        String scelta = InputDati.leggiStringa(inserimentoData);
+        //String scelta = InputDati.leggiStringa(inserimentoData);
         Date dataInizio = InputDati.leggiData(inserisciDataInizio);
         Date dataFine = InputDati.leggiData(inserisciDataFine);
         date.add(dataInizio);
         date.add(dataFine);
         return date;
     }
+    public void visualizzaMenuTematici(Set<MenuTematico> menuTematici){
+        for (MenuTematico menu: menuTematici) {
+            System.out.println(menu.toString());
+        }
+    }
+
+    public void visualizzaMenuAllaCarta(MenuCarta menuAllaCarta){
+        System.out.println(menuAllaCarta.toString());
+    }
+
 }
