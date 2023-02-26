@@ -1,9 +1,11 @@
 package Libreria;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.time.ZoneId;
 
 public class InputDati {
     private static final String ERRORE_FORMATO = "Attenzione: il dato inserito non e' nel formato corretto";
@@ -192,11 +194,11 @@ public class InputDati {
         return valoreLetto == 'S';
     }
 
-    public static Date leggiData(String messaggio) {
+    public static LocalDate leggiData(String messaggio) {
         boolean finito = false;
         Date data = null;
         String valoreLetto= null;
-
+        LocalDate localDate = null;
         do {
             System.out.print(messaggio);
 
@@ -204,7 +206,8 @@ public class InputDati {
                 valoreLetto = lettore.next();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 data = dateFormat.parse(valoreLetto);
-                System.out.println("Data inserita: " + data);
+                localDate = data.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                System.out.println("Data inserita: " + localDate);
                 finito = true;  //se non viene lanciata eccezione, la data e' corretta
             } catch (Exception e) {
                 System.out.println("formato data non valido");
@@ -212,7 +215,7 @@ public class InputDati {
             }
         } while(!finito);
 
-        return data;
+        return localDate;
     }
 
 }

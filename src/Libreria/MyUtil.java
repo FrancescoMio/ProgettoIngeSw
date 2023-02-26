@@ -6,14 +6,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class MyUtil {
-    public static boolean controlloData(Date inizio, Date fine){
-        Date oggi = Date.from(Instant.now());
-        if (inizio.before(oggi) && fine.after(oggi)){
+    public static boolean controlloData(LocalDate dataInizio, LocalDate dataFine){
+        LocalDate oggi = LocalDate.now();
+        if(oggi.isAfter(dataInizio) && oggi.isBefore(dataFine))
             return true;
-        }
-        else{
-            return false;
-        }
+        return false;
     }
 
     public static LocalDate getDataOdierna(){
