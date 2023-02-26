@@ -47,13 +47,8 @@ public class Gestore extends Utente {
         do {
             String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
             int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione: ");
-            LocalDate inizio = InputDati.leggiData("Inserire data inizio disponibilità nel formato dd/MM/yyyy: ");
-            LocalDate fine = InputDati.leggiData("Inserire data fine disponibilità nel formato dd/MM/yyyy: ");
-
             HashMap<String, Integer> ingredienti = inserisciIngredienti();
-
             Ricetta ricetta = controlloRicetta(ingredienti, piatti);//se ricetta esiste già, uso quella già presente, altrimenti la creo
-
             Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione);
             piatti.add(piatto);
             scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
