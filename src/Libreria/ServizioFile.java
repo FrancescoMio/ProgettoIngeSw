@@ -1,10 +1,6 @@
 package Libreria;
 
-import unibs.ids.ristorante.ListaSpesa;
-import unibs.ids.ristorante.QuantitaMerce;
-
 import java.io.*;
-import java.util.HashMap;
 
 public class ServizioFile {
     private static final String MSG_NO_FILE = "ATTENZIONE: NON TROVO IL FILE ";

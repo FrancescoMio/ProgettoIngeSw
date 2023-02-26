@@ -45,14 +45,13 @@ public class Gestore extends Utente {
         boolean scelta = true;
         do {
             String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
-            Date inizio = InputDati.leggiData("Inserire data inizio disponibilità nel formato dd/MM/yyyy: ");
-            Date fine = InputDati.leggiData("Inserire data fine disponibilità nel formato dd/MM/yyyy: ");
+            int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione del piatto: ");
 
             HashMap<String, Integer> ingredienti = inserisciIngredienti();
 
             Ricetta ricetta = controlloRicetta(ingredienti, piatti);//se ricetta esiste già, uso quella già presente, altrimenti la creo
 
-            Piatto piatto = new Piatto(nome, ricetta, inizio, fine);
+            Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione);
             piatti.add(piatto);
             scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
         } while (scelta);
@@ -154,7 +153,7 @@ public class Gestore extends Utente {
     }
 
     /**
-     * Metodc per il calcolo del carico di lavoro del menù tematico
+     * Metodo per il calcolo del carico di lavoro del menù tematico
      * @param piattiDelMenuTematico
      * @return
      */
@@ -186,6 +185,24 @@ public class Gestore extends Utente {
 
     public void visualizzaMenuAllaCarta(MenuCarta menuAllaCarta){
         System.out.println(menuAllaCarta.toString());
+    }
+
+    public void visualizzaMagazzino(RegistroMagazzino magazzino){
+        magazzino.visualizzaMagazzino();
+    }
+
+    public Consumo inizializzaBevande(RegistroMagazzino magazzino){
+        System.out.println("Le chiediamo di seguito di inserire le bevande presenti nel suo ristorante");
+        while(InputDati.yesOrNo("Vuole inserire una nuova bevanda?")){
+            String nome = InputDati.leggiStringaConSpazi("Inserire il nome della bevanda: ");
+            int quantita = InputDati.leggiIntero("Inserire la quantità di bevanda tipicamente consumata: ");
+            Bevanda bevanda = new Bevanda(nome);
+            QuantitaMerce quantitaMerce = new QuantitaMerce(quantita, "l");
+            Consumo consumoBevande = new Consumo(bevanda, quantitaMerce);
+            //da finire, bisogna decidere come gestire maagzzino e bevande+ extra
+            //magazzino.aggiungiBevanda(new Bevanda(nome,consumoBevande));
+        }
+        return null;//da togliere
     }
 
 }
