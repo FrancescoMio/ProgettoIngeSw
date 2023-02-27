@@ -134,7 +134,7 @@ public class Gestore extends Utente {
         double sommaCaricoLavoroPiatti = 0;
         do {
             int i = 1;
-            for (Piatto piatto : piattiDisponibili) {
+            for (Piatto piatto : piatti) {
                 System.out.println(i + "-" + piatto.getDenominazione());
                 i++;
             }

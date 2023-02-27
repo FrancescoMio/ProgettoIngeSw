@@ -19,7 +19,7 @@ public class QuantitaMerce {
         if (unitaMisura.equals("kg") || unitaMisura.equals("hg")|| unitaMisura.equals("dg")|| unitaMisura.equals("g") || unitaMisura.equals("l") || unitaMisura.equals("hl")|| unitaMisura.equals("dl")|| unitaMisura.equals("ml")) {
             return unitaMisura;
         } else {
-            while(!unitaMisura.equals("kg") || !unitaMisura.equals("hg")|| !unitaMisura.equals("dg")|| !unitaMisura.equals("g") || !unitaMisura.equals("l") || !unitaMisura.equals("hl")|| !unitaMisura.equals("dl")|| !unitaMisura.equals("ml")) {
+            while(!unitaMisura.equals("kg") || !unitaMisura.equals("hg")|| !unitaMisura.equals("dg")|| !unitaMisura.equals("g") || !unitaMisura.equals("l")) {
                 System.out.println("Unità di misura non valida");
                 unitaMisura = Libreria.InputDati.leggiStringa("Inserire unità di misura valida: ");
             }
