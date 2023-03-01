@@ -5,19 +5,19 @@ import java.util.Date;
 public class Piatto implements Ordinabile {
     private String denominazione;
     //private boolean disponibile;
-    private Ricetta ricetta = new Ricetta();
+    private String ricetta = "";
     private int tempoPreparazione;//in minuti
     private double caricoLavoro;
 
     //Costruttore
-    public Piatto(String denominazione, Ricetta ricetta, int tempoPreparazione) {
+    public Piatto(String denominazione, String ricetta, int tempoPreparazione, double caricoLavoro) {
         this.denominazione = denominazione;
         this.ricetta = ricetta;
         this.tempoPreparazione = tempoPreparazione;
-        this.caricoLavoro = ricetta.getCaricoLavoro();//setto il carico di lavoro del piatto come quello della ricetta corrispondente
+        this.caricoLavoro = caricoLavoro;//setto il carico di lavoro del piatto come quello della ricetta corrispondente
     }
 
-    public Ricetta getRicetta() {
+    public String getRicetta() {
         return ricetta;
     }
 
