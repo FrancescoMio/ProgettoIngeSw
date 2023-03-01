@@ -9,4 +9,12 @@ public class Stringhe {
     public static final String nomeMenuTematico = "Inserire nome del menù tematico: ";
     public static final String sceltaNumeroPiatto = "Inserire il numero del piatto che vorrebbe aggiungere al menu tematico:";
     public static final String nuovoPiattoMenuTematico = "Vuole inserire un altro piatto nel menù tematico?";
+    public static final String nuovaConfigurazione = "COMPILARE LA CONFIGURAZIONE DEL RISTORANTE";
+    public static final String lineSeparator = "--------------------------------------------------";
+    public static final String creazioneMenuTematici = "CREAZIONE MENU' TEMATICI: ";
+    public static final String titoloMenu = "SELEZIONARE TIPOLOGIA DI UTENTE: ";
+    public static String [] vociMenu = {"Gestore","Addetto alle prenotazioni","Magazziniere"};
+
+    public static final String titoloMenuGestore = "SELEZIONARE MODALITA' UTILIZZO: ";
+    public static String [] vociMenuGestore = {"Crea nuova configurazione","Carica configurazione"};
 }

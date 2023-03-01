@@ -3,12 +3,15 @@ package unibs.ids.ristorante;
 import Libreria.InputDati;
 import Libreria.MyUtil;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import static unibs.ids.ristorante.Stringhe.*;
+
 public class Ristorante {
     //dichiaro static perchè sono proprietà del ristorante che non vengono modificate
-    private static String nome;
+    private static String nomeRistorante;
     private static int postiASedere;
     private static int caricoDiLavoroSostenibile;//sarà da ricavare  moltiplicando il carico di lavoro per persona per i posti per 120/100
     private static int caricoDiLavoroXPersona;//impegno richiesto per preparare cibo per una persona in un singolo pasto
@@ -23,32 +26,42 @@ public class Ristorante {
      */
     public Ristorante() {
         //creo gestore con cui inizializzare tutto
-        String nomeGestore = InputDati.leggiStringa("Inserire il nome del gestore: ");
-        String cognomeGestore = InputDati.leggiStringa("Inserire il cognome del gestore: ");
-        gestore = new Gestore(nomeGestore, cognomeGestore);
+        creaGestore();
+        creaConfigurazione();
+        creaMenu();
         registroMagazzino = new RegistroMagazzino();
         piattiDisponibili = new HashSet<>();
-        System.out.println("Buongiorno " + gestore.getNome() + " " + gestore.getCognome() + ", le chiediamo gentilmente di inserire i dati per il suo ristorante: ");
-
-        this.nome = gestore.getNomeRistorante();
-        this.postiASedere = gestore.postiASedere();
-        this.piattiDisponibili = gestore.inizializzaPiatti();
-        System.out.println(piattiDisponibili);
-        this.caricoDiLavoroXPersona = gestore.caricoXpersona();
-        this.caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
+        caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
         this.registroMagazzino.addGenereAlimentareExtra();
         this.registroMagazzino.addBevanda();
+        gestore.visualizzaMenuTematici(menuTematici);
+        gestore.visualizzaMenuAllaCarta(menuAllaCarta);
+    }
+
+    public void creaGestore(){
+        System.out.println(lineSeparator);
+        System.out.println(nuovaConfigurazione);
+        String nome = InputDati.leggiStringa("Inserire il nome del gestore: ");
+        String cognome = InputDati.leggiStringa("Inserire il cognome del gestore: ");
+        gestore = new Gestore(nome, cognome);
+    }
+
+    public void creaConfigurazione(){
+        nomeRistorante = gestore.getNomeRistorante();
+        postiASedere = gestore.postiASedere();
+        piattiDisponibili = gestore.inizializzaPiatti();
+        caricoDiLavoroXPersona = gestore.caricoXpersona();
+    }
+
+    public void creaMenu(){
+        System.out.println(lineSeparator);
+        System.out.println(creazioneMenuTematici);
         //creazione dei menù  tematici
-        this.menuTematici = new HashSet<>();
+        menuTematici = new HashSet<>();
         menuTematici = gestore.creaMenuTematici(piattiDisponibili);
         //creazione menù alla carta
         String nomeMenuCarta = "Menù del " + MyUtil.getDataOdierna();
         menuAllaCarta = new MenuCarta(nomeMenuCarta,piattiDisponibili,MyUtil.getDataOdierna());
-        System.out.println("Menù tematici:");
-        gestore.visualizzaMenuTematici(menuTematici);
-        System.out.println("Menù alla carta:");
-        gestore.visualizzaMenuAllaCarta(menuAllaCarta);
-
     }
     public static int getCaricoXPersona() {
         return caricoDiLavoroXPersona;

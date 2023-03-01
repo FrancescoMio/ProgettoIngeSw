@@ -77,8 +77,8 @@ public class MenuTematico extends Menu implements Ordinabile{
     @Override
     public String toString() {
         return "MenuTematico{" +
-                ", nomeMenu='" + nomeMenu + '\'' +
-                "caricoLavoroMenuTematico=" + caricoLavoroMenuTematico +
+                "nomeMenu='" + nomeMenu +
+                ", caricoLavoroMenuTematico=" + caricoLavoroMenuTematico +
                 ", disponibile=" + disponibile +
                 ", dataInizio=" + dataInizio +
                 ", dataFine=" + dataFine +

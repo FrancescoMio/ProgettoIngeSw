@@ -204,16 +204,12 @@ public class InputDati {
 
             try {
                 valoreLetto = lettore.next();
-                boolean controlloData = controllaData(valoreLetto);
-                if(controlloData){
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    dateFormat.setLenient(false);
                     data = dateFormat.parse(valoreLetto);
                     localDate = data.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); //converte Date in LocalDate
                     System.out.println("Data inserita: " + localDate);
                     finito = true;  //se non viene lanciata eccezione, la data e' corretta
-                }
-                else
-                    System.err.println("formato data non valido");
             } catch (Exception e) {
                 System.out.println("formato data non valido");
                 String var4 = lettore.next();

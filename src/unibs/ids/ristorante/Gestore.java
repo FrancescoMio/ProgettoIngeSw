@@ -111,7 +111,8 @@ public class Gestore extends Utente {
         boolean scelta = true;
         do {
             String nome = InputDati.leggiStringaConSpazi(nomeMenuTematico);
-            ArrayList<LocalDate> date = inserisciDate();
+            ArrayList<LocalDate> date = new ArrayList<>();
+            date = inserisciDate();
             Set<Piatto> piattiDelMenu = new HashSet<>();
             piattiDelMenu = inserisciPiattiMenuTematico(piattiDisponibili);
             double caricoLavoroMenu = calcoloLavoroMenuTematico(piattiDelMenu);
@@ -168,7 +169,6 @@ public class Gestore extends Utente {
      */
     public ArrayList<LocalDate> inserisciDate(){
         ArrayList<LocalDate> date = new ArrayList<>();
-        //String scelta = InputDati.leggiStringa(inserimentoData);
         LocalDate dataInizio = InputDati.leggiData(inserisciDataInizio);
         LocalDate dataFine = InputDati.leggiData(inserisciDataFine);
         date.add(dataInizio);
@@ -176,12 +176,16 @@ public class Gestore extends Utente {
         return date;
     }
     public void visualizzaMenuTematici(Set<MenuTematico> menuTematici){
-        for (MenuTematico menu: menuTematici) {
+        System.out.println(lineSeparator);
+        System.out.println("MENU' TEMATICI: ");
+        for (MenuTematico menu: menuTematici)
             System.out.println(menu.toString());
-        }
+
     }
 
     public void visualizzaMenuAllaCarta(MenuCarta menuAllaCarta){
+        System.out.println(lineSeparator);
+        System.out.println("MENU' ALLA CARTA: ");
         System.out.println(menuAllaCarta.toString());
     }
     public void visualizzaMagazzino(RegistroMagazzino magazzino){

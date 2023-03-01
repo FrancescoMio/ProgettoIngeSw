@@ -10,11 +10,12 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../serina_intellij.jar!/" />
+          <root url="jar://$USER_HOME$/serina_intellij.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="json-simple-1.1.1" level="project" />
   </component>
 </module>
