@@ -17,8 +17,8 @@ public class Gestore extends Utente {
      * metodo per inserire piatti a mano
      * @return
      */
-    public Set<Piatto> inizializzaPiatti() {
-        return inserisciPiatti();
+    public Set<Piatto> inizializzaPiatti(Set<Ricetta> ricette) {
+        return inserisciPiatti(ricette);
     }
 
     public String getNomeRistorante() {
@@ -41,15 +41,17 @@ public class Gestore extends Utente {
      *
      * @return
      */
-    public Set<Piatto> inserisciPiatti() {
+    public Set<Piatto> inserisciPiatti(Set<Ricetta> ricette) {
         Set<Piatto> piatti = new HashSet<>();
         boolean scelta = true;
         do {
             String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
             int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione: ");
-            HashMap<String, Integer> ingredienti = inserisciIngredienti();
-            Ricetta ricetta = controlloRicetta(ingredienti, piatti);//se ricetta esiste già, uso quella già presente, altrimenti la creo
-            Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione);
+            String nomeRicetta = InputDati.leggiStringa("Inserire nome ricetta: ");
+            //todo: controllare che vada tutto bene
+            Ricetta ricettaEsistente = controlloRicetta(nomeRicetta, ricette);//se ricetta esiste già, uso quella già presente, altrimenti la creo
+
+            Piatto piatto = new Piatto(nome, nomeRicetta, tempoPreparazione, ricettaEsistente.getCaricoLavoro());
             piatti.add(piatto);
             scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
         } while (scelta);
@@ -76,18 +78,25 @@ public class Gestore extends Utente {
     /**
      * metodo di utilita' per controllare se la ricetta esiste già, se esiste la ritorna, altrimenti la crea e la ritorna
      *
-     * @param ingredienti
-     * @param piatti
+     * @param nome
+     * @param ricette
      * @return
      */
-    public Ricetta controlloRicetta(HashMap<String, Integer> ingredienti, Set<Piatto> piatti) {
-        for (Piatto piatto : piatti) { //controllo esistenza della ricetta
-            if (piatto.getRicetta().getIngredienti().equals(ingredienti)) {
-                return piatto.getRicetta();
+    public Ricetta controlloRicetta(String nome, Set<Ricetta> ricette) {
+        for (Ricetta ricetta : ricette) {
+            if (ricetta.getNome().equals(nome)) {
+                return ricetta;
             }
-        }//se non esiste la ricetta, la creo e la ritorno per la creazione del piatto
-        int numeroPorzioni = InputDati.leggiIntero("Inserire numero porzioni che derivano dalla preparazione della ricetta: ");
-        double caricoXPorzione = InputDati.leggiDouble("Inserire carico di lavoro per porzione: ");//DA METTERE A POSTO, DEVE ESSERE UNA PORZIONE DI CARICO DI LAVORO PER PERSONA
+        }
+        System.out.println("Ricetta non trovata, inserisci i dati per aggiungerla alla lista delle ricette: ");
+        //se non esiste la ricetta, la creo e la ritorno per la creazione del piatto
+        Ricetta ricetta = creaRicetta();
+        ricette.add(ricetta);
+        return ricetta;
+    }
+
+    //da sistemare
+    private double controlloCaricoXPorzione(double caricoXPorzione) {
         boolean ok = false;
         do {
             if (caricoXPorzione < 10000) {  //Ristorante.getCaricoXPersona()
@@ -97,8 +106,7 @@ public class Gestore extends Utente {
                 caricoXPorzione = InputDati.leggiDouble("Inserire carico di lavoro per porzione: ");
             }
         } while (!ok);
-        Ricetta ricetta = new Ricetta(ingredienti, numeroPorzioni, caricoXPorzione);
-        return ricetta;
+        return caricoXPorzione;
     }
 
     /**
@@ -205,4 +213,46 @@ public class Gestore extends Utente {
         }
         return null;//da togliere
     }
+
+    public Set<Ricetta> inizializzaRicette(){
+        Set<Ricetta> ricette = new HashSet<>();
+        System.out.println("Le chiediamo di seguire le seguenti istruzioni per l'inserimento delle ricette");
+        do{
+            String nome = InputDati.leggiStringaConSpazi("Inserire il nome della ricetta: ");
+
+            if(controlloNome(nome, ricette)){
+                System.out.println("Ricetta già presente, se ne vuoi creare una simile dai un nome diverso: ");
+                nome = InputDati.leggiStringaConSpazi("Inserire il nome della ricetta: ");
+            }
+            HashMap<String,Integer> ingredienti = inserisciIngredienti();
+
+            int numeroPorzioni = InputDati.leggiIntero("Inserire il numero di porzioni tipicamente consumate: ");
+
+            double caricoXPorzione = InputDati.leggiDouble("Inserire il carico di lavoro per porzione: ");
+            caricoXPorzione = controlloCaricoXPorzione(caricoXPorzione);
+
+            Ricetta ricetta = new Ricetta(nome,ingredienti,numeroPorzioni,caricoXPorzione);
+            ricette.add(ricetta);
+        }while(InputDati.yesOrNo("Vuole inserire una nuova ricetta?"));
+        return ricette;
+    }
+
+    private boolean controlloNome(String nome, Set<Ricetta> ricette) {
+        for(Ricetta ricetta: ricette){
+            if(ricetta.getNome().equals(nome))
+                return true;
+        }
+        return false;
+    }
+
+    private Ricetta creaRicetta(){
+        String nome = InputDati.leggiStringaConSpazi("Inserire il nome della ricetta: ");
+        HashMap<String,Integer> ingredienti = inserisciIngredienti();
+        int numeroPorzioni = InputDati.leggiIntero("Inserire il numero di porzioni tipicamente consumate: ");
+        double caricoXPorzione = InputDati.leggiDouble("Inserire il carico di lavoro per porzione: ");
+        caricoXPorzione = controlloCaricoXPorzione(caricoXPorzione);
+        Ricetta ricetta = new Ricetta(nome,ingredienti,numeroPorzioni,caricoXPorzione);
+        return ricetta;
+    }
+
 }

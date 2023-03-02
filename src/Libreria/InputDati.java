@@ -2,6 +2,7 @@ package Libreria;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -211,12 +212,24 @@ public class InputDati {
                     System.out.println("Data inserita: " + localDate);
                     finito = true;  //se non viene lanciata eccezione, la data e' corretta
             } catch (Exception e) {
-                System.out.println("formato data non valido");
+                System.err.println("formato data non valido");
                 String var4 = lettore.next();
             }
         } while(!finito);
 
         return localDate;
+    }
+
+    public static boolean controllaData(String data){
+        String []dataSplit = data.split("/");
+        for(int i = 0; i < dataSplit.length; i++){
+            try {
+                Integer.parseInt(dataSplit[i]);
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
