@@ -17,4 +17,5 @@ public class Stringhe {
 
     public static final String titoloMenuGestore = "SELEZIONARE MODALITA' UTILIZZO: ";
     public static String [] vociMenuGestore = {"Crea nuova configurazione","Carica configurazione"};
+    public static final String erroreSceltaPiatto = "Numero piatto inserito non valido!";
 }

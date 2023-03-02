@@ -15,7 +15,7 @@ public class Ristorante {
     private static int postiASedere;
     private static int caricoDiLavoroSostenibile;//sarà da ricavare  moltiplicando il carico di lavoro per persona per i posti per 120/100
     private static int caricoDiLavoroXPersona;//impegno richiesto per preparare cibo per una persona in un singolo pasto
-    private Set<Ricetta> ricette;
+    private Set<Ricetta> libroRicette;
     private Set<Piatto> piattiDisponibili;//lista di piatti che il ristorante può offrire
     private RegistroMagazzino registroMagazzino;
     private Gestore gestore; //gestore del ristorante
@@ -27,12 +27,10 @@ public class Ristorante {
      */
     public Ristorante() {
         //creo gestore con cui inizializzare tutto
+        registroMagazzino = new RegistroMagazzino();
         creaGestore();
         creaConfigurazione();
         creaMenu();
-        registroMagazzino = new RegistroMagazzino();
-        ricette = new HashSet<>();
-        piattiDisponibili = new HashSet<>();
         caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
         this.registroMagazzino.addGenereAlimentareExtra();
         this.registroMagazzino.addBevanda();
@@ -49,10 +47,12 @@ public class Ristorante {
     }
 
     public void creaConfigurazione(){
+        libroRicette = new HashSet<>();
+        piattiDisponibili = new HashSet<>();
         nomeRistorante = gestore.getNomeRistorante();
         postiASedere = gestore.postiASedere();
-        ricette = gestore.inizializzaRicette();
-        piattiDisponibili = gestore.inizializzaPiatti(ricette);
+        libroRicette = gestore.inizializzaRicette();
+        piattiDisponibili = gestore.inizializzaPiatti(libroRicette);
         caricoDiLavoroXPersona = gestore.caricoXpersona();
     }
 

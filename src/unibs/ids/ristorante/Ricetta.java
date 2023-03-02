@@ -40,7 +40,7 @@ public class Ricetta {
     public String toString() {
         return "Ricetta{" +
                 "nome='" + nome +
-                "ingredienti=" + ingredienti +
+                ", ingredienti=" + ingredienti +
                 ", numeroPorzioni=" + numeroPorzioni +
                 ", caricoDiLavoroXPorzione=" + caricoDiLavoroXPorzione +
                 '}';

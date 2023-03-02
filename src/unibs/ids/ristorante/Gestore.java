@@ -47,7 +47,7 @@ public class Gestore extends Utente {
         do {
             String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
             int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione: ");
-            String nomeRicetta = InputDati.leggiStringa("Inserire nome ricetta: ");
+            String nomeRicetta = InputDati.leggiStringaConSpazi("Inserire nome ricetta: ");
             //todo: controllare che vada tutto bene
             Ricetta ricettaEsistente = controlloRicetta(nomeRicetta, ricette);//se ricetta esiste già, uso quella già presente, altrimenti la creo
 
@@ -83,8 +83,10 @@ public class Gestore extends Utente {
      * @return
      */
     public Ricetta controlloRicetta(String nome, Set<Ricetta> ricette) {
+        System.out.println(nome);
         for (Ricetta ricetta : ricette) {
-            if (ricetta.getNome().equals(nome)) {
+            System.out.println(ricetta);
+            if (ricetta.getNome().equalsIgnoreCase(nome)) {
                 return ricetta;
             }
         }
@@ -143,14 +145,22 @@ public class Gestore extends Utente {
         double sommaCaricoLavoroPiatti = 0;
         do {
             int i = 1;
+            int numeroPiatto;
+            boolean sceltaCorretta = false;
             for (Piatto piatto : piatti) {
                 System.out.println(i + "-" + piatto.getDenominazione());
                 i++;
             }
-            int numeroPiatto = InputDati.leggiIntero(sceltaNumeroPiatto);
+            do{
+                numeroPiatto = InputDati.leggiInteroPositivo(sceltaNumeroPiatto);
+                if(numeroPiatto >= 1 && numeroPiatto <= piatti.length)
+                    sceltaCorretta = true;
+                else
+                    System.err.println(erroreSceltaPiatto);
+            }while (!sceltaCorretta);
             sommaCaricoLavoroPiatti += piatti[numeroPiatto - 1].getCaricoLavoro();
             if(sommaCaricoLavoroPiatti > 4/3*Ristorante.getCaricoXPersona()){
-                System.err.println(Stringhe.caricoLavoroMenuTematicoNonValido);
+                System.err.println(caricoLavoroMenuTematicoNonValido);
                 break;
             }
             piattiDelMenu.add(piatti[numeroPiatto - 1]);
@@ -221,7 +231,7 @@ public class Gestore extends Utente {
             String nome = InputDati.leggiStringaConSpazi("Inserire il nome della ricetta: ");
 
             if(controlloNome(nome, ricette)){
-                System.out.println("Ricetta già presente, se ne vuoi creare una simile dai un nome diverso: ");
+                System.err.println("Ricetta già presente, se ne vuoi creare una simile dai un nome diverso: ");
                 nome = InputDati.leggiStringaConSpazi("Inserire il nome della ricetta: ");
             }
             HashMap<String,Integer> ingredienti = inserisciIngredienti();
