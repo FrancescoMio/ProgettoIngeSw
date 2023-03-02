@@ -1,9 +1,11 @@
 package unibs.ids.ristorante;
 
 import Libreria.InputDati;
+import Libreria.LeggiJSON;
 import Libreria.MyUtil;
+import org.json.simple.JSONObject;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,15 +13,16 @@ import static unibs.ids.ristorante.Stringhe.*;
 
 public class Ristorante {
     //dichiaro static perchè sono proprietà del ristorante che non vengono modificate
-    private static String nomeRistorante;
-    private static int postiASedere;
-    private static int caricoDiLavoroSostenibile;//sarà da ricavare  moltiplicando il carico di lavoro per persona per i posti per 120/100
-    private static int caricoDiLavoroXPersona;//impegno richiesto per preparare cibo per una persona in un singolo pasto
+    private String nomeRistorante;
+    private int postiASedere;
+    private int caricoDiLavoroSostenibile;//sarà da ricavare  moltiplicando il carico di lavoro per persona per i posti per 120/100
+    private int caricoDiLavoroXPersona;//impegno richiesto per preparare cibo per una persona in un singolo pasto
     private Set<Piatto> piattiDisponibili;//lista di piatti che il ristorante può offrire
     private RegistroMagazzino registroMagazzino;
     private Gestore gestore; //gestore del ristorante
     private Set<MenuTematico> menuTematici;
     private MenuCarta menuAllaCarta;
+    private ArrayList<JSONObject> piattiDisponibiliJson;
 
     /**
      * Costruttore dedicato alla inizializzazione dei dati di configurazione del ristorante
@@ -27,6 +30,7 @@ public class Ristorante {
     public Ristorante() {
         //creo gestore con cui inizializzare tutto
         registroMagazzino = new RegistroMagazzino();
+        piattiDisponibiliJson = new ArrayList<>();
         creaGestore();
         creaConfigurazione();
         creaMenu();
@@ -35,6 +39,7 @@ public class Ristorante {
         this.registroMagazzino.addBevanda();
         gestore.visualizzaMenuTematici(menuTematici);
         gestore.visualizzaMenuAllaCarta(menuAllaCarta);
+        LeggiJSON.salvaConfigurazione(this,piattiDisponibiliJson);
     }
 
     public void creaGestore(){
@@ -50,6 +55,7 @@ public class Ristorante {
         nomeRistorante = gestore.getNomeRistorante();
         postiASedere = gestore.postiASedere();
         piattiDisponibili = gestore.inizializzaPiatti();
+        this.piattiDisponibiliJson = gestore.getPiattiDisponibiliJson();
         caricoDiLavoroXPersona = gestore.caricoXpersona();
     }
 
@@ -58,12 +64,12 @@ public class Ristorante {
         System.out.println(creazioneMenuTematici);
         //creazione dei menù  tematici
         menuTematici = new HashSet<>();
-        menuTematici = gestore.creaMenuTematici(piattiDisponibili);
+        menuTematici = gestore.creaMenuTematici(piattiDisponibili,caricoDiLavoroXPersona);
         //creazione menù alla carta
         String nomeMenuCarta = "Menù del " + MyUtil.getDataOdierna();
         menuAllaCarta = new MenuCarta(nomeMenuCarta,piattiDisponibili,MyUtil.getDataOdierna());
     }
-    public static int getCaricoXPersona() {
+    public  int getCaricoXPersona() {
         return caricoDiLavoroXPersona;
     }
     public int getPostiASedere() {
@@ -76,5 +82,14 @@ public class Ristorante {
 
     public void setRegistroMagazzino(RegistroMagazzino registroMagazzino) {
         this.registroMagazzino = registroMagazzino;
+    }
+    public String getNomeRistorante() {
+        return nomeRistorante;
+    }
+    public int getCaricoDiLavoroSostenibile() {
+        return caricoDiLavoroSostenibile;
+    }
+    public Set<Piatto> getPiattiDisponibili() {
+        return piattiDisponibili;
     }
 }

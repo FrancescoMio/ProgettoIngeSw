@@ -1,8 +1,0 @@
-ListaSpesa
-Indivia,25,kg
-Patate,15,kg
-Panna,10,l
-Rape,15,kg
-Michette,250,hg
-Acqua minerale,80,l
-FineListaSpesa

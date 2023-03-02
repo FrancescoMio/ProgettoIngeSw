@@ -1,6 +1,7 @@
 package unibs.ids.ristorante;
 
 import Libreria.InputDati;
+import org.json.simple.JSONObject;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -8,9 +9,11 @@ import java.util.*;
 import static unibs.ids.ristorante.Stringhe.*;
 
 public class Gestore extends Utente {
+    ArrayList<JSONObject> piattiDisponibiliJson;
 
     public Gestore(String nome, String cognome) {//Costruttore
         super(nome, cognome);
+        piattiDisponibiliJson = new ArrayList<>();
     }
 
     /**
@@ -45,15 +48,40 @@ public class Gestore extends Utente {
         Set<Piatto> piatti = new HashSet<>();
         boolean scelta = true;
         do {
+            JSONObject piattoJson = new JSONObject();
             String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
             int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione: ");
+            piattoJson.put("denominazione",nome);
+            piattoJson.put("tempoPreparazione", tempoPreparazione);
             //todo: controllare che vada tutto bene
             Ricetta ricetta = creaRicetta(piatti);
+            ArrayList<JSONObject> ingredientiJson = setRicettaJson(ricetta);
             Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione);
+            piattoJson.put("caricoLavoro", piatto.getCaricoLavoro());
+            JSONObject ricettaJson = new JSONObject();
+            ricettaJson.put("numeroPorzioni",ricetta.getNumeroPorzioni());
+            ricettaJson.put("caricoLavoro",ricetta.getCaricoLavoro());
+            ricettaJson.put("elencoIngredienti",ingredientiJson);
+            piattoJson.put("ricetta", ricettaJson);
+            piattiDisponibiliJson.add(piattoJson);
             piatti.add(piatto);
             scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
         } while (scelta);
         return piatti;
+    }
+
+    public ArrayList<JSONObject> setRicettaJson(Ricetta ricetta){
+        ArrayList<JSONObject> ingredientiJson = new ArrayList<>();
+
+        Iterator<Map.Entry<String, Integer>> iterator = ricetta.getIngredienti().entrySet().iterator();
+        while (iterator.hasNext()) {
+            JSONObject obj = new JSONObject();
+            Map.Entry<String, Integer> entry = iterator.next();
+            obj.put("nome",entry.getKey());
+            obj.put("dose",entry.getValue());
+            ingredientiJson.add(obj);
+        }
+        return  ingredientiJson;
     }
 
     /**
@@ -112,7 +140,7 @@ public class Gestore extends Utente {
      * @param piattiDisponibili
      * @return
      */
-    public Set<MenuTematico> creaMenuTematici(Set<Piatto> piattiDisponibili) {
+    public Set<MenuTematico> creaMenuTematici(Set<Piatto> piattiDisponibili,int caricoLavoroPersona) {
         Set<MenuTematico> menuTematici = new HashSet<>();
         boolean scelta = true;
         do {
@@ -120,7 +148,7 @@ public class Gestore extends Utente {
             ArrayList<LocalDate> date = new ArrayList<>();
             date = inserisciDate();
             Set<Piatto> piattiDelMenu = new HashSet<>();
-            piattiDelMenu = inserisciPiattiMenuTematico(piattiDisponibili);
+            piattiDelMenu = inserisciPiattiMenuTematico(piattiDisponibili,caricoLavoroPersona);
             double caricoLavoroMenu = calcoloLavoroMenuTematico(piattiDelMenu);
             MenuTematico myMenu = new MenuTematico(nome, piattiDelMenu,date.get(0),date.get(1),caricoLavoroMenu);
             menuTematici.add(myMenu);
@@ -134,7 +162,7 @@ public class Gestore extends Utente {
      * @param piattiDisponibili
      * @return
      */
-    public Set<Piatto> inserisciPiattiMenuTematico(Set<Piatto> piattiDisponibili) {
+    public Set<Piatto> inserisciPiattiMenuTematico(Set<Piatto> piattiDisponibili,int caricoLavoroPersona) {
         Piatto[] piatti = piattiDisponibili.toArray(new Piatto[piattiDisponibili.size()]);
         Set<Piatto> piattiDelMenu = new HashSet<>();
         boolean scelta = true;
@@ -155,7 +183,7 @@ public class Gestore extends Utente {
                     System.err.println(erroreSceltaPiatto);
             }while (!sceltaCorretta);
             sommaCaricoLavoroPiatti += piatti[numeroPiatto - 1].getCaricoLavoro();
-            if(sommaCaricoLavoroPiatti > 4/3*Ristorante.getCaricoXPersona()){
+            if(sommaCaricoLavoroPiatti > 4/3*caricoLavoroPersona){
                 System.err.println(caricoLavoroMenuTematicoNonValido);
                 break;
             }
@@ -224,6 +252,10 @@ public class Gestore extends Utente {
         HashMap<String,Integer> ingredienti = inserisciIngredienti();
         Ricetta ricetta = controlloRicetta(ingredienti, piatti);
         return ricetta;
+    }
+
+    public ArrayList<JSONObject> getPiattiDisponibiliJson() {
+        return piattiDisponibiliJson;
     }
 
 }

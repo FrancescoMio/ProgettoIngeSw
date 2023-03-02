@@ -1,17 +1,14 @@
 package unibs.ids.ristorante;
 
-import Libreria.InputDati;
 import Libreria.LeggiJSON;
 import Libreria.MyMenu;
-import Libreria.MyUtil;
 
-import java.time.LocalDate;
+import java.io.IOException;
 
 import static unibs.ids.ristorante.Stringhe.*;
 
 public class Main {
-    public static void main(String[] args) {
-        LeggiJSON json = new LeggiJSON();
+    public static void main(String[] args) throws IOException {
         MyMenu menuUtenza = new MyMenu(titoloMenu,vociMenu);
         int scelta = menuUtenza.scegli();
         switch(scelta){
@@ -31,14 +28,14 @@ public class Main {
     }
 
 
-    public static void menuGestore(){
+    public static void menuGestore() throws IOException {
         MyMenu menu = new MyMenu(titoloMenuGestore,vociMenuGestore);
         int scelta = menu.scegli();
         if(scelta == 1){
             Ristorante ristorante = new Ristorante();
         }
         else{
-            //carica configurazione tramite file JSON
+            LeggiJSON json = new LeggiJSON();
         }
     }
 
