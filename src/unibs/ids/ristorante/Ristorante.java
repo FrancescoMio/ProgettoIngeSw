@@ -56,7 +56,7 @@ public class Ristorante {
         System.out.println(nuovaConfigurazione);
         String nome = InputDati.leggiStringa("Inserire il nome dell'addetto alle prenotazioni: ");
         String cognome = InputDati.leggiStringa("Inserire il cognome: ");
-        addettoPrenotazioni = new AddettoPrenotazioni(nome, cognome, postiASedere, caricoDiLavoroSostenibile);
+        addettoPrenotazioni = new AddettoPrenotazioni(nome, cognome);
     }
 
     public void creaConfigurazione(){

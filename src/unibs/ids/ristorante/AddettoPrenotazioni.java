@@ -9,25 +9,21 @@ import java.util.HashMap;
 public class AddettoPrenotazioni extends Utente {
 
     private ArrayList<Prenotazione> prenotazioni = new ArrayList<>();
-    private int copertiMax;//coperti massimi raggiungibili da una prenotazione in una giornata
-    private double caricoMax;//carico massimo raggiungibile da una prenotazione in una giornata
 
-    public AddettoPrenotazioni(String nome, String cognome, int posti, int carico) {//Costruttore
+    public AddettoPrenotazioni(String nome, String cognome) {//Costruttore
         super(nome, cognome);
         this.prenotazioni = new ArrayList<>();
-        this.copertiMax = posti;
-        this.caricoMax = carico;
     }
 
-    public void creaPrenotazioni(){
+    public void creaPrenotazioni(int copertiMax, double caricoMax){
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
         int numeroCoperti = InputDati.leggiIntero("Inserire numero coperti: ");
         LocalDate dataPrenotazione = InputDati.leggiData("Inserire data prenotazione: ");
         Prenotazione prenotazione;
         //richiamo metodo che controlla se il numero di coperti inseriti supera il numero massimo di coperti raggiungibili in una giornata
-        if(controlloCoperti(numeroCoperti, dataPrenotazione)){
+        if(controlloCoperti(numeroCoperti, dataPrenotazione, copertiMax)){
             ordine = chiediOrdine();
-            if(controlloCaricoLavoro(dataPrenotazione, ordine)){
+            if(controlloCaricoLavoro(dataPrenotazione, ordine, caricoMax)){
                 prenotazione = new Prenotazione(numeroCoperti, dataPrenotazione, ordine);
                 prenotazioni.add(prenotazione);
             }
@@ -43,7 +39,7 @@ public class AddettoPrenotazioni extends Utente {
 
     }
 
-    private boolean controlloCaricoLavoro(LocalDate dataPrenotazione, HashMap<Ordinabile,Integer> ordine){
+    private boolean controlloCaricoLavoro(LocalDate dataPrenotazione, HashMap<Ordinabile,Integer> ordine, double caricoMax){
         double caricoLavorodellaGiornata = CaricoLavoroInData(dataPrenotazione);
         for(Ordinabile o : ordine.keySet()){
             caricoLavorodellaGiornata += o.getCaricoLavoro()*ordine.get(o);
@@ -68,7 +64,7 @@ public class AddettoPrenotazioni extends Utente {
         return sommaCarichiLavoro;
     }
 
-    private boolean controlloCoperti(int numeroCoperti, LocalDate dataPrenotazione){
+    private boolean controlloCoperti(int numeroCoperti, LocalDate dataPrenotazione, int copertiMax){
         int numeroCopertiGiaPrenotati = 0;
         for(Prenotazione p : prenotazioni){
             if(p.getDataPrenotazione().equals(dataPrenotazione)){
