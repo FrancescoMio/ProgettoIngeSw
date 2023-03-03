@@ -15,6 +15,12 @@ public class AddettoPrenotazioni extends Utente {
         this.prenotazioni = new ArrayList<>();
     }
 
+    /**
+     * Metodo principale di addettoPrenotazioni, permette di creare una prenotazione effettiva per una data in particolare
+     * e comprende tutti i controlli su carico di lavoro e numero di coperti
+     * @param copertiMax
+     * @param caricoMax
+     */
     public void creaPrenotazioni(int copertiMax, double caricoMax){
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
         int numeroCoperti = InputDati.leggiIntero("Inserire numero coperti: ");
@@ -22,10 +28,13 @@ public class AddettoPrenotazioni extends Utente {
         Prenotazione prenotazione;
         //richiamo metodo che controlla se il numero di coperti inseriti supera il numero massimo di coperti raggiungibili in una giornata
         if(controlloCoperti(numeroCoperti, dataPrenotazione, copertiMax)){
+            //se numero di coperti è accettabile, creo l'ordine
             ordine = chiediOrdine();
+            //richiamo metodo che controlla se il carico di lavoro supera il carico massimo raggiungibile in una giornata
             if(controlloCaricoLavoro(dataPrenotazione, ordine, caricoMax)){
+                //se il carico di lavoro è accettabile, creo la prenotazione
                 prenotazione = new Prenotazione(numeroCoperti, dataPrenotazione, ordine);
-                prenotazioni.add(prenotazione);
+                prenotazioni.add(prenotazione);//aggiungo la prenotazione alla lista delle prenotazioni
             }
             else{
                 System.out.println("Prenotazione non effettuata, carico di lavoro troppo elevato");
@@ -39,9 +48,19 @@ public class AddettoPrenotazioni extends Utente {
 
     }
 
+    /**
+     * metodo che permette di controllare che il carico di lavoro sia accettabile nella giornata scelta
+     * @param dataPrenotazione
+     * @param ordine
+     * @param caricoMax
+     * @return
+     */
     private boolean controlloCaricoLavoro(LocalDate dataPrenotazione, HashMap<Ordinabile,Integer> ordine, double caricoMax){
+        //salvo il carico delle prenotazioni già presenti nella data in questione
         double caricoLavorodellaGiornata = CaricoLavoroInData(dataPrenotazione);
+
         for(Ordinabile o : ordine.keySet()){
+            //aggiungo il carico di lavoro dell'ordine
             caricoLavorodellaGiornata += o.getCaricoLavoro()*ordine.get(o);
         }
         if(caricoLavorodellaGiornata > caricoMax)
@@ -50,6 +69,11 @@ public class AddettoPrenotazioni extends Utente {
             return true;
     }
 
+    /**
+     * metodo che permette di calcolare il carico di lavoro delle prenotazioni già presenti in una data
+     * @param dataPrenotazione
+     * @return
+     */
     private double CaricoLavoroInData(LocalDate dataPrenotazione){
         double sommaCarichiLavoro = 0;
         ArrayList<Prenotazione> prenotazioniUtili = new ArrayList<>();
@@ -64,6 +88,14 @@ public class AddettoPrenotazioni extends Utente {
         return sommaCarichiLavoro;
     }
 
+    /**
+     * metodo che permette di controllare che il numero di coperti inseriti non superi il numero
+     * massimo di coperti raggiungibili in una giornata
+     * @param numeroCoperti
+     * @param dataPrenotazione
+     * @param copertiMax
+     * @return
+     */
     private boolean controlloCoperti(int numeroCoperti, LocalDate dataPrenotazione, int copertiMax){
         int numeroCopertiGiaPrenotati = 0;
         for(Prenotazione p : prenotazioni){
@@ -80,6 +112,9 @@ public class AddettoPrenotazioni extends Utente {
             return true;
     }
 
+    /**
+     * metodo che permette di eliminare automaticamente le prenotazioni scadute
+     */
     private void togliPrenotazioniScadute(){
         for(Prenotazione p : prenotazioni){
             if(p.getDataPrenotazione().isBefore(LocalDate.now())){
