@@ -9,9 +9,6 @@ public class Merce {
         merce = new HashMap<String, QuantitaMerce>();
     }
 
-    /*public ListaSpesa(File file){
-        this.listaSpesa = ServizioFile.leggiListaSpesa(file);
-    }*/
 
     public void aggiungiMerce(String nome, QuantitaMerce quantitaMerce) {
         merce.put(nome, quantitaMerce);

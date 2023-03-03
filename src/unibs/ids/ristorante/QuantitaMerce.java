@@ -41,4 +41,7 @@ public class QuantitaMerce {
         else
             this.quantita = quantita;
     }
+    public void setUnitaMisura(String unitaMisura) {
+        this.unitaMisura = unitaMisura;
+    }
 }

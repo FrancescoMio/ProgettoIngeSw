@@ -30,6 +30,14 @@ public class Prenotazione {
         return dataPrenotazione;
     }
 
+    public double getCaricoLavoro(){
+        double caricoLavoro = 0;
+        for(Ordinabile o : ordine.keySet()){
+            caricoLavoro += o.getCaricoLavoro()*ordine.get(o);
+        }
+        return caricoLavoro;
+    }
+
     public void setDataPrenotazione(LocalDate dataPrenotazione) {
         this.dataPrenotazione = dataPrenotazione;
     }

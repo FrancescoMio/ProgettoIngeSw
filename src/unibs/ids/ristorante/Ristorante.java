@@ -20,6 +20,7 @@ public class Ristorante {
     private Set<Piatto> piattiDisponibili;//lista di piatti che il ristorante può offrire
     private RegistroMagazzino registroMagazzino;
     private Gestore gestore; //gestore del ristorante
+    private AddettoPrenotazioni addettoPrenotazioni;//addetto alle prenotazioni del ristorante
     private Set<MenuTematico> menuTematici;
     private MenuCarta menuAllaCarta;
     private ArrayList<JSONObject> piattiDisponibiliJson;
@@ -48,6 +49,14 @@ public class Ristorante {
         String nome = InputDati.leggiStringa("Inserire il nome del gestore: ");
         String cognome = InputDati.leggiStringa("Inserire il cognome del gestore: ");
         gestore = new Gestore(nome, cognome);
+    }
+
+    public void creaAddettoPrenotazioni(){
+        System.out.println(lineSeparator);
+        System.out.println(nuovaConfigurazione);
+        String nome = InputDati.leggiStringa("Inserire il nome dell'addetto alle prenotazioni: ");
+        String cognome = InputDati.leggiStringa("Inserire il cognome: ");
+        addettoPrenotazioni = new AddettoPrenotazioni(nome, cognome, postiASedere, caricoDiLavoroSostenibile);
     }
 
     public void creaConfigurazione(){
