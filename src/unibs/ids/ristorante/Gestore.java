@@ -16,6 +16,10 @@ public class Gestore extends Utente {
         piattiDisponibiliJson = new ArrayList<>();
     }
 
+    public Gestore(){
+        super();
+    }
+
     /**
      * metodo per inserire piatti a mano
      * @return
@@ -257,6 +261,11 @@ public class Gestore extends Utente {
 
     public ArrayList<JSONObject> getPiattiDisponibiliJson() {
         return piattiDisponibiliJson;
+    }
+
+    public void setGestore(String nome, String cognome){
+        this.nome = nome;
+        this.cognome = cognome;
     }
 
 }

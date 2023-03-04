@@ -35,7 +35,8 @@ public class Main {
             Ristorante ristorante = new Ristorante();
         }
         else{
-            LeggiJSON json = new LeggiJSON();
+            Ristorante ristorante = LeggiJSON.caricaDati();
+            System.out.println(ristorante.toString());
         }
     }
 

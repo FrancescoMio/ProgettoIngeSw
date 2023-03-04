@@ -1,12 +1,16 @@
 package unibs.ids.ristorante;
 
 public class Utente {
-    private String nome;
-    private String cognome;
+    protected String nome;
+    protected String cognome;
 
     public Utente(String nome, String cognome) {//Costruttore
         this.nome = nome;
         this.cognome = cognome;
+    }
+
+    public Utente(){
+
     }
 
     public String getCognome() {
@@ -15,5 +19,13 @@ public class Utente {
 
     public String getNome() {
         return nome;
+    }
+
+    @Override
+    public String toString() {
+        return "Utente{" +
+                "nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                '}';
     }
 }

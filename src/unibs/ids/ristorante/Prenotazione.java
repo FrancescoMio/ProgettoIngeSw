@@ -2,6 +2,8 @@ package unibs.ids.ristorante;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Questa classe viene utilizzata per creare e gestire la prenotazione effettuata da un cliente
@@ -48,5 +50,17 @@ public class Prenotazione {
 
     public void setOrdine(HashMap<Ordinabile, Integer> ordine) {
         this.ordine = ordine;
+    }
+
+    public boolean controlloCoperti(){
+        int somma = 0;
+        Iterator<Map.Entry<Ordinabile, Integer>> iterator = ordine.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Ordinabile, Integer> entry = iterator.next();
+            somma += entry.getValue();
+        }
+        if(somma >= numeroCoperti)
+            return true;
+        return false;
     }
 }

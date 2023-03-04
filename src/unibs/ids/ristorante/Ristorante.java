@@ -33,6 +33,7 @@ public class Ristorante {
         registroMagazzino = new RegistroMagazzino();
         piattiDisponibiliJson = new ArrayList<>();
         creaGestore();
+        creaAddettoPrenotazioni();
         creaConfigurazione();
         creaMenu();
         caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
@@ -41,6 +42,15 @@ public class Ristorante {
         gestore.visualizzaMenuTematici(menuTematici);
         gestore.visualizzaMenuAllaCarta(menuAllaCarta);
         LeggiJSON.salvaConfigurazione(this,piattiDisponibiliJson);
+    }
+
+    public Ristorante(String caricaConfigurazione){
+        gestore = new Gestore();
+        piattiDisponibili = new HashSet<>();
+        registroMagazzino = new RegistroMagazzino();
+        addettoPrenotazioni = new AddettoPrenotazioni();
+        menuTematici = new HashSet<>();
+        menuAllaCarta = new MenuCarta();
     }
 
     public void creaGestore(){
@@ -100,5 +110,48 @@ public class Ristorante {
     }
     public Set<Piatto> getPiattiDisponibili() {
         return piattiDisponibili;
+    }
+
+    public String getNomeGestore() {
+        return gestore.getNome();
+    }
+
+    public String getCognomeGestore(){
+        return gestore.getCognome();
+    }
+
+    public void setGestore(String nome, String cognome){
+        gestore.setGestore(nome,cognome);
+    }
+    public void setPostiASedere(int posti){
+        postiASedere = posti;
+    }
+    public void setCaricoLavoroPersona(int carico){
+        caricoDiLavoroXPersona = carico;
+    }
+
+    public void setCaricoLavoroSostenibile(int carico){
+        caricoDiLavoroSostenibile = carico;
+    }
+
+    public void setNomeRistorante(String nome){
+        nomeRistorante = nome;
+    }
+
+    @Override
+    public String toString() {
+        return "Ristorante{" +
+                "nomeRistorante='" + nomeRistorante + '\'' +
+                ", postiASedere=" + postiASedere +
+                ", caricoDiLavoroSostenibile=" + caricoDiLavoroSostenibile +
+                ", caricoDiLavoroXPersona=" + caricoDiLavoroXPersona +
+                ", piattiDisponibili=" + piattiDisponibili +
+                ", registroMagazzino=" + registroMagazzino +
+                ", gestore=" + gestore +
+                ", addettoPrenotazioni=" + addettoPrenotazioni +
+                ", menuTematici=" + menuTematici +
+                ", menuAllaCarta=" + menuAllaCarta +
+                ", piattiDisponibiliJson=" + piattiDisponibiliJson +
+                '}';
     }
 }

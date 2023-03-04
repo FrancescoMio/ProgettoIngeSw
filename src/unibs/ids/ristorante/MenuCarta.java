@@ -13,6 +13,10 @@ public class MenuCarta extends Menu{
         this.data = data;
     }
 
+    public MenuCarta(){
+        super();
+    }
+
 
     @Override
     public String toString() {

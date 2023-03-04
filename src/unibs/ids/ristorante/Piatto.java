@@ -1,5 +1,6 @@
 package unibs.ids.ristorante;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Piatto implements Ordinabile {
@@ -8,6 +9,7 @@ public class Piatto implements Ordinabile {
     private Ricetta ricetta = new Ricetta();
     private int tempoPreparazione;//in minuti
     private double caricoLavoro;
+
 
     //Costruttore
     public Piatto(String denominazione, Ricetta ricetta, int tempoPreparazione) {

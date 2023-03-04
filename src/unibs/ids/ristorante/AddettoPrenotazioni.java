@@ -15,6 +15,10 @@ public class AddettoPrenotazioni extends Utente {
         this.prenotazioni = new ArrayList<>();
     }
 
+    public AddettoPrenotazioni(){
+        super();
+    }
+
     /**
      * Metodo principale di addettoPrenotazioni, permette di creare una prenotazione effettiva per una data in particolare
      * e comprende tutti i controlli su carico di lavoro e numero di coperti
@@ -57,7 +61,7 @@ public class AddettoPrenotazioni extends Utente {
      */
     private boolean controlloCaricoLavoro(LocalDate dataPrenotazione, HashMap<Ordinabile,Integer> ordine, double caricoMax){
         //salvo il carico delle prenotazioni già presenti nella data in questione
-        double caricoLavorodellaGiornata = CaricoLavoroInData(dataPrenotazione);
+        double caricoLavorodellaGiornata = caricoLavoroInData(dataPrenotazione);
 
         for(Ordinabile o : ordine.keySet()){
             //aggiungo il carico di lavoro dell'ordine
@@ -74,7 +78,7 @@ public class AddettoPrenotazioni extends Utente {
      * @param dataPrenotazione
      * @return
      */
-    private double CaricoLavoroInData(LocalDate dataPrenotazione){
+    private double caricoLavoroInData(LocalDate dataPrenotazione){
         double sommaCarichiLavoro = 0;
         ArrayList<Prenotazione> prenotazioniUtili = new ArrayList<>();
         for(Prenotazione p : prenotazioni){

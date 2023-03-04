@@ -13,6 +13,10 @@ public class Menu {
         this.elencoPiatti = elencoPiatti;
     }
 
+    public Menu(){
+
+    }
+
     public Set<Piatto> getElencoPiatti() {
         return elencoPiatti;
     }
