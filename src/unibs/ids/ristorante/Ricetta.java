@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 public class Ricetta {
     private HashMap<String, Integer> ingredienti;//ingrediente come chiave e valore opportuno come valore
-
-
     private int numeroPorzioni;
     private double caricoDiLavoroXPorzione; //sarà una frazione<1 di carico per persona, controllo poi in Ristorante
 

@@ -137,6 +137,9 @@ public class Ristorante {
     public void setNomeRistorante(String nome){
         nomeRistorante = nome;
     }
+    public void setPiattiDisponibili(Set<Piatto> piattiDisponibili) {
+        this.piattiDisponibili = piattiDisponibili;
+    }
 
     @Override
     public String toString() {
@@ -154,4 +157,5 @@ public class Ristorante {
                 ", piattiDisponibiliJson=" + piattiDisponibiliJson +
                 '}';
     }
+
 }

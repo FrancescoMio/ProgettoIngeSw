@@ -64,7 +64,7 @@ public class Gestore extends Utente {
             piattoJson.put("caricoLavoro", piatto.getCaricoLavoro());
             JSONObject ricettaJson = new JSONObject();
             ricettaJson.put("numeroPorzioni",ricetta.getNumeroPorzioni());
-            ricettaJson.put("caricoLavoro",ricetta.getCaricoLavoro());
+            ricettaJson.put("caricoLavoroXporzione",ricetta.getCaricoLavoro());
             ricettaJson.put("elencoIngredienti",ingredientiJson);
             piattoJson.put("ricetta", ricettaJson);
             piattiDisponibiliJson.add(piattoJson);

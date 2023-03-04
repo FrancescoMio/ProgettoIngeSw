@@ -3,12 +3,20 @@ package Libreria;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import unibs.ids.ristorante.Piatto;
+import unibs.ids.ristorante.Ricetta;
 import unibs.ids.ristorante.Ristorante;
+import unibs.ids.ristorante.Stringhe;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import static unibs.ids.ristorante.Stringhe.lineSeparator;
 
 public class LeggiJSON {
 
@@ -54,25 +62,42 @@ public class LeggiJSON {
 
             String nomeRistorante = (String) jsonObject.get("NomeRistorante");
             ristorante.setNomeRistorante(nomeRistorante);
-            System.out.println(nomeRistorante);
 
             String nomeGestore = (String) jsonObject.get("NomeGestore");
             String cognomeGestore = (String) jsonObject.get("CognomeGestore");
             ristorante.setGestore(nomeGestore,cognomeGestore);
 
-            /*int postiASedere = (int) jsonObject.get("PostiAsedere");
-            ristorante.setPostiASedere(postiASedere);
+            long postiASedere = (long) jsonObject.get("PostiAsedere");
+            ristorante.setPostiASedere((int)postiASedere);
 
-            int caricoLavoroPersona = (int) jsonObject.get("CaricoLavoroPersona");
-            ristorante.setCaricoLavoroPersona(caricoLavoroPersona);
+            long caricoLavoroPersona = (long) jsonObject.get("CaricoLavoroPersona");
+            ristorante.setCaricoLavoroPersona((int)caricoLavoroPersona);
 
-            int caricoLavoroSostenibile = (int) jsonObject.get("CaricoLavoroSostenibile");
-            ristorante.setCaricoLavoroSostenibile(caricoLavoroSostenibile);*/
+            long caricoLavoroSostenibile = (long) jsonObject.get("CaricoLavoroSostenibile");
+            ristorante.setCaricoLavoroSostenibile((int)caricoLavoroSostenibile);
 
-            /*JSONObject addressObject = (JSONObject) jsonObject.get("address");
-            String street = (String) addressObject.get("street");
-            String city = (String) addressObject.get("city");
-            String state = (String) addressObject.get("state");*/
+            ArrayList<JSONObject> piatti = (ArrayList<JSONObject>) jsonObject.get("PiattiDisponibili");
+            Set<Piatto> piattiDisponibili = new HashSet<>();
+
+            for (JSONObject obj: piatti) { //scorro tutti i piatti contenuti nel nel JSON
+                String denominazione = (String) obj.get("denominazione");
+                long tempoPreparazione = (long) obj.get("tempoPreparazione");
+                JSONObject ricettaJson = (JSONObject) obj.get("ricetta");
+                long numeroPorzioni = (long) ricettaJson.get("numeroPorzioni");
+                double caricoLavoroXporzione = (double) ricettaJson.get("caricoLavoroXporzione");
+                ArrayList<JSONObject> elencoIngredienti = (ArrayList<JSONObject>)ricettaJson.get("elencoIngredienti");
+                HashMap<String,Integer> ingredienti = new HashMap<>();
+                for (JSONObject ingrediente: elencoIngredienti) {
+                    long dose = (long) ingrediente.get("dose");
+                    String nomeIngrediente = (String) ingrediente.get("nome");
+                    ingredienti.put(nomeIngrediente,(int)dose);
+                }
+                Ricetta ricetta = new Ricetta(ingredienti, (int)numeroPorzioni, (double)caricoLavoroXporzione);
+                Piatto piatto = new Piatto(denominazione,ricetta,(int)tempoPreparazione);
+                piattiDisponibili.add(piatto);
+            }
+
+            ristorante.setPiattiDisponibili(piattiDisponibili);
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
