@@ -8,15 +8,22 @@ import java.util.HashMap;
 
 public class AddettoPrenotazioni extends Utente {
 
-    private ArrayList<Prenotazione> prenotazioni = new ArrayList<>();
-
     public AddettoPrenotazioni(String nome, String cognome) {//Costruttore
         super(nome, cognome);
-        this.prenotazioni = new ArrayList<>();
     }
 
     public AddettoPrenotazioni(){
         super();
+    }
+
+    public ArrayList<Prenotazione> creaPrenotazioni(int copertiMax, double caricoMax) {
+        ArrayList<Prenotazione> prenotazioni = new ArrayList<>();
+        do{
+            Prenotazione prenotazione = creaPrenotazione(prenotazioni, copertiMax, caricoMax);
+            if(prenotazione != null)
+                prenotazioni.add(prenotazione);
+        }while (InputDati.yesOrNo("Vuoi creare un'altra prenotazione?"));
+        return prenotazioni;
     }
 
     /**
@@ -25,20 +32,20 @@ public class AddettoPrenotazioni extends Utente {
      * @param copertiMax
      * @param caricoMax
      */
-    public void creaPrenotazioni(int copertiMax, double caricoMax){
+    private Prenotazione creaPrenotazione(ArrayList<Prenotazione> prenotazioni, int copertiMax, double caricoMax){
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
         int numeroCoperti = InputDati.leggiIntero("Inserire numero coperti: ");
         LocalDate dataPrenotazione = InputDati.leggiData("Inserire data prenotazione: ");
         Prenotazione prenotazione;
         //richiamo metodo che controlla se il numero di coperti inseriti supera il numero massimo di coperti raggiungibili in una giornata
-        if(controlloCoperti(numeroCoperti, dataPrenotazione, copertiMax)){
+        if(controlloCoperti(prenotazioni, numeroCoperti, dataPrenotazione, copertiMax)){
             //se numero di coperti è accettabile, creo l'ordine
             ordine = chiediOrdine();
             //richiamo metodo che controlla se il carico di lavoro supera il carico massimo raggiungibile in una giornata
-            if(controlloCaricoLavoro(dataPrenotazione, ordine, caricoMax)){
+            if(controlloCaricoLavoro(prenotazioni, dataPrenotazione, ordine, caricoMax)){
                 //se il carico di lavoro è accettabile, creo la prenotazione
                 prenotazione = new Prenotazione(numeroCoperti, dataPrenotazione, ordine);
-                prenotazioni.add(prenotazione);//aggiungo la prenotazione alla lista delle prenotazioni
+                return prenotazione;
             }
             else{
                 System.out.println("Prenotazione non effettuata, carico di lavoro troppo elevato");
@@ -49,7 +56,7 @@ public class AddettoPrenotazioni extends Utente {
             System.out.println("Prenotazione non effettuata, carico di coperti troppo elevato");
             System.out.println("Tornate un altro giorno e saremo lieti di servirvi!");
         }
-
+        return null;
     }
 
     /**
@@ -59,9 +66,9 @@ public class AddettoPrenotazioni extends Utente {
      * @param caricoMax
      * @return
      */
-    private boolean controlloCaricoLavoro(LocalDate dataPrenotazione, HashMap<Ordinabile,Integer> ordine, double caricoMax){
+    private boolean controlloCaricoLavoro(ArrayList<Prenotazione> prenotazioni, LocalDate dataPrenotazione, HashMap<Ordinabile,Integer> ordine, double caricoMax){
         //salvo il carico delle prenotazioni già presenti nella data in questione
-        double caricoLavorodellaGiornata = caricoLavoroInData(dataPrenotazione);
+        double caricoLavorodellaGiornata = caricoLavoroInData(prenotazioni, dataPrenotazione);
 
         for(Ordinabile o : ordine.keySet()){
             //aggiungo il carico di lavoro dell'ordine
@@ -78,7 +85,7 @@ public class AddettoPrenotazioni extends Utente {
      * @param dataPrenotazione
      * @return
      */
-    private double caricoLavoroInData(LocalDate dataPrenotazione){
+    private double caricoLavoroInData(ArrayList<Prenotazione> prenotazioni ,LocalDate dataPrenotazione){
         double sommaCarichiLavoro = 0;
         ArrayList<Prenotazione> prenotazioniUtili = new ArrayList<>();
         for(Prenotazione p : prenotazioni){
@@ -100,7 +107,7 @@ public class AddettoPrenotazioni extends Utente {
      * @param copertiMax
      * @return
      */
-    private boolean controlloCoperti(int numeroCoperti, LocalDate dataPrenotazione, int copertiMax){
+    private boolean controlloCoperti(ArrayList<Prenotazione> prenotazioni, int numeroCoperti, LocalDate dataPrenotazione, int copertiMax){
         int numeroCopertiGiaPrenotati = 0;
         for(Prenotazione p : prenotazioni){
             if(p.getDataPrenotazione().equals(dataPrenotazione)){
@@ -119,7 +126,7 @@ public class AddettoPrenotazioni extends Utente {
     /**
      * metodo che permette di eliminare automaticamente le prenotazioni scadute
      */
-    private void togliPrenotazioniScadute(){
+    private void togliPrenotazioniScadute(ArrayList<Prenotazione> prenotazioni){
         for(Prenotazione p : prenotazioni){
             if(p.getDataPrenotazione().isBefore(LocalDate.now())){
                 prenotazioni.remove(p);
