@@ -5,6 +5,7 @@ import Libreria.InputDati;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class AddettoPrenotazioni extends Utente {
 
@@ -16,10 +17,10 @@ public class AddettoPrenotazioni extends Utente {
         super();
     }
 
-    public ArrayList<Prenotazione> creaPrenotazioni(int copertiMax, double caricoMax) {
+    public ArrayList<Prenotazione> creaPrenotazioni(int copertiMax, double caricoMax, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici) {
         ArrayList<Prenotazione> prenotazioni = new ArrayList<>();
         do{
-            Prenotazione prenotazione = creaPrenotazione(prenotazioni, copertiMax, caricoMax);
+            Prenotazione prenotazione = creaPrenotazione(prenotazioni, copertiMax, caricoMax, menuAllaCarta, menuTematici);
             if(prenotazione != null)
                 prenotazioni.add(prenotazione);
         }while (InputDati.yesOrNo("Vuoi creare un'altra prenotazione?"));
@@ -32,7 +33,7 @@ public class AddettoPrenotazioni extends Utente {
      * @param copertiMax
      * @param caricoMax
      */
-    private Prenotazione creaPrenotazione(ArrayList<Prenotazione> prenotazioni, int copertiMax, double caricoMax){
+    private Prenotazione creaPrenotazione(ArrayList<Prenotazione> prenotazioni, int copertiMax, double caricoMax,MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
         int numeroCoperti = InputDati.leggiIntero("Inserire numero coperti: ");
         LocalDate dataPrenotazione = InputDati.leggiData("Inserire data prenotazione: ");
@@ -40,7 +41,7 @@ public class AddettoPrenotazioni extends Utente {
         //richiamo metodo che controlla se il numero di coperti inseriti supera il numero massimo di coperti raggiungibili in una giornata
         if(controlloCoperti(prenotazioni, numeroCoperti, dataPrenotazione, copertiMax)){
             //se numero di coperti è accettabile, creo l'ordine
-            ordine = chiediOrdine();
+            ordine = chiediOrdine(numeroCoperti, menuAllaCarta, menuTematici);
             //richiamo metodo che controlla se il carico di lavoro supera il carico massimo raggiungibile in una giornata
             if(controlloCaricoLavoro(prenotazioni, dataPrenotazione, ordine, caricoMax)){
                 //se il carico di lavoro è accettabile, creo la prenotazione
@@ -134,8 +135,50 @@ public class AddettoPrenotazioni extends Utente {
         }
     }
 
-    private HashMap<Ordinabile,Integer> chiediOrdine(){
-        //TODO
-        return null;//da togliere
+    private HashMap<Ordinabile,Integer> chiediOrdine(int numeroCoperti, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
+        HashMap<Ordinabile,Integer> ordine = new HashMap<>();
+        System.out.println("Inserire cortesemente l'ordine per ogni persona al tavolo");
+        for(int i = 0; i < numeroCoperti; i++){
+            System.out.println("Ordine persona " + (i+1));
+            Ordinabile ordinabile = chiediOrdinabile(menuAllaCarta, menuTematici);
+            int quantita = InputDati.leggiIntero("Inserire quante persone hanno scelto questo menu/piatto: ");
+            ordine.put(ordinabile, quantita);
+        }
+        return ordine;
     }
+
+    private Ordinabile chiediOrdinabile(MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
+        Ordinabile ordinabile = null;
+        int scelta = 0;
+        do{
+            System.out.println("1) Menu");
+            System.out.println("2) Piatto");
+            scelta = InputDati.leggiIntero("Inserire:\n1 per scegliere un piatto dal menu alla carta,\n2 per scegliere un menu tematico");
+            switch (scelta){
+                case 1:
+                    //ordinabile = chiediMenu(menuTematici);
+                    break;
+                case 2:
+                    //ordinabile = chiediPiatto(menuAllaCarta);
+                    break;
+                default:
+                    System.out.println("Scelta non valida");
+            }
+        }while(scelta != 1 && scelta != 2);
+        return ordinabile;
+    }
+
+    /*
+    private Ordinabile chiediPiatto(MenuCarta menuAllaCarta) {
+        System.out.println("I piatti disponibili sono:");
+        for(Piatto p : menuAllaCarta.getPiatti()){
+            System.out.println(p);
+        }
+    }
+
+    private Ordinabile chiediMenu(Set<MenuTematico> menuTematici) {
+
+    }
+    */
+
 }

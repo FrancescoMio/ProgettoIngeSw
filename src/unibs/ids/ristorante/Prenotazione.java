@@ -52,6 +52,7 @@ public class Prenotazione {
         this.ordine = ordine;
     }
 
+    //probabilmente da togliere
     public boolean controlloCoperti(){
         int somma = 0;
         Iterator<Map.Entry<Ordinabile, Integer>> iterator = ordine.entrySet().iterator();
