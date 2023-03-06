@@ -24,6 +24,7 @@ public class Ristorante {
     private MenuCarta menuAllaCarta;
     private ArrayList<JSONObject> piattiDisponibiliJson;
     private ArrayList<JSONObject> menuTematiciJson;
+    private ArrayList<Prenotazione> prenotazioni;
 
     /**
      * Costruttore dedicato alla inizializzazione dei dati di configurazione del ristorante
@@ -34,9 +35,9 @@ public class Ristorante {
         piattiDisponibiliJson = new ArrayList<>();
         menuTematiciJson = new ArrayList<>();
         creaGestore();
-        creaAddettoPrenotazioni();
         creaConfigurazione();
         creaMenu();
+        creaAddettoPrenotazioni();
         caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
         this.registroMagazzino.addGenereAlimentareExtra();
         this.registroMagazzino.addBevanda();
@@ -58,17 +59,18 @@ public class Ristorante {
     public void creaGestore(){
         System.out.println(lineSeparator);
         System.out.println(nuovaConfigurazione);
-        String nome = InputDati.leggiStringa("Inserire il nome del gestore: ");
-        String cognome = InputDati.leggiStringa("Inserire il cognome del gestore: ");
+        String nome = InputDati.leggiStringaConSpazi("Inserire il nome del gestore: ");
+        String cognome = InputDati.leggiStringaConSpazi("Inserire il cognome del gestore: ");
         gestore = new Gestore(nome, cognome);
     }
 
     public void creaAddettoPrenotazioni(){
         System.out.println(lineSeparator);
         System.out.println(nuovaConfigurazione);
-        String nome = InputDati.leggiStringa("Inserire il nome dell'addetto alle prenotazioni: ");
-        String cognome = InputDati.leggiStringa("Inserire il cognome: ");
+        String nome = InputDati.leggiStringaConSpazi("Inserire il nome dell'addetto alle prenotazioni: ");
+        String cognome = InputDati.leggiStringaConSpazi("Inserire il cognome: ");
         addettoPrenotazioni = new AddettoPrenotazioni(nome, cognome);
+        this.prenotazioni = addettoPrenotazioni.creaPrenotazioni(postiASedere,caricoDiLavoroSostenibile,menuAllaCarta,menuTematici);
     }
 
     public void creaConfigurazione(){
