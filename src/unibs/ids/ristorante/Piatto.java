@@ -7,6 +7,7 @@ public class Piatto implements Ordinabile {
     private String denominazione;
     //private boolean disponibile;
     private Ricetta ricetta = new Ricetta();
+
     private int tempoPreparazione;//in minuti
     private double caricoLavoro;
 
@@ -31,6 +32,9 @@ public class Piatto implements Ordinabile {
     }
     public void setCaricoLavoro(double caricoLavoro) {
         this.caricoLavoro = caricoLavoro;
+    }
+    public int getTempoPreparazione() {
+        return tempoPreparazione;
     }
 
     @Override

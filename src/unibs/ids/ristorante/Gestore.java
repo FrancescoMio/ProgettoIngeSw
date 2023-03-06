@@ -4,16 +4,21 @@ import Libreria.InputDati;
 import org.json.simple.JSONObject;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static unibs.ids.ristorante.Stringhe.*;
 
 public class Gestore extends Utente {
     ArrayList<JSONObject> piattiDisponibiliJson;
+    ArrayList<JSONObject> menuTematiciJson;
+    ArrayList<JSONObject> piattiMenuTematicoJson;
 
     public Gestore(String nome, String cognome) {//Costruttore
         super(nome, cognome);
         piattiDisponibiliJson = new ArrayList<>();
+        menuTematiciJson = new ArrayList<>();
+        piattiMenuTematicoJson = new ArrayList<>();
     }
 
     public Gestore(){
@@ -52,26 +57,34 @@ public class Gestore extends Utente {
         Set<Piatto> piatti = new HashSet<>();
         boolean scelta = true;
         do {
-            JSONObject piattoJson = new JSONObject();
             String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
             int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione: ");
-            piattoJson.put("denominazione",nome);
-            piattoJson.put("tempoPreparazione", tempoPreparazione);
             //todo: controllare che vada tutto bene
             Ricetta ricetta = creaRicetta(piatti);
-            ArrayList<JSONObject> ingredientiJson = setRicettaJson(ricetta);
             Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione);
-            piattoJson.put("caricoLavoro", piatto.getCaricoLavoro());
-            JSONObject ricettaJson = new JSONObject();
-            ricettaJson.put("numeroPorzioni",ricetta.getNumeroPorzioni());
-            ricettaJson.put("caricoLavoroXporzione",ricetta.getCaricoLavoro());
-            ricettaJson.put("elencoIngredienti",ingredientiJson);
-            piattoJson.put("ricetta", ricettaJson);
-            piattiDisponibiliJson.add(piattoJson);
             piatti.add(piatto);
+            setPiattiDisponibiliJson(piatto,ricetta,"piattiDisponibili");
             scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
         } while (scelta);
         return piatti;
+    }
+
+    public void setPiattiDisponibiliJson(Piatto piatto, Ricetta ricetta, String localita){
+        JSONObject piattoJson = new JSONObject();
+        piattoJson.put("denominazione",piatto.getDenominazione());
+        piattoJson.put("tempoPreparazione", piatto.getTempoPreparazione());
+        piattoJson.put("caricoLavoro", piatto.getCaricoLavoro());
+        ArrayList<JSONObject> ingredientiJson = setRicettaJson(ricetta);
+        JSONObject ricettaJson = new JSONObject();
+        ricettaJson.put("numeroPorzioni",ricetta.getNumeroPorzioni());
+        ricettaJson.put("caricoLavoroXporzione",ricetta.getCaricoLavoro());
+        ricettaJson.put("elencoIngredienti",ingredientiJson);
+        piattoJson.put("ricetta", ricettaJson);
+        if(localita.equalsIgnoreCase("piattiDisponibili"))
+            piattiDisponibiliJson.add(piattoJson);
+        if(localita.equalsIgnoreCase("menuTematico"))
+            piattiMenuTematicoJson.add(piattoJson);
+
     }
 
     public ArrayList<JSONObject> setRicettaJson(Ricetta ricetta){
@@ -155,10 +168,29 @@ public class Gestore extends Utente {
             piattiDelMenu = inserisciPiattiMenuTematico(piattiDisponibili,caricoLavoroPersona);
             double caricoLavoroMenu = calcoloLavoroMenuTematico(piattiDelMenu);
             MenuTematico myMenu = new MenuTematico(nome, piattiDelMenu,date.get(0),date.get(1),caricoLavoroMenu);
+            JSONObject menuTematicoJson = setMenutematicoJson(myMenu,piattiDelMenu);
+            menuTematiciJson.add(menuTematicoJson);
+            //piattiMenuTematicoJson.clear();
             menuTematici.add(myMenu);
             scelta = InputDati.yesOrNo(nuovoMenuTematico);
         } while (scelta);
         return menuTematici;
+    }
+
+    public JSONObject setMenutematicoJson(MenuTematico menu, Set<Piatto> piattiDelMenu){
+        JSONObject menuTematicoJson = new JSONObject();
+        menuTematicoJson.put("nome",menu.getNomeMenu());
+        String dataInizio = menu.getDataInizio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        String dataFine = menu.getDataFine().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        menuTematicoJson.put("dataInizio",dataInizio);
+        menuTematicoJson.put("dataFine",dataFine);
+        menuTematicoJson.put("disponibile",menu.getDisponibilita());
+        menuTematicoJson.put("caricoLavoro",menu.getCaricoLavoro());
+        for (Piatto piatto : piattiDelMenu)
+            setPiattiDisponibiliJson(piatto,piatto.getRicetta(),"menuTematico");
+        menuTematicoJson.put("elencoPiatti",piattiMenuTematicoJson);
+
+        return  menuTematicoJson;
     }
 
     /**
@@ -263,9 +295,17 @@ public class Gestore extends Utente {
         return piattiDisponibiliJson;
     }
 
+    public ArrayList<JSONObject> getMenuTematiciJson() {
+        return menuTematiciJson;
+    }
+
     public void setGestore(String nome, String cognome){
         this.nome = nome;
         this.cognome = cognome;
+    }
+
+    public ArrayList<JSONObject> getPiattiMenuTematicoJson() {
+        return piattiMenuTematicoJson;
     }
 
 }

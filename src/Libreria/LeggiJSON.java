@@ -33,11 +33,17 @@ public class LeggiJSON {
         obj.put("CaricoLavoroPersona",ristorante.getCaricoXPersona());
         obj.put("CaricoLavoroSostenibile",ristorante.getCaricoDiLavoroSostenibile());
         obj.put("PiattiDisponibili", piattiDisponibili);
-        salvaSuFile(obj);
+        salvaSuFile(obj,"./config.json");
     }
 
-    public static void salvaSuFile(JSONObject object){
-        try (FileWriter file = new FileWriter("./output.json")) {
+    public static void salvaMenuTematici(Ristorante ristorante, ArrayList<JSONObject> elencoMenuTematici){
+        JSONObject obj = new JSONObject();
+        obj.put("MenuTematici", elencoMenuTematici);
+        salvaSuFile(obj,"./menuTematici.json");
+    }
+
+    public static void salvaSuFile(JSONObject object, String nomeFile){
+        try (FileWriter file = new FileWriter(nomeFile)) {
             // Scrivi il JSON nel file
             file.write(object.toJSONString());
             file.flush();
@@ -57,7 +63,7 @@ public class LeggiJSON {
         Ristorante ristorante = new Ristorante("caricaDati");
         JSONParser parser = new JSONParser();
 
-        try (FileReader reader = new FileReader("./output.json")) {
+        try (FileReader reader = new FileReader("./config.json")) {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
 
             String nomeRistorante = (String) jsonObject.get("NomeRistorante");

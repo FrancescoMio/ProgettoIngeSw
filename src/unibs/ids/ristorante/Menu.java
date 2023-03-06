@@ -17,16 +17,15 @@ public class Menu {
 
     }
 
-    public String getNomeMenu() {
-        return nomeMenu;
-    }
-
     public Set<Piatto> getElencoPiatti() {
         return elencoPiatti;
     }
 
     public void setElencoPiatti(Set<Piatto> elencoPiatti) {
         this.elencoPiatti = elencoPiatti;
+    }
+    public String getNomeMenu() {
+        return nomeMenu;
     }
 
 }
