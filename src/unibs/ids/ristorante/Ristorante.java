@@ -45,6 +45,7 @@ public class Ristorante {
         gestore.visualizzaMenuAllaCarta(menuAllaCarta);
         LeggiJSON.salvaConfigurazione(this,piattiDisponibiliJson);
         LeggiJSON.salvaMenuTematici(this,menuTematiciJson);
+        System.out.println(menuTematiciJson);
     }
 
     public Ristorante(String caricaConfigurazione){

@@ -186,8 +186,10 @@ public class Gestore extends Utente {
         menuTematicoJson.put("dataFine",dataFine);
         menuTematicoJson.put("disponibile",menu.getDisponibilita());
         menuTematicoJson.put("caricoLavoro",menu.getCaricoLavoro());
-        for (Piatto piatto : piattiDelMenu)
+        for (Piatto piatto : piattiDelMenu){
+            System.out.println("piatto di "+menu.getNomeMenu()+":"+piatto.getDenominazione());
             setPiattiDisponibiliJson(piatto,piatto.getRicetta(),"menuTematico");
+        }
         menuTematicoJson.put("elencoPiatti",piattiMenuTematicoJson);
 
         return  menuTematicoJson;
