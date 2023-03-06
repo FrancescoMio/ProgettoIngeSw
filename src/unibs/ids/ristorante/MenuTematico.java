@@ -85,4 +85,18 @@ public class MenuTematico extends Menu implements Ordinabile{
                 ", elencoPiatti=" + elencoPiatti +
                 '}';
     }
+    public String toStringMenuTematicoDisponibile(){
+        if(disponibile)
+            return "MenuTematico{" +
+                    "nomeMenu='" + nomeMenu +
+                    ", caricoLavoroMenuTematico=" + caricoLavoroMenuTematico +
+                    ", disponibile=" + disponibile +
+                    ", dataInizio=" + dataInizio +
+                    ", dataFine=" + dataFine +
+                    ", elencoPiatti=" + elencoPiatti +
+                    '}';
+        else
+            return "Non disponibile";
+    }
+
 }

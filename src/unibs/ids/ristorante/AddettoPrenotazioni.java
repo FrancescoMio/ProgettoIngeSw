@@ -5,6 +5,7 @@ import Libreria.InputDati;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
 
 public class AddettoPrenotazioni extends Utente {
@@ -30,8 +31,8 @@ public class AddettoPrenotazioni extends Utente {
     /**
      * Metodo principale di addettoPrenotazioni, permette di creare una prenotazione effettiva per una data in particolare
      * e comprende tutti i controlli su carico di lavoro e numero di coperti
-     * @param copertiMax
-     * @param caricoMax
+     * @param copertiMax numero massimo di coperti del ristorante
+     * @param caricoMax massimo carico sostenibile del ristorante
      */
     private Prenotazione creaPrenotazione(ArrayList<Prenotazione> prenotazioni, int copertiMax, double caricoMax,MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
@@ -62,10 +63,10 @@ public class AddettoPrenotazioni extends Utente {
 
     /**
      * metodo che permette di controllare che il carico di lavoro sia accettabile nella giornata scelta
-     * @param dataPrenotazione
-     * @param ordine
-     * @param caricoMax
-     * @return
+     * @param dataPrenotazione data della prenotazione
+     * @param ordine coppia menu/piatto e quantità associata
+     * @param caricoMax carico massimo raggiungibile in una giornata
+     * @return true se il carico di lavoro è accettabile, false altrimenti
      */
     private boolean controlloCaricoLavoro(ArrayList<Prenotazione> prenotazioni, LocalDate dataPrenotazione, HashMap<Ordinabile,Integer> ordine, double caricoMax){
         //salvo il carico delle prenotazioni già presenti nella data in questione
@@ -83,8 +84,8 @@ public class AddettoPrenotazioni extends Utente {
 
     /**
      * metodo che permette di calcolare il carico di lavoro delle prenotazioni già presenti in una data
-     * @param dataPrenotazione
-     * @return
+     * @param dataPrenotazione data della prenotazione
+     * @return carico di lavoro delle prenotazioni già presenti in una data
      */
     private double caricoLavoroInData(ArrayList<Prenotazione> prenotazioni ,LocalDate dataPrenotazione){
         double sommaCarichiLavoro = 0;
@@ -135,6 +136,14 @@ public class AddettoPrenotazioni extends Utente {
         }
     }
 
+    /**
+     * metodo che permette di chiedere all'utente l'ordine per ogni persona al tavolo,
+     * ovvero una coppia menuTematico/piatto e quantità
+     * @param numeroCoperti
+     * @param menuAllaCarta
+     * @param menuTematici
+     * @return
+     */
     private HashMap<Ordinabile,Integer> chiediOrdine(int numeroCoperti, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
         System.out.println("Inserire cortesemente l'ordine per ogni persona al tavolo");
@@ -147,6 +156,13 @@ public class AddettoPrenotazioni extends Utente {
         return ordine;
     }
 
+    /**
+     * metodo di supporto a chiediOrdine che permette invece di chiedere all'utente
+     * il singolo piatto dal Menu alla Carta o il Menu Tematico
+     * @param menuAllaCarta
+     * @param menuTematici
+     * @return
+     */
     private Ordinabile chiediOrdinabile(MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
         Ordinabile ordinabile = null;
         int scelta = 0;
@@ -156,10 +172,10 @@ public class AddettoPrenotazioni extends Utente {
             scelta = InputDati.leggiIntero("Inserire:\n1 per scegliere un piatto dal menu alla carta,\n2 per scegliere un menu tematico");
             switch (scelta){
                 case 1:
-                    //ordinabile = chiediMenu(menuTematici);
+                    ordinabile = chiediMenu(menuTematici);
                     break;
                 case 2:
-                    //ordinabile = chiediPiatto(menuAllaCarta);
+                    ordinabile = chiediPiatto(menuAllaCarta);
                     break;
                 default:
                     System.out.println("Scelta non valida");
@@ -168,17 +184,61 @@ public class AddettoPrenotazioni extends Utente {
         return ordinabile;
     }
 
-    /*
+
+    /**
+     * Metodo di supporto a chiediOrdinabile che permette di chiedere all'utente
+     * il singolo piatto dal menu alla carta che si desidera ordinare
+     * @param menuAllaCarta
+     * @return
+     */
     private Ordinabile chiediPiatto(MenuCarta menuAllaCarta) {
         System.out.println("I piatti disponibili sono:");
-        for(Piatto p : menuAllaCarta.getPiatti()){
-            System.out.println(p);
+        menuAllaCarta.toString();
+        Ordinabile piatto = null;
+        int scelta = InputDati.leggiIntero("Inserire il numero del piatto che si desidera ordinare: ");
+        Iterator<Piatto> iterator = menuAllaCarta.getElencoPiatti().iterator();
+        if(scelta > menuAllaCarta.getElencoPiatti().size() || scelta < 1) {
+            scelta = InputDati.leggiIntero("Scelta non valida, reinserire il numero del piatto che si desidera ordinare ");
         }
+        for (int i = 0; i < scelta; i++) {
+            if(i == scelta-1){
+                piatto = iterator.next();
+                break;
+            }
+            else
+                iterator.next();
+        }
+        return piatto;
     }
 
+    /**
+     * Metodo di supporto a chiediOrdinabile che permette di chiedere all'utente
+     * il menu tematico che si desidera ordinare
+     * @param menuTematici
+     * @return
+     */
     private Ordinabile chiediMenu(Set<MenuTematico> menuTematici) {
-
+        Ordinabile menuTematico = null;
+        System.out.println("Di seguito sono riportati i menu tematici del nostro ristorante, ordinandone uno sara' servito tutto il menu");
+        for(MenuTematico m : menuTematici){
+            int i = 1;
+            System.out.println(i + ") " + m.toStringMenuTematicoDisponibile());
+            i++;
+        }
+        int scelta = InputDati.leggiIntero("Inserire il numero del menu tematico che si desidera ordinare: ");
+        if(scelta > menuTematici.size() || scelta < 1) {
+            scelta = InputDati.leggiIntero("Scelta non valida, reinserire il numero del menu tematico che si desidera ordinare ");
+        }
+        Iterator<MenuTematico> iterator = menuTematici.iterator();
+        for (int i = 0; i < scelta; i++) {
+            if(i == scelta-1){
+                menuTematico = iterator.next();
+                break;
+            }
+            else
+                iterator.next();
+        }
+        return menuTematico;
     }
-    */
 
 }

@@ -16,14 +16,27 @@ public class MenuCarta extends Menu{
     public MenuCarta(){
         super();
     }
-
+    public Set<Piatto> getElencoPiatti() {
+        return elencoPiatti;
+    }
 
     @Override
     public String toString() {
         return "MenuCarta{" +
                 "data=" + data +
                 ", nomeMenu='" + nomeMenu + '\'' +
-                ", elencoPiatti=" + elencoPiatti +
+                ", elencoPiatti=" + visualizzaPiatti() +
                 '}';
     }
+
+    private String visualizzaPiatti(){
+        String piatti = "";
+        for(Piatto p : elencoPiatti){
+            int i = 1;
+            System.out.println("Piatto " + i + ": " + p.getDenominazione());
+            i++;
+        }
+        return piatti;
+    }
+
 }

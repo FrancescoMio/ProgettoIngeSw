@@ -17,6 +17,10 @@ public class Menu {
 
     }
 
+    public String getNomeMenu() {
+        return nomeMenu;
+    }
+
     public Set<Piatto> getElencoPiatti() {
         return elencoPiatti;
     }
