@@ -10,15 +10,9 @@ import java.util.*;
 import static unibs.ids.ristorante.Stringhe.*;
 
 public class Gestore extends Utente {
-    ArrayList<JSONObject> piattiDisponibiliJson;
-    ArrayList<JSONObject> menuTematiciJson;
-    ArrayList<JSONObject> piattiMenuTematicoJson;
 
     public Gestore(String nome, String cognome) {//Costruttore
         super(nome, cognome);
-        piattiDisponibiliJson = new ArrayList<>();
-        menuTematiciJson = new ArrayList<>();
-        piattiMenuTematicoJson = new ArrayList<>();
     }
 
     public Gestore(){
@@ -63,42 +57,9 @@ public class Gestore extends Utente {
             Ricetta ricetta = creaRicetta(piatti);
             Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione);
             piatti.add(piatto);
-            setPiattiDisponibiliJson(piatto,ricetta,"piattiDisponibili");
             scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
         } while (scelta);
         return piatti;
-    }
-
-    public void setPiattiDisponibiliJson(Piatto piatto, Ricetta ricetta, String localita){
-        JSONObject piattoJson = new JSONObject();
-        piattoJson.put("denominazione",piatto.getDenominazione());
-        piattoJson.put("tempoPreparazione", piatto.getTempoPreparazione());
-        piattoJson.put("caricoLavoro", piatto.getCaricoLavoro());
-        ArrayList<JSONObject> ingredientiJson = setRicettaJson(ricetta);
-        JSONObject ricettaJson = new JSONObject();
-        ricettaJson.put("numeroPorzioni",ricetta.getNumeroPorzioni());
-        ricettaJson.put("caricoLavoroXporzione",ricetta.getCaricoLavoro());
-        ricettaJson.put("elencoIngredienti",ingredientiJson);
-        piattoJson.put("ricetta", ricettaJson);
-        if(localita.equalsIgnoreCase("piattiDisponibili"))
-            piattiDisponibiliJson.add(piattoJson);
-        if(localita.equalsIgnoreCase("menuTematico"))
-            piattiMenuTematicoJson.add(piattoJson);
-
-    }
-
-    public ArrayList<JSONObject> setRicettaJson(Ricetta ricetta){
-        ArrayList<JSONObject> ingredientiJson = new ArrayList<>();
-
-        Iterator<Map.Entry<String, Integer>> iterator = ricetta.getIngredienti().entrySet().iterator();
-        while (iterator.hasNext()) {
-            JSONObject obj = new JSONObject();
-            Map.Entry<String, Integer> entry = iterator.next();
-            obj.put("nome",entry.getKey());
-            obj.put("dose",entry.getValue());
-            ingredientiJson.add(obj);
-        }
-        return  ingredientiJson;
     }
 
     /**
@@ -168,31 +129,10 @@ public class Gestore extends Utente {
             piattiDelMenu = inserisciPiattiMenuTematico(piattiDisponibili,caricoLavoroPersona);
             double caricoLavoroMenu = calcoloLavoroMenuTematico(piattiDelMenu);
             MenuTematico myMenu = new MenuTematico(nome, piattiDelMenu,date.get(0),date.get(1),caricoLavoroMenu);
-            JSONObject menuTematicoJson = setMenutematicoJson(myMenu,piattiDelMenu);
-            menuTematiciJson.add(menuTematicoJson);
-            //piattiMenuTematicoJson.clear();
             menuTematici.add(myMenu);
             scelta = InputDati.yesOrNo(nuovoMenuTematico);
         } while (scelta);
         return menuTematici;
-    }
-
-    public JSONObject setMenutematicoJson(MenuTematico menu, Set<Piatto> piattiDelMenu){
-        JSONObject menuTematicoJson = new JSONObject();
-        menuTematicoJson.put("nome",menu.getNomeMenu());
-        String dataInizio = menu.getDataInizio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        String dataFine = menu.getDataFine().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        menuTematicoJson.put("dataInizio",dataInizio);
-        menuTematicoJson.put("dataFine",dataFine);
-        menuTematicoJson.put("disponibile",menu.getDisponibilita());
-        menuTematicoJson.put("caricoLavoro",menu.getCaricoLavoro());
-        for (Piatto piatto : piattiDelMenu){
-            System.out.println("piatto di "+menu.getNomeMenu()+":"+piatto.getDenominazione());
-            setPiattiDisponibiliJson(piatto,piatto.getRicetta(),"menuTematico");
-        }
-        menuTematicoJson.put("elencoPiatti",piattiMenuTematicoJson);
-
-        return  menuTematicoJson;
     }
 
     /**
@@ -293,21 +233,9 @@ public class Gestore extends Utente {
         return ricetta;
     }
 
-    public ArrayList<JSONObject> getPiattiDisponibiliJson() {
-        return piattiDisponibiliJson;
-    }
-
-    public ArrayList<JSONObject> getMenuTematiciJson() {
-        return menuTematiciJson;
-    }
-
     public void setGestore(String nome, String cognome){
         this.nome = nome;
         this.cognome = cognome;
-    }
-
-    public ArrayList<JSONObject> getPiattiMenuTematicoJson() {
-        return piattiMenuTematicoJson;
     }
 
 }

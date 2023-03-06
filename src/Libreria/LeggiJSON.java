@@ -3,20 +3,13 @@ package Libreria;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import unibs.ids.ristorante.Piatto;
-import unibs.ids.ristorante.Ricetta;
-import unibs.ids.ristorante.Ristorante;
-import unibs.ids.ristorante.Stringhe;
+import unibs.ids.ristorante.*;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
-import static unibs.ids.ristorante.Stringhe.lineSeparator;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class LeggiJSON {
 
@@ -24,22 +17,79 @@ public class LeggiJSON {
 
     }
 
-    public static void salvaConfigurazione(Ristorante ristorante,ArrayList<JSONObject> piattiDisponibili){
+    public static void salvaConfigurazione(Ristorante ristorante, Set<Piatto> piatti){
         JSONObject obj = new JSONObject();
-        obj.put("NomeGestore",ristorante.getNomeGestore());
-        obj.put("CognomeGestore",ristorante.getCognomeGestore());
-        obj.put("NomeRistorante",ristorante.getNomeRistorante());
-        obj.put("PostiAsedere",ristorante.getPostiASedere());
-        obj.put("CaricoLavoroPersona",ristorante.getCaricoXPersona());
-        obj.put("CaricoLavoroSostenibile",ristorante.getCaricoDiLavoroSostenibile());
-        obj.put("PiattiDisponibili", piattiDisponibili);
+        obj.put("nomeGestore",ristorante.getNomeGestore());
+        obj.put("cognomeGestore",ristorante.getCognomeGestore());
+        obj.put("nomeRistorante",ristorante.getNomeRistorante());
+        obj.put("postiAsedere",ristorante.getPostiASedere());
+        obj.put("caricoLavoroPersona",ristorante.getCaricoXPersona());
+        obj.put("caricoLavoroSostenibile",ristorante.getCaricoDiLavoroSostenibile());
+        ArrayList<JSONObject> elencoPiattiJson = getElencoPiattiJson(piatti);
+        obj.put("elencoPiatti",elencoPiattiJson);
         salvaSuFile(obj,"./config.json");
     }
 
-    public static void salvaMenuTematici(Ristorante ristorante, ArrayList<JSONObject> elencoMenuTematici){
-        JSONObject obj = new JSONObject();
-        obj.put("MenuTematici", elencoMenuTematici);
-        salvaSuFile(obj,"./menuTematici.json");
+    /**
+     * Metodo per il salvataggio dei menù tematici nel file JSON "menuTematici.json"
+     * @param elencoMenuTematici
+     */
+    public static void salvaMenuTematici(Set<MenuTematico> elencoMenuTematici){
+        JSONObject menuTematiciJson = new JSONObject();
+        ArrayList<JSONObject> elencoMenuTematiciJson = new ArrayList<>();
+        for(MenuTematico menu : elencoMenuTematici){
+            ArrayList<JSONObject> elencoPiattiJson = new ArrayList<>();
+            JSONObject menuJson = new JSONObject();
+            menuJson.put("nome", menu.getNomeMenu());
+            menuJson.put("caricoLavoro", menu.getCaricoLavoro());
+            menuJson.put("disponibile", menu.getDisponibilita());
+            String dataInizio = menu.getDataInizio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")); //converto la data in una stringa perchè JSON non supporta le date come valore ammissibile
+            String dataFine = menu.getDataFine().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            menuJson.put("dataInizio", dataInizio);
+            menuJson.put("dataFine", dataFine);
+            elencoPiattiJson = getElencoPiattiJson(menu.getElencoPiatti());
+            menuJson.put("elencoPiatti", elencoPiattiJson);
+            elencoMenuTematiciJson.add(menuJson);
+        }
+        menuTematiciJson.put("menuTematici", elencoMenuTematiciJson);
+        salvaSuFile(menuTematiciJson,"./menuTematici.json");
+    }
+
+    /**
+     * Metodo grazie al quale passando come parametro un elenco di piatti ritorna l'elenco di tali piatti in formato JSON
+     * @param elencoPiatti
+     * @return
+     */
+    public static ArrayList<JSONObject> getElencoPiattiJson(Set<Piatto> elencoPiatti){
+        ArrayList<JSONObject> elencoPiattiJson = new ArrayList<>();
+        for (Piatto piatto: elencoPiatti) {
+            JSONObject piattoJson = new JSONObject();
+            piattoJson.put("nome",piatto.getDenominazione());
+            piattoJson.put("tempoPreparazione",piatto.getTempoPreparazione());
+            piattoJson.put("caricoLavoro",piatto.getCaricoLavoro());
+            JSONObject ricettaJson = new JSONObject();
+            ArrayList<JSONObject> ingredientiJson = setRicettaJson(piatto.getRicetta());
+            ricettaJson.put("numeroPorzioni",piatto.getRicetta().getNumeroPorzioni());
+            ricettaJson.put("caricoLavoroXporzione",piatto.getRicetta().getCaricoLavoro());
+            ricettaJson.put("elencoIngredienti",ingredientiJson);
+            piattoJson.put("ricetta",ricettaJson);
+            elencoPiattiJson.add(piattoJson);
+        }
+        return elencoPiattiJson;
+    }
+
+    public static ArrayList<JSONObject> setRicettaJson(Ricetta ricetta){
+        ArrayList<JSONObject> ingredientiJson = new ArrayList<>();
+
+        Iterator<Map.Entry<String, Integer>> iterator = ricetta.getIngredienti().entrySet().iterator();
+        while (iterator.hasNext()) {
+            JSONObject obj = new JSONObject();
+            Map.Entry<String, Integer> entry = iterator.next();
+            obj.put("nome",entry.getKey());
+            obj.put("dose",entry.getValue());
+            ingredientiJson.add(obj);
+        }
+        return  ingredientiJson;
     }
 
     public static void salvaSuFile(JSONObject object, String nomeFile){

@@ -229,6 +229,7 @@ public class AddettoPrenotazioni extends Utente {
         if(scelta > menuTematici.size() || scelta < 1) {
             scelta = InputDati.leggiIntero("Scelta non valida, reinserire il numero del menu tematico che si desidera ordinare ");
         }
+
         Iterator<MenuTematico> iterator = menuTematici.iterator();
         for (int i = 0; i < scelta; i++) {
             if(i == scelta-1){

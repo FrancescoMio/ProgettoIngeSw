@@ -3,8 +3,6 @@ package unibs.ids.ristorante;
 import Libreria.InputDati;
 import Libreria.LeggiJSON;
 import Libreria.MyUtil;
-import org.json.simple.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,8 +20,6 @@ public class Ristorante {
     private AddettoPrenotazioni addettoPrenotazioni;//addetto alle prenotazioni del ristorante
     private Set<MenuTematico> menuTematici;
     private MenuCarta menuAllaCarta;
-    private ArrayList<JSONObject> piattiDisponibiliJson;
-    private ArrayList<JSONObject> menuTematiciJson;
     private ArrayList<Prenotazione> prenotazioni;
 
     /**
@@ -32,8 +28,6 @@ public class Ristorante {
     public Ristorante() {
         //creo gestore con cui inizializzare tutto
         registroMagazzino = new RegistroMagazzino();
-        piattiDisponibiliJson = new ArrayList<>();
-        menuTematiciJson = new ArrayList<>();
         creaGestore();
         creaConfigurazione();
         creaMenu();
@@ -43,9 +37,9 @@ public class Ristorante {
         this.registroMagazzino.addBevanda();
         gestore.visualizzaMenuTematici(menuTematici);
         gestore.visualizzaMenuAllaCarta(menuAllaCarta);
-        LeggiJSON.salvaConfigurazione(this,piattiDisponibiliJson);
-        LeggiJSON.salvaMenuTematici(this,menuTematiciJson);
-        System.out.println(menuTematiciJson);
+        LeggiJSON.salvaConfigurazione(this,piattiDisponibili);
+        LeggiJSON.salvaMenuTematici(menuTematici);
+
     }
 
     public Ristorante(String caricaConfigurazione){
@@ -79,7 +73,6 @@ public class Ristorante {
         nomeRistorante = gestore.getNomeRistorante();
         postiASedere = gestore.postiASedere();
         piattiDisponibili = gestore.inizializzaPiatti();
-        this.piattiDisponibiliJson = gestore.getPiattiDisponibiliJson();
         caricoDiLavoroXPersona = gestore.caricoXpersona();
     }
 
@@ -89,7 +82,6 @@ public class Ristorante {
         //creazione dei menù  tematici
         menuTematici = new HashSet<>();
         menuTematici = gestore.creaMenuTematici(piattiDisponibili,caricoDiLavoroXPersona);
-        this.menuTematiciJson = gestore.getMenuTematiciJson();
         //creazione menù alla carta
         String nomeMenuCarta = "Menù del " + MyUtil.getDataOdierna();
         menuAllaCarta = new MenuCarta(nomeMenuCarta,piattiDisponibili,MyUtil.getDataOdierna());
@@ -160,7 +152,6 @@ public class Ristorante {
                 ", addettoPrenotazioni=" + addettoPrenotazioni +
                 ", menuTematici=" + menuTematici +
                 ", menuAllaCarta=" + menuAllaCarta +
-                ", piattiDisponibiliJson=" + piattiDisponibiliJson +
                 '}';
     }
 
