@@ -231,8 +231,8 @@ public class AddettoPrenotazioni extends Utente {
         }
 
         Iterator<MenuTematico> iterator = menuTematici.iterator();
-        for (int i = 0; i < scelta; i++) {
-            if(i == scelta-1){
+        for (int j = 0; j < scelta; j++) {
+            if(j == scelta-1){
                 menuTematico = iterator.next();
                 break;
             }

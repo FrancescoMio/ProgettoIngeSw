@@ -6,18 +6,22 @@ import java.util.Date;
 public class Piatto implements Ordinabile {
     private String denominazione;
     //private boolean disponibile;
-    private Ricetta ricetta = new Ricetta();
+    private Ricetta ricetta;
 
     private int tempoPreparazione;//in minuti
     private double caricoLavoro;
+    private LocalDate dataInizio;
+    private LocalDate dataFine;
 
 
     //Costruttore
-    public Piatto(String denominazione, Ricetta ricetta, int tempoPreparazione) {
+    public Piatto(String denominazione, Ricetta ricetta, int tempoPreparazione, LocalDate dataInizio, LocalDate dataFine) {
         this.denominazione = denominazione;
         this.ricetta = ricetta;
         this.tempoPreparazione = tempoPreparazione;
         this.caricoLavoro = ricetta.getCaricoLavoro();//setto il carico di lavoro del piatto come quello della ricetta corrispondente
+        this.dataInizio = dataInizio;
+        this.dataFine = dataFine;
     }
 
     public Ricetta getRicetta() {
@@ -36,14 +40,31 @@ public class Piatto implements Ordinabile {
     public int getTempoPreparazione() {
         return tempoPreparazione;
     }
+    public LocalDate getDataInizio() {
+        return dataInizio;
+    }
+
+    public LocalDate getDataFine() {
+        return dataFine;
+    }
+    public void setDataInizio(LocalDate dataInizio) {
+        this.dataInizio = dataInizio;
+    }
+
+    public void setDataFine(LocalDate dataFine) {
+        this.dataFine = dataFine;
+    }
+
 
     @Override
     public String toString() {
         return "Piatto{" +
                 "denominazione='" + denominazione + '\'' +
                 ", ricetta=" + ricetta +
-                ", tempo di perparazione=" + tempoPreparazione +
+                ", tempoPreparazione=" + tempoPreparazione +
                 ", caricoLavoro=" + caricoLavoro +
+                ", dataInizio=" + dataInizio +
+                ", dataFine=" + dataFine +
                 '}';
     }
 }

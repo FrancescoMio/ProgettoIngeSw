@@ -1,6 +1,6 @@
 package unibs.ids.ristorante;
 
-import Libreria.LeggiJSON;
+import Libreria.Json;
 import Libreria.MyMenu;
 
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class Main {
             Ristorante ristorante = new Ristorante();
         }
         else{
-            Ristorante ristorante = LeggiJSON.caricaDati();
+            Ristorante ristorante = Json.caricaDati();
             System.out.println(ristorante.toString());
         }
     }

@@ -12,9 +12,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class LeggiJSON {
+public class Json {
 
-    public LeggiJSON() throws IOException {
+    public Json() throws IOException {
 
     }
 
@@ -56,6 +56,18 @@ public class LeggiJSON {
         salvaSuFile(menuTematiciJson,"./menuTematici.json");
     }
 
+
+    public static void salvaMenuCarta(MenuCarta menuCarta){
+        JSONObject menuCartaJson = new JSONObject();
+        menuCartaJson.put("nome",menuCarta.getNomeMenu());
+        String data = menuCarta.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        menuCartaJson.put("data",data);
+        ArrayList<JSONObject> piattiJson = getElencoPiattiJson(menuCarta.getElencoPiatti());
+        menuCartaJson.put("elencoPiatti", piattiJson);
+        salvaSuFile(menuCartaJson, "./menuCarta.json");
+    }
+
+
     /**
      * Metodo grazie al quale passando come parametro un elenco di piatti ritorna l'elenco di tali piatti in formato JSON
      * @param elencoPiatti
@@ -66,6 +78,10 @@ public class LeggiJSON {
         for (Piatto piatto: elencoPiatti) {
             JSONObject piattoJson = new JSONObject();
             piattoJson.put("nome",piatto.getDenominazione());
+            String dataInizio = piatto.getDataInizio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")); //converto la data in una stringa perchè JSON non supporta le date come valore ammissibile
+            String dataFine = piatto.getDataFine().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            piattoJson.put("dataInizio", dataInizio);
+            piattoJson.put("dataFine", dataFine);
             piattoJson.put("tempoPreparazione",piatto.getTempoPreparazione());
             piattoJson.put("caricoLavoro",piatto.getCaricoLavoro());
             JSONObject ricettaJson = new JSONObject();
@@ -135,16 +151,16 @@ public class LeggiJSON {
             ristorante.setCaricoLavoroSostenibile((int)caricoLavoroSostenibile);
 
             //carico i piatti del ristorante
-            ArrayList<JSONObject> piatti = (ArrayList<JSONObject>) jsonObject.get("elencoPiatti");
-            Set<Piatto> piattiDisponibili = new HashSet<>();
-            piattiDisponibili = getPiatti(piatti);
-            ristorante.setPiattiDisponibili(piattiDisponibili);
+            ArrayList<JSONObject> elencoPiatti = (ArrayList<JSONObject>) jsonObject.get("elencoPiatti");
+            Set<Piatto> piatti = new HashSet<>();
+            piatti = getPiatti(elencoPiatti);
+            ristorante.setPiatti(piatti);
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
 
-        //carico menù tematici del ristorante
+        //caricamento menù tematici del ristorante
         try (FileReader reader = new FileReader("./menuTematici.json")) {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             ArrayList<JSONObject> menuTematiciJson = (ArrayList<JSONObject>) jsonObject.get("menuTematici");
@@ -183,13 +199,25 @@ public class LeggiJSON {
     /**
      * Metodo che partendo dall' ArrayList di oggetti JSON dei piatti ritorna il Set<Piatto> dei piatti da caricare
      * nel ristorante
-     * @param piatti
+     * @param elencoPiatti
      * @return
      */
-    public static Set<Piatto> getPiatti(ArrayList<JSONObject> piatti){
-        Set<Piatto> piattiDisponibili = new HashSet<>();
-        for (JSONObject obj: piatti) { //scorro tutti i piatti contenuti nel nel JSON
+    public static Set<Piatto> getPiatti(ArrayList<JSONObject> elencoPiatti){
+        Set<Piatto> piatti = new HashSet<>();
+        for (JSONObject obj: elencoPiatti) { //scorro tutti i piatti contenuti nel nel JSON
             String denominazione = (String) obj.get("nome");
+
+            String dataInizioStr = (String) obj.get("dataInizio");
+            dataInizioStr = dataInizioStr.replaceAll("'\\'", "");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            // Parsing della stringa in un oggetto LocalDate
+            LocalDate dataInizio = LocalDate.parse(dataInizioStr, formatter);
+
+            String dataFineStr = (String) obj.get("dataFine");
+            dataFineStr = dataFineStr.replaceAll("'\\'", "");
+            // Parsing della stringa in un oggetto LocalDate
+            LocalDate dataFine = LocalDate.parse(dataFineStr, formatter);
+
             long tempoPreparazione = (long) obj.get("tempoPreparazione");
             JSONObject ricettaJson = (JSONObject) obj.get("ricetta");
             long numeroPorzioni = (long) ricettaJson.get("numeroPorzioni");
@@ -202,9 +230,9 @@ public class LeggiJSON {
                 ingredienti.put(nomeIngrediente,(int)dose);
             }
             Ricetta ricetta = new Ricetta(ingredienti, (int)numeroPorzioni, (double)caricoLavoroXporzione);
-            Piatto piatto = new Piatto(denominazione,ricetta,(int)tempoPreparazione);
-            piattiDisponibili.add(piatto);
+            Piatto piatto = new Piatto(denominazione,ricetta,(int)tempoPreparazione,dataInizio,dataFine);
+            piatti.add(piatto);
         }
-        return  piattiDisponibili;
+        return piatti;
     }
 }

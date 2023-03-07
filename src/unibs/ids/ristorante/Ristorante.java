@@ -1,7 +1,7 @@
 package unibs.ids.ristorante;
 
 import Libreria.InputDati;
-import Libreria.LeggiJSON;
+import Libreria.Json;
 import Libreria.MyUtil;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,7 +14,7 @@ public class Ristorante {
     private int postiASedere;
     private int caricoDiLavoroSostenibile;//sarà da ricavare  moltiplicando il carico di lavoro per persona per i posti per 120/100
     private int caricoDiLavoroXPersona;//impegno richiesto per preparare cibo per una persona in un singolo pasto
-    private Set<Piatto> piattiDisponibili;//lista di piatti che il ristorante può offrire
+    private Set<Piatto> piatti;//lista di piatti che il ristorante può offrire
     private RegistroMagazzino registroMagazzino;
     private Gestore gestore; //gestore del ristorante
     private AddettoPrenotazioni addettoPrenotazioni;//addetto alle prenotazioni del ristorante
@@ -31,21 +31,24 @@ public class Ristorante {
         registroMagazzino = new RegistroMagazzino();
         creaGestore();
         creaConfigurazione();
-        creaMenu();
+        creaMenuTematici();
+        creaMenuCarta();
         //creaAddettoPrenotazioni();
         caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
         this.registroMagazzino.addGenereAlimentareExtra();
         this.registroMagazzino.addBevanda();
         gestore.visualizzaMenuTematici(menuTematici);
         gestore.visualizzaMenuAllaCarta(menuAllaCarta);
-        LeggiJSON.salvaConfigurazione(this,piattiDisponibili);
-        LeggiJSON.salvaMenuTematici(menuTematici);
+        Json.salvaConfigurazione(this,piatti);
+        Json.salvaMenuTematici(menuTematici);
+        Json.salvaMenuCarta(menuAllaCarta);
+
 
     }
 
     public Ristorante(String caricaConfigurazione){
         gestore = new Gestore();
-        piattiDisponibili = new HashSet<>();
+        piatti = new HashSet<>();
         registroMagazzino = new RegistroMagazzino();
         addettoPrenotazioni = new AddettoPrenotazioni();
         menuTematici = new HashSet<>();
@@ -70,22 +73,28 @@ public class Ristorante {
     }
 
     public void creaConfigurazione(){
-        piattiDisponibili = new HashSet<>();
+        piatti = new HashSet<>();
         nomeRistorante = gestore.getNomeRistorante();
         postiASedere = gestore.postiASedere();
-        piattiDisponibili = gestore.inizializzaPiatti();
+        piatti = gestore.inizializzaPiatti();
         caricoDiLavoroXPersona = gestore.caricoXpersona();
     }
 
-    public void creaMenu(){
+    public void creaMenuTematici(){
         System.out.println(lineSeparator);
         System.out.println(creazioneMenuTematici);
         //creazione dei menù  tematici
         menuTematici = new HashSet<>();
-        menuTematici = gestore.creaMenuTematici(piattiDisponibili,caricoDiLavoroXPersona);
-        //creazione menù alla carta
-        String nomeMenuCarta = "Menù del " + MyUtil.getDataOdierna();
-        menuAllaCarta = new MenuCarta(nomeMenuCarta,piattiDisponibili,MyUtil.getDataOdierna());
+        menuTematici = gestore.creaMenuTematici(piatti,caricoDiLavoroXPersona);
+    }
+
+    public void creaMenuCarta(){
+        Set<Piatto> piattiDisponibili = new HashSet<>();
+        for (Piatto piatto : piatti) {
+            if(MyUtil.controlloData(piatto.getDataInizio(), piatto.getDataFine()))
+                piattiDisponibili.add(piatto);
+        }
+        menuAllaCarta = new MenuCarta("MenùAllaCarta",piattiDisponibili,MyUtil.getDataOdierna());
     }
     public  int getCaricoXPersona() {
         return caricoDiLavoroXPersona;
@@ -108,7 +117,7 @@ public class Ristorante {
         return caricoDiLavoroSostenibile;
     }
     public Set<Piatto> getPiattiDisponibili() {
-        return piattiDisponibili;
+        return piatti;
     }
 
     public String getNomeGestore() {
@@ -136,8 +145,11 @@ public class Ristorante {
     public void setNomeRistorante(String nome){
         nomeRistorante = nome;
     }
-    public void setPiattiDisponibili(Set<Piatto> piattiDisponibili) {
-        this.piattiDisponibili = piattiDisponibili;
+    public void setPiatti(Set<Piatto> piatti) {
+        this.piatti = piatti;
+    }
+    public Set<Piatto> getPiatti() {
+        return piatti;
     }
 
     public void setMenuTematici(Set<MenuTematico> menuTematici) {
@@ -151,7 +163,7 @@ public class Ristorante {
                 ", postiASedere=" + postiASedere +
                 ", caricoDiLavoroSostenibile=" + caricoDiLavoroSostenibile +
                 ", caricoDiLavoroXPersona=" + caricoDiLavoroXPersona +
-                ", piattiDisponibili=" + piattiDisponibili +
+                ", piattiDisponibili=" + piatti +
                 ", registroMagazzino=" + registroMagazzino +
                 ", gestore=" + gestore +
                 ", addettoPrenotazioni=" + addettoPrenotazioni +

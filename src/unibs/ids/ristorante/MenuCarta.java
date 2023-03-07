@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Set;
 
 public class MenuCarta extends Menu{
-
     private LocalDate data;
 
     public MenuCarta (String nome,Set<Piatto> elencoPiatti,LocalDate data) {
@@ -18,6 +17,14 @@ public class MenuCarta extends Menu{
     }
     public Set<Piatto> getElencoPiatti() {
         return elencoPiatti;
+    }
+
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 
     @Override

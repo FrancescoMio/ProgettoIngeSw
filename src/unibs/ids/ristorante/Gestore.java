@@ -52,10 +52,12 @@ public class Gestore extends Utente {
         boolean scelta = true;
         do {
             String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
+            LocalDate dataInizio = InputDati.leggiData("Inserire data di inizio validità: ");
+            LocalDate dataFine = InputDati.leggiData("Inserire data di fine validità: ");
             int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione: ");
             //todo: controllare che vada tutto bene
             Ricetta ricetta = creaRicetta(piatti);
-            Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione);
+            Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione, dataInizio, dataFine);
             piatti.add(piatto);
             scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
         } while (scelta);
