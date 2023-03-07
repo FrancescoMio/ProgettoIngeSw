@@ -25,7 +25,7 @@ public class MenuCarta extends Menu{
         return "MenuCarta{" +
                 "data=" + data +
                 ", nomeMenu='" + nomeMenu + '\'' +
-                ", elencoPiatti=" + visualizzaPiatti() +
+                ", elencoPiatti=" + elencoPiatti/*visualizzaPiatti() */+
                 '}';
     }
 

@@ -18,6 +18,7 @@ public class Ristorante {
     private RegistroMagazzino registroMagazzino;
     private Gestore gestore; //gestore del ristorante
     private AddettoPrenotazioni addettoPrenotazioni;//addetto alle prenotazioni del ristorante
+
     private Set<MenuTematico> menuTematici;
     private MenuCarta menuAllaCarta;
     private ArrayList<Prenotazione> prenotazioni;
@@ -31,7 +32,7 @@ public class Ristorante {
         creaGestore();
         creaConfigurazione();
         creaMenu();
-        creaAddettoPrenotazioni();
+        //creaAddettoPrenotazioni();
         caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
         this.registroMagazzino.addGenereAlimentareExtra();
         this.registroMagazzino.addBevanda();
@@ -137,6 +138,10 @@ public class Ristorante {
     }
     public void setPiattiDisponibili(Set<Piatto> piattiDisponibili) {
         this.piattiDisponibili = piattiDisponibili;
+    }
+
+    public void setMenuTematici(Set<MenuTematico> menuTematici) {
+        this.menuTematici = menuTematici;
     }
 
     @Override
