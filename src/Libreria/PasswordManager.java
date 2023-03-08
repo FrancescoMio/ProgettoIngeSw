@@ -3,7 +3,7 @@ package Libreria;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.FileReader;
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class PasswordManager {
         if(scelta == 1){
             String nome = InputDati.leggiStringaConSpazi("Inserire nome: ");
             String cognome = InputDati.leggiStringaConSpazi("Inserire cognome: ");
-            String password = InputDati.leggiStringaNonVuota("Inserire password: ");
+            String password = InputDati.leggiStringaNonVuota("Inserisci password: ");
             String hashPassword = hashPassword(password);
             JSONObject utenteJson = new JSONObject();
             utenteJson.put("nome",nome);
@@ -60,10 +60,10 @@ public class PasswordManager {
             Json.salvaCredenziali(utentiJson);
             System.out.println("REGISTRAZIONE EFFETTUATA CORRETTAMENTE!");
             return true;
-        }else{
+        }else if(scelta == 2){
             String nome = InputDati.leggiStringaConSpazi("Inserire nome: ");
             String cognome = InputDati.leggiStringaConSpazi("Inserire cognome: ");
-            String password = InputDati.leggiStringaNonVuota("Inserire password: ");
+            String password = InputDati.leggiStringaNonVuota("Inserisci password: ");
             String hashPassword = hashPassword(password);
 
             JSONParser parser = new JSONParser();
@@ -82,8 +82,28 @@ public class PasswordManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else{
+            System.out.println("---ARRIVEDERCI---");
+            return false;
         }
         return false;
     }
 
+    public static String leggiPassword (String messaggio) {
+        EraserThread et = new EraserThread(messaggio);
+        Thread mask = new Thread(et);
+        mask.start();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+        try {
+            String password = in.readLine();
+            et.stopMasking();
+            System.out.println(password);
+            return password;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

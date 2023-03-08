@@ -14,15 +14,17 @@ public class Ristorante {
     private int postiASedere;
     private int caricoDiLavoroSostenibile;//sarà da ricavare  moltiplicando il carico di lavoro per persona per i posti per 120/100
     private int caricoDiLavoroXPersona;//impegno richiesto per preparare cibo per una persona in un singolo pasto
-    private Set<Piatto> piatti;//lista di piatti che il ristorante può offrire
+    private Set<Piatto> piatti;//lista di piatti che il ristorante può offrire, comprende anche quelli non disponibili
     private RegistroMagazzino registroMagazzino;
     private Gestore gestore; //gestore del ristorante
     private AddettoPrenotazioni addettoPrenotazioni;//addetto alle prenotazioni del ristorante
-
     private Set<MenuTematico> menuTematici;
-
     private MenuCarta menuAllaCarta;
+    private Set<Bevanda> bevande;
+    private Set<GenereAlimentareExtra> generiAlimentari;
     private ArrayList<Prenotazione> prenotazioni;
+    private ConsumoProCapiteBevande consumoProCapiteBevande;
+    private ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra;
 
     /**
      * Costruttore dedicato alla inizializzazione dei dati di configurazione del ristorante
@@ -34,10 +36,14 @@ public class Ristorante {
         creaConfigurazione();
         creaMenuTematici();
         creaMenuCarta();
+        creaInsiemeBevande();
+        creaConsumoProCapiteBevande();
+        creaInsiemeGeneriExtra();
+        creaConsumoProCapiteGeneriExtra();
         //creaAddettoPrenotazioni();
         caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
-        this.registroMagazzino.addGenereAlimentareExtra();
-        this.registroMagazzino.addBevanda();
+        //this.registroMagazzino.addGenereAlimentareExtra();
+        //this.registroMagazzino.addBevanda();
         gestore.visualizzaMenuTematici(menuTematici);
         gestore.visualizzaMenuAllaCarta(menuAllaCarta);
         Json.salvaConfigurazione(this,piatti);
@@ -96,6 +102,28 @@ public class Ristorante {
         }
         menuAllaCarta = new MenuCarta("MenùAllaCarta",piattiDisponibili,MyUtil.getDataOdierna());
     }
+
+    public void creaInsiemeBevande(){
+        bevande = new HashSet<>();
+        bevande = gestore.inizializzaBevande();
+    }
+
+    public void creaInsiemeGeneriExtra(){
+        generiAlimentari = new HashSet<>();
+        generiAlimentari = gestore.inizializzaGeneriAlimentari();
+    }
+
+    public void creaConsumoProCapiteBevande(){
+        System.out.println(lineSeparator);
+        System.out.println("CONFIGURAZIONE CONSUMO PRO CAPITE MEDIO BEVANDE:");
+        consumoProCapiteBevande = gestore.inizializzaConsumoBevande(bevande);
+    }
+    public void creaConsumoProCapiteGeneriExtra(){
+        System.out.println(lineSeparator);
+        System.out.println("CONFIGURAZIONE CONSUMO PRO CAPITE GENERI EXTRA:");
+        consumoProCapiteGeneriExtra = gestore.inizializzaConsumoGeneriExtra(generiAlimentari);
+    }
+
     public  int getCaricoXPersona() {
         return caricoDiLavoroXPersona;
     }
@@ -162,6 +190,21 @@ public class Ristorante {
 
     public void setMenuAllaCarta(MenuCarta menuAllaCarta) {
         this.menuAllaCarta = menuAllaCarta;
+    }
+
+    public Set<Bevanda> getBevande() {
+        return bevande;
+    }
+
+    public Set<GenereAlimentareExtra> getGeneriAlimentari() {
+        return generiAlimentari;
+    }
+    public void setBevande(Set<Bevanda> bevande) {
+        this.bevande = bevande;
+    }
+
+    public void setGeneriAlimentari(Set<GenereAlimentareExtra> generiAlimentari) {
+        this.generiAlimentari = generiAlimentari;
     }
 
     @Override

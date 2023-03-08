@@ -41,11 +41,10 @@ public class Main {
             int scelta = menu.scegli();
             if(scelta == 1){
                 Ristorante ristorante = new Ristorante();
-            }
-            else{
+            } else if (scelta == 2) {
                 Ristorante ristorante = Json.caricaDati();
                 System.out.println(ristorante.toString());
-            }
+            }else return;
         }
     }
 

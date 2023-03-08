@@ -29,6 +29,8 @@ public class Json {
         obj.put("caricoLavoroSostenibile",ristorante.getCaricoDiLavoroSostenibile());
         ArrayList<JSONObject> elencoPiattiJson = getElencoPiattiJson(piatti);
         obj.put("elencoPiatti",elencoPiattiJson);
+        //ArrayList<JSONObject>  elencoBevande = getRaggruppabileJSon(ristorante.getBevande());
+        //ArrayList<JSONObject>  elencoGeneriExtra = getRaggruppabileJSon(ristorante.getGeneriAlimentari());
         salvaSuFile(obj,"./config.json");
     }
 

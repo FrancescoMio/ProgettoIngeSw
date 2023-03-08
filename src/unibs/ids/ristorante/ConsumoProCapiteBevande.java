@@ -6,4 +6,9 @@ public class ConsumoProCapiteBevande extends Consumo{
         super(insieme,quantita);
     }
 
+    public ConsumoProCapiteBevande(){
+        super();
+    }
+
+
 }

@@ -115,10 +115,10 @@ public class Gestore extends Utente {
 
     /**
      * Metodo per l'aggiunta di un menù tematico
-     * @param piattiDisponibili
+     * @param piatti
      * @return
      */
-    public Set<MenuTematico> creaMenuTematici(Set<Piatto> piattiDisponibili,int caricoLavoroPersona) {
+    public Set<MenuTematico> creaMenuTematici(Set<Piatto> piatti,int caricoLavoroPersona) {
         Set<MenuTematico> menuTematici = new HashSet<>();
         boolean scelta = true;
         do {
@@ -126,7 +126,7 @@ public class Gestore extends Utente {
             ArrayList<LocalDate> date = new ArrayList<>();
             date = inserisciDate();
             Set<Piatto> piattiDelMenu = new HashSet<>();
-            piattiDelMenu = inserisciPiattiMenuTematico(piattiDisponibili,caricoLavoroPersona);
+            piattiDelMenu = inserisciPiattiMenuTematico(piatti,caricoLavoroPersona);
             double caricoLavoroMenu = calcoloLavoroMenuTematico(piattiDelMenu);
             MenuTematico myMenu = new MenuTematico(nome, piattiDelMenu,date.get(0),date.get(1),caricoLavoroMenu);
             menuTematici.add(myMenu);
@@ -137,11 +137,11 @@ public class Gestore extends Utente {
 
     /**
      * metodo per l'aggiunta di piatti nel menù tematico
-     * @param piattiDisponibili
+     * @param elencoPiatti
      * @return
      */
-    public Set<Piatto> inserisciPiattiMenuTematico(Set<Piatto> piattiDisponibili,int caricoLavoroPersona) {
-        Piatto[] piatti = piattiDisponibili.toArray(new Piatto[piattiDisponibili.size()]);
+    public Set<Piatto> inserisciPiattiMenuTematico(Set<Piatto> elencoPiatti,int caricoLavoroPersona) {
+        Piatto[] piatti = elencoPiatti.toArray(new Piatto[elencoPiatti.size()]);
         Set<Piatto> piattiDelMenu = new HashSet<>();
         boolean scelta = true;
         double sommaCaricoLavoroPiatti = 0;
@@ -213,18 +213,56 @@ public class Gestore extends Utente {
         magazzino.visualizzaMagazzino();
     }
 
-    public Consumo inizializzaBevande(RegistroMagazzino magazzino){
-        System.out.println("Le chiediamo di seguito di inserire le bevande presenti nel suo ristorante");
-        while(InputDati.yesOrNo("Vuole inserire una nuova bevanda?")){
-            String nome = InputDati.leggiStringaConSpazi("Inserire il nome della bevanda: ");
-            int quantita = InputDati.leggiIntero("Inserire la quantità di bevanda tipicamente consumata: ");
-            Bevanda bevanda = new Bevanda(nome);
-            QuantitaMerce quantitaMerce = new QuantitaMerce(quantita, "l");
-            Consumo consumoBevande = new Consumo(bevanda, quantitaMerce);
-            //da finire, bisogna decidere come gestire maagzzino e bevande+ extra
-            //magazzino.aggiungiBevanda(new Bevanda(nome,consumoBevande));
+    public Set<Bevanda> inizializzaBevande(){
+        Set<Bevanda> bevande = new HashSet<>();
+        System.out.println(lineSeparator);
+        System.out.println("CONFIGURAZIONE INSIEME BEVANDE:");
+        boolean scelta = true;
+        do {
+            String nomeBevanda = InputDati.leggiStringaNonVuota("Inserire nome bevanda: ");
+            Bevanda bevanda = new Bevanda(nomeBevanda);
+            bevande.add(bevanda);
+            scelta = InputDati.yesOrNo(nuovaBevanda);
+        } while (scelta);
+        return bevande;
+    }
+
+    public ConsumoProCapiteBevande inizializzaConsumoBevande(Set<Bevanda> bevande){
+        ConsumoProCapiteBevande consumoProCapiteBevande = new ConsumoProCapiteBevande();
+        HashMap<Raggruppabile,QuantitaMerce> hashMapConsumo = new HashMap<>();
+        for (Bevanda bevanda: bevande) {
+            int quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + bevanda.getNome() + "': ");
+            QuantitaMerce quantitaBevanda = new QuantitaMerce(quantita,"L");
+            hashMapConsumo.put(bevanda, quantitaBevanda);
         }
-        return null;//da togliere
+        consumoProCapiteBevande.setConsumo(hashMapConsumo);
+        return consumoProCapiteBevande;
+    }
+
+    public ConsumoProCapiteGeneriExtra inizializzaConsumoGeneriExtra(Set<GenereAlimentareExtra> generiAlimentari){
+        ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra = new ConsumoProCapiteGeneriExtra();
+        HashMap<Raggruppabile,QuantitaMerce> hashMapConsumo = new HashMap<>();
+        for (GenereAlimentareExtra genere: generiAlimentari) {
+            int quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + genere.getNome() + "': ");
+            QuantitaMerce quantitaGenere = new QuantitaMerce(quantita,"HG");
+            hashMapConsumo.put(genere, quantitaGenere);
+        }
+        consumoProCapiteGeneriExtra.setConsumo(hashMapConsumo);
+        return consumoProCapiteGeneriExtra;
+    }
+
+    public Set<GenereAlimentareExtra> inizializzaGeneriAlimentari(){
+        Set<GenereAlimentareExtra> generi = new HashSet<>();
+        System.out.println(lineSeparator);
+        System.out.println("CONFIGURAZIONE INSIEME GENERI ALIMENTARI EXTRA:");
+        boolean scelta = true;
+        do {
+            String nomeGenere = InputDati.leggiStringaNonVuota("Inserire nome genere alimentare extra: ");
+            GenereAlimentareExtra genere = new GenereAlimentareExtra(nomeGenere);
+            generi.add(genere);
+            scelta = InputDati.yesOrNo(nuovaGenere);
+        } while (scelta);
+        return generi;
     }
 
     private Ricetta creaRicetta(Set<Piatto> piatti){

@@ -6,13 +6,13 @@ import java.util.HashMap;
 public class Consumo {
     private HashMap<Raggruppabile,QuantitaMerce> consumoProCapite;
 
-    public Consumo(){
-        this.consumoProCapite = new HashMap<>();
-    }
-
     public Consumo(Raggruppabile insieme, QuantitaMerce quantita){
         this.consumoProCapite = new HashMap<>();
         this.consumoProCapite.put(insieme,quantita);
+    }
+
+    public Consumo(){
+        consumoProCapite = new HashMap<>();
     }
 
     public HashMap<Raggruppabile,QuantitaMerce> getConsumo(){
@@ -20,7 +20,6 @@ public class Consumo {
     }
 
     public void setConsumo(HashMap<Raggruppabile,QuantitaMerce> consumo){
-        this.consumoProCapite.clear();
         this.consumoProCapite = consumo;
     }
 
