@@ -16,10 +16,10 @@ public class QuantitaMerce {
      * @return the quantita
      */
     private String controlloUnitaMisura(String unitaMisura) {
-        if (unitaMisura.equals("kg") || unitaMisura.equals("hg")|| unitaMisura.equals("dg")|| unitaMisura.equals("g") || unitaMisura.equals("l") || unitaMisura.equals("hl")|| unitaMisura.equals("dl")|| unitaMisura.equals("ml")) {
+        if (unitaMisura.equals("kg") || unitaMisura.equals("hg")|| unitaMisura.equals("g") || unitaMisura.equals("l")) {
             return unitaMisura;
         } else {
-            while(!unitaMisura.equals("kg") || !unitaMisura.equals("hg")|| !unitaMisura.equals("dg")|| !unitaMisura.equals("g") || !unitaMisura.equals("l")) {
+            while(!unitaMisura.equals("kg") || !unitaMisura.equals("hg")|| !unitaMisura.equals("g") || !unitaMisura.equals("l")) {
                 System.out.println("Unità di misura non valida");
                 unitaMisura = Libreria.InputDati.leggiStringa("Inserire unità di misura valida: ");
             }
@@ -44,4 +44,5 @@ public class QuantitaMerce {
     public void setUnitaMisura(String unitaMisura) {
         this.unitaMisura = unitaMisura;
     }
+
 }
