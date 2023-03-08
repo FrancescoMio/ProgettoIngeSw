@@ -5,6 +5,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import unibs.ids.ristorante.*;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -115,7 +116,7 @@ public class Json {
             file.write(object.toJSONString());
             file.flush();
             file.close();
-            System.out.println("Il file JSON è stato scritto con successo!");
+            System.out.println("Il file JSON '"+ nomeFile + "' è stato scritto con successo!");
 
         } catch (Exception e) {
             System.err.println("Errore durante la scrittura del file JSON: " + e.getMessage());
@@ -159,6 +160,12 @@ public class Json {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
+
+        //creazione nuovo menù alla carta in base ai piatti disponibili e salvataggio del menù
+        //ad ogni caricamento verranno salvati nel file JSON del menù alla carta solamente i piatti disponibili
+        ristorante.creaMenuCarta();
+        MenuCarta menuCarta = ristorante.getMenuAllaCarta();
+        salvaMenuCarta(menuCarta);
 
         //caricamento menù tematici del ristorante
         try (FileReader reader = new FileReader("./menuTematici.json")) {
@@ -234,5 +241,21 @@ public class Json {
             piatti.add(piatto);
         }
         return piatti;
+    }
+
+    public static ArrayList<JSONObject> caricaCredenziali(){
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader("./credenziali.json")){
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            ArrayList<JSONObject> elencoUtentiJson = (ArrayList<JSONObject>) jsonObject.get("elencoUtenti");
+            return elencoUtentiJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void salvaCredenziali(JSONObject utenti){
+        salvaSuFile(utenti, "./credenziali.json");
     }
 }

@@ -1,13 +1,11 @@
 package unibs.ids.ristorante;
 
 import Libreria.InputDati;
-import org.json.simple.JSONObject;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static unibs.ids.ristorante.Stringhe.*;
+import static Libreria.Stringhe.*;
 
 public class Gestore extends Utente {
 

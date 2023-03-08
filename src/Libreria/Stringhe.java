@@ -1,4 +1,4 @@
-package unibs.ids.ristorante;
+package Libreria;
 
 public class Stringhe {
     public static final String inserisciDataInizio = "Inserire data di inizio: ";
@@ -17,5 +17,8 @@ public class Stringhe {
 
     public static final String titoloMenuGestore = "SELEZIONARE MODALITA' UTILIZZO: ";
     public static String [] vociMenuGestore = {"Crea nuova configurazione","Carica configurazione"};
+    public static final String titoloMenuAuth = "FASE DI AUTENTICAZIONE: ";
+    public static String [] vociMenuAuth = {"REGISTRATI","ACCEDI"};
+
     public static final String erroreSceltaPiatto = "Numero piatto inserito non valido!";
 }

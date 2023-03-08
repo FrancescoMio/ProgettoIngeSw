@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import static unibs.ids.ristorante.Stringhe.*;
+import static Libreria.Stringhe.*;
 
 public class Ristorante {
     private String nomeRistorante;
@@ -20,6 +20,7 @@ public class Ristorante {
     private AddettoPrenotazioni addettoPrenotazioni;//addetto alle prenotazioni del ristorante
 
     private Set<MenuTematico> menuTematici;
+
     private MenuCarta menuAllaCarta;
     private ArrayList<Prenotazione> prenotazioni;
 
@@ -42,8 +43,6 @@ public class Ristorante {
         Json.salvaConfigurazione(this,piatti);
         Json.salvaMenuTematici(menuTematici);
         Json.salvaMenuCarta(menuAllaCarta);
-
-
     }
 
     public Ristorante(String caricaConfigurazione){
@@ -53,6 +52,7 @@ public class Ristorante {
         addettoPrenotazioni = new AddettoPrenotazioni();
         menuTematici = new HashSet<>();
         menuAllaCarta = new MenuCarta();
+        //Json.salvaMenuCarta(menuAllaCarta);
     }
 
     public void creaGestore(){
@@ -154,6 +154,14 @@ public class Ristorante {
 
     public void setMenuTematici(Set<MenuTematico> menuTematici) {
         this.menuTematici = menuTematici;
+    }
+
+    public MenuCarta getMenuAllaCarta() {
+        return menuAllaCarta;
+    }
+
+    public void setMenuAllaCarta(MenuCarta menuAllaCarta) {
+        this.menuAllaCarta = menuAllaCarta;
     }
 
     @Override
