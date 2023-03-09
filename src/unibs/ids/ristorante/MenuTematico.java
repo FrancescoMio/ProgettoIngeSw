@@ -3,6 +3,8 @@ package unibs.ids.ristorante;
 import Libreria.MyUtil;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 public class MenuTematico extends Menu implements Ordinabile{
@@ -85,6 +87,17 @@ public class MenuTematico extends Menu implements Ordinabile{
                 ", elencoPiatti=" + elencoPiatti +
                 '}';
     }
+    public Merce getListaIngredienti(){
+        Merce listaIngredienti = new Merce();
+        Merce listaIngredientiPiatto = new Merce();
+        for(Piatto piatto : elencoPiatti){
+            //per ogni piatto del menu associo la lista di ingredienti
+            listaIngredientiPiatto = piatto.getRicetta().getListaIngredienti();
+            listaIngredienti = listaIngredienti.aggregaMerci(listaIngredienti, listaIngredientiPiatto);//sta roba è bruttissima
+        }
+        return listaIngredienti;
+    }
+
     public String toStringMenuTematicoDisponibile(){
         if(disponibile)
             return "MenuTematico{" +

@@ -1,6 +1,7 @@
 package unibs.ids.ristorante;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Piatto implements Ordinabile {
@@ -66,5 +67,8 @@ public class Piatto implements Ordinabile {
                 ", dataInizio=" + dataInizio +
                 ", dataFine=" + dataFine +
                 '}';
+    }
+    public Merce getListaIngredienti(){
+        return this.ricetta.getListaIngredienti();
     }
 }

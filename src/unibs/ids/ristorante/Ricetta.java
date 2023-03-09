@@ -1,5 +1,6 @@
 package unibs.ids.ristorante;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Ricetta {
@@ -42,5 +43,10 @@ public class Ricetta {
                 ", numeroPorzioni=" + numeroPorzioni +
                 ", caricoDiLavoroXPorzione=" + caricoDiLavoroXPorzione +
                 '}';
+    }
+
+    public Merce getListaIngredienti() {
+        Merce listaIngredienti = getListaIngredienti().aggiungiIngrediente(ingredienti);
+        return listaIngredienti;
     }
 }
