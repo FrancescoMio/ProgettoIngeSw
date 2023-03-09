@@ -4,6 +4,7 @@ import Libreria.InputDati;
 import Libreria.Json;
 import Libreria.MyUtil;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class Ristorante {
     private Set<MenuTematico> menuTematici;
     private MenuCarta menuAllaCarta;
     private Set<Bevanda> bevande;
-    private Set<GenereAlimentareExtra> generiAlimentari;
+    private Set<GenereAlimentareExtra> generiAlimentariExtra;
     private ArrayList<Prenotazione> prenotazioni;
     private ConsumoProCapiteBevande consumoProCapiteBevande;
     private ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra;
@@ -32,18 +33,17 @@ public class Ristorante {
     public Ristorante() {
         //creo gestore con cui inizializzare tutto
         registroMagazzino = new RegistroMagazzino();
+
         creaGestore();
         creaConfigurazione();
         creaMenuTematici();
         creaMenuCarta();
-        creaInsiemeBevande();
-        creaConsumoProCapiteBevande();
-        creaInsiemeGeneriExtra();
-        creaConsumoProCapiteGeneriExtra();
+        creaInsiemeBevandeEGeneri();
+        creaConsumoProCapite();
+
+        //creaConsumoProCapite();
         //creaAddettoPrenotazioni();
         caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
-        //this.registroMagazzino.addGenereAlimentareExtra();
-        //this.registroMagazzino.addBevanda();
         gestore.visualizzaMenuTematici(menuTematici);
         gestore.visualizzaMenuAllaCarta(menuAllaCarta);
         Json.salvaConfigurazione(this,piatti);
@@ -58,7 +58,6 @@ public class Ristorante {
         addettoPrenotazioni = new AddettoPrenotazioni();
         menuTematici = new HashSet<>();
         menuAllaCarta = new MenuCarta();
-        //Json.salvaMenuCarta(menuAllaCarta);
     }
 
     public void creaGestore(){
@@ -103,17 +102,34 @@ public class Ristorante {
         menuAllaCarta = new MenuCarta("MenùAllaCarta",piattiDisponibili,MyUtil.getDataOdierna());
     }
 
-    public void creaInsiemeBevande(){
-        bevande = new HashSet<>();
-        bevande = gestore.inizializzaBevande();
+    public void creaInsiemeBevandeEGeneri(){
+        Set<Raggruppabile> bevandeEextra = gestore.inizializzaBevandeEgeneri();
+        Set<Bevanda> insiemeBevande = new HashSet<>();
+        Set<GenereAlimentareExtra> insiemeGeneriExtra = new HashSet<>();
+        for (Raggruppabile item: bevandeEextra) {
+            if(item instanceof Bevanda)
+                insiemeBevande.add((Bevanda) item);
+            else insiemeGeneriExtra.add((GenereAlimentareExtra) item);
+        }
+        this.bevande = insiemeBevande;
+        this.generiAlimentariExtra = insiemeGeneriExtra;
+        //System.out.println(bevande);
+        //System.out.println(generiAlimentariExtra);
     }
 
-    public void creaInsiemeGeneriExtra(){
-        generiAlimentari = new HashSet<>();
-        generiAlimentari = gestore.inizializzaGeneriAlimentari();
+    public void creaConsumoProCapite(){
+        ArrayList<HashMap<Raggruppabile,QuantitaMerce>> consumi = gestore.inizializzaConsumi(bevande,generiAlimentariExtra);
+        ConsumoProCapiteBevande consumoBevande = new ConsumoProCapiteBevande();
+        ConsumoProCapiteGeneriExtra consumoGeneri = new ConsumoProCapiteGeneriExtra();
+        consumoBevande.setConsumo(consumi.get(0));
+        consumoGeneri.setConsumo(consumi.get(1));
+        this.consumoProCapiteBevande = consumoBevande;
+        this.consumoProCapiteGeneriExtra = consumoGeneri;
+        //System.out.println(consumoProCapiteBevande);
+        //System.out.println(consumoProCapiteGeneriExtra);
     }
 
-    public void creaConsumoProCapiteBevande(){
+    /*public void creaConsumoProCapiteBevande(){
         System.out.println(lineSeparator);
         System.out.println("CONFIGURAZIONE CONSUMO PRO CAPITE MEDIO BEVANDE:");
         consumoProCapiteBevande = gestore.inizializzaConsumoBevande(bevande);
@@ -122,7 +138,7 @@ public class Ristorante {
         System.out.println(lineSeparator);
         System.out.println("CONFIGURAZIONE CONSUMO PRO CAPITE GENERI EXTRA:");
         consumoProCapiteGeneriExtra = gestore.inizializzaConsumoGeneriExtra(generiAlimentari);
-    }
+    }*/
 
     public  int getCaricoXPersona() {
         return caricoDiLavoroXPersona;
@@ -197,14 +213,14 @@ public class Ristorante {
     }
 
     public Set<GenereAlimentareExtra> getGeneriAlimentari() {
-        return generiAlimentari;
+        return generiAlimentariExtra;
     }
     public void setBevande(Set<Bevanda> bevande) {
         this.bevande = bevande;
     }
 
     public void setGeneriAlimentari(Set<GenereAlimentareExtra> generiAlimentari) {
-        this.generiAlimentari = generiAlimentari;
+        this.generiAlimentariExtra = generiAlimentari;
     }
 
     @Override

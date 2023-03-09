@@ -15,4 +15,10 @@ public class Bevanda implements Raggruppabile{
         this.nome = nome;
     }
 
+    @Override
+    public String toString() {
+        return "Bevanda{" +
+                "nome='" + nome + '\'' +
+                '}';
+    }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Consumo {
-    private HashMap<Raggruppabile,QuantitaMerce> consumoProCapite;
+    protected HashMap<Raggruppabile,QuantitaMerce> consumoProCapite;
 
     public Consumo(Raggruppabile insieme, QuantitaMerce quantita){
         this.consumoProCapite = new HashMap<>();
@@ -41,4 +41,10 @@ public class Consumo {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Consumo{" +
+                "consumoProCapite=" + consumoProCapite +
+                '}';
+    }
 }

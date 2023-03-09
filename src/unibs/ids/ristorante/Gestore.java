@@ -213,21 +213,61 @@ public class Gestore extends Utente {
         magazzino.visualizzaMagazzino();
     }
 
-    public Set<Bevanda> inizializzaBevande(){
-        Set<Bevanda> bevande = new HashSet<>();
+    public Set<Raggruppabile> inizializzaBevandeEgeneri(){
+        Set<Raggruppabile> insieme = new HashSet<>();
         System.out.println(lineSeparator);
-        System.out.println("CONFIGURAZIONE INSIEME BEVANDE:");
-        boolean scelta = true;
+        System.out.println("CONFIGURAZIONE INSIEME BEVANDE E GENERI ALIMENTARI EXTRA:");
+        boolean nuovo = true;
+        boolean scletaBevanda;
+        String nome = "";
         do {
-            String nomeBevanda = InputDati.leggiStringaNonVuota("Inserire nome bevanda: ");
-            Bevanda bevanda = new Bevanda(nomeBevanda);
-            bevande.add(bevanda);
-            scelta = InputDati.yesOrNo(nuovaBevanda);
-        } while (scelta);
-        return bevande;
+            scletaBevanda = InputDati.BevandaOGenere("Inserire bevanda o genere alimentare?");
+            if(scletaBevanda){
+                nome = InputDati.leggiStringaNonVuota("Inserire nome bevanda: ");
+                Bevanda bevanda = new Bevanda(nome);
+                insieme.add(bevanda);
+            }
+            else{
+                nome = InputDati.leggiStringaNonVuota("Inserire nome genere alimentare extra: ");
+                GenereAlimentareExtra genereExtra = new GenereAlimentareExtra(nome);
+                insieme.add(genereExtra);
+            }
+            nuovo = InputDati.yesOrNo(nuovaBevandaOgenere);
+        } while (nuovo);
+        return insieme;
     }
 
-    public ConsumoProCapiteBevande inizializzaConsumoBevande(Set<Bevanda> bevande){
+    /**
+     * Metodo per l'inizializzazione delle bevande e generi alimentari extra
+     * hashMapBevande contiene i consumi di tutte le bevande passate come parametro
+     * hashMapGeneri contiene i consumi di tutti generi passati come parametro
+     * @param bevande
+     * @param generi
+     * @return
+     */
+    public ArrayList<HashMap<Raggruppabile,QuantitaMerce>> inizializzaConsumi(Set<Bevanda> bevande, Set<GenereAlimentareExtra> generi){
+        ArrayList<HashMap<Raggruppabile,QuantitaMerce>> consumi = new ArrayList<>();
+        HashMap<Raggruppabile,QuantitaMerce> hashMapBevande = new HashMap<>();
+        HashMap<Raggruppabile,QuantitaMerce> hashMapGeneri = new HashMap<>();
+        System.out.println(lineSeparator);
+        System.out.println("CONFIGURAZIONE CONSUMO PRO CAPITE BEVANDE:");
+        for (Bevanda bevanda: bevande) {
+            int quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + bevanda.getNome() + "' (l) : ");
+            QuantitaMerce quantitaMerce = new QuantitaMerce(quantita, "l");
+            hashMapBevande.put(bevanda,quantitaMerce);
+        }
+        System.out.println("CONFIGURAZIONE CONSUMO PRO CAPITE GENERI ALIMENTARI EXTRA:");
+        for (GenereAlimentareExtra genere: generi) {
+            int quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + genere.getNome() + "' (hg) : ");
+            QuantitaMerce quantitaMerce = new QuantitaMerce(quantita, "hg");
+            hashMapGeneri.put(genere,quantitaMerce);
+        }
+        consumi.add(hashMapBevande);
+        consumi.add(hashMapGeneri);
+        return consumi;
+    }
+
+    /*public ConsumoProCapiteBevande inizializzaConsumoBevande(Set<Bevanda> bevande){
         ConsumoProCapiteBevande consumoProCapiteBevande = new ConsumoProCapiteBevande();
         HashMap<Raggruppabile,QuantitaMerce> hashMapConsumo = new HashMap<>();
         for (Bevanda bevanda: bevande) {
@@ -263,7 +303,7 @@ public class Gestore extends Utente {
             scelta = InputDati.yesOrNo(nuovaGenere);
         } while (scelta);
         return generi;
-    }
+    }*/
 
     private Ricetta creaRicetta(Set<Piatto> piatti){
         HashMap<String,Integer> ingredienti = inserisciIngredienti();

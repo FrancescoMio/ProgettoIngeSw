@@ -44,5 +44,13 @@ public class QuantitaMerce {
     public void setUnitaMisura(String unitaMisura) {
         this.unitaMisura = unitaMisura;
     }
+    @Override
+    public String toString() {
+        return "QuantitaMerce{" +
+                "quantita=" + quantita +
+                ", unitaMisura='" + unitaMisura + '\'' +
+                '}';
+    }
+
 
 }

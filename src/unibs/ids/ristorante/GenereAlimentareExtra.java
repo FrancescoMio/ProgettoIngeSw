@@ -15,4 +15,10 @@ public class GenereAlimentareExtra implements Raggruppabile{
         this.nome = nome;
     }
 
+    @Override
+    public String toString() {
+        return "GenereAlimentareExtra{" +
+                "nome='" + nome + '\'' +
+                '}';
+    }
 }

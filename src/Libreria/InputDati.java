@@ -194,6 +194,18 @@ public class InputDati {
         return valoreLetto == 'S';
     }
 
+    /**
+     * Metodo per la scelta fra bevanda o genere alimentare extra
+     * @param messaggio
+     * @return
+     */
+    public static boolean BevandaOGenere(String messaggio) {
+        String mioMessaggio = messaggio + "(B/G)";
+        String var10001 = String.valueOf('B');
+        char valoreLetto = leggiUpperChar(mioMessaggio, var10001 + "G");
+        return valoreLetto == 'B';
+    }
+
     public static LocalDate leggiData(String messaggio) {
         boolean finito = false;
         Date data = null;

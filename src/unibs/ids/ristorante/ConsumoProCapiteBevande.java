@@ -11,4 +11,10 @@ public class ConsumoProCapiteBevande extends Consumo{
     }
 
 
+    @Override
+    public String toString() {
+        return "ConsumoProCapiteBevande{" +
+                "consumoProCapite=" + consumoProCapite +
+                '}';
+    }
 }
