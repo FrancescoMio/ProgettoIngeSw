@@ -1,22 +1,24 @@
 package unibs.ids.ristorante;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 public class Magazziniere extends Utente {
 
-    Merce listaSpesa;
+    private Merce listaSpesa;
 
     public Magazziniere(String nome, String cognome) {//Costruttore
         super(nome, cognome);
+        listaSpesa = new Merce();
     }
 
-    //TODO: da gestire possibile incremento del quantitativo e inserire bevande e generi extra
+    //TODO: da gestire possibile incremento del quantitativo (110% tipo) e inserire bevande e generi extra
     public void creaListaSpesaGiornaliera(Prenotazione prenotazione, RegistroMagazzino registroMagazzino) {
-        Merce listaSpesa = new Merce();
-        // todo: listaSpesa = aggiuntaBevande(listaSpesa,...);   saranno da aggiungere altri paramentri
-        //todo: listaSpesa = aggiuntaGeneriExtra(listaSpesa,...);  saranno da aggiungere altri paramentri
+        //ogni volta la riinizializzo a 0
+        listaSpesa = new Merce();
+        listaSpesa = aggiuntaBevandeEExtra(listaSpesa, registroMagazzino.getBevandeEExtra());
         Iterator<Map.Entry<Ordinabile,Integer>> iterator= prenotazione.getOrdine().entrySet().iterator(); //Iteratore per scorrere la mappa
         do{
             Map.Entry<Ordinabile,Integer> entry = iterator.next();//seleziono elemento con chiave Ordinabile e valore quantita di piatti o menu scelti
@@ -35,6 +37,20 @@ public class Magazziniere extends Utente {
     }
 
     public Merce getListaSpesa() {
+        return listaSpesa;
+    }
+
+    private Merce aggiuntaBevandeEExtra(Merce listaSpesa, Consumo bevandeEExtra){
+        for (Map.Entry<Raggruppabile, QuantitaMerce> entry : bevandeEExtra.getConsumo().entrySet()) {
+            Raggruppabile item = entry.getKey();
+            QuantitaMerce quantita = entry.getValue();
+            if(item instanceof Bevanda){
+                listaSpesa.aggiungiMerce(item.getNome(), quantita);
+            }
+            else if(item instanceof GenereAlimentareExtra){
+                listaSpesa.aggiungiMerce(item.getNome(), quantita);
+            }
+        }
         return listaSpesa;
     }
 

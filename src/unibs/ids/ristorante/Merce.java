@@ -23,7 +23,7 @@ public class Merce {
 
     public void visualizzaMerce() {
         for(String nome : merce.keySet()) {
-            System.out.println("Nome: " + nome + " Quantità: " + merce.get(nome).getQuantita() + merce.get(nome).getUnitaMisura());
+            System.out.println("Nome: " + nome + " Quantità: " + (int)merce.get(nome).getQuantita() + merce.get(nome).getUnitaMisura());
         }
     }
     public HashMap<String, QuantitaMerce> getMerce() {
@@ -34,7 +34,7 @@ public class Merce {
     public Merce aggregaMerci(Merce listaSpesa, Merce aggiunta){
         for(String nome : aggiunta.getMerce().keySet()) {
             if(listaSpesa.getMerce().containsKey(nome)) {
-                int quantita = listaSpesa.getMerce().get(nome).getQuantita() + aggiunta.getMerce().get(nome).getQuantita();
+                double quantita = listaSpesa.getMerce().get(nome).getQuantita() + aggiunta.getMerce().get(nome).getQuantita();
                 listaSpesa.getMerce().get(nome).setQuantita(quantita);
             } else {
                 listaSpesa.aggiungiMerce(nome, aggiunta.getMerce().get(nome));

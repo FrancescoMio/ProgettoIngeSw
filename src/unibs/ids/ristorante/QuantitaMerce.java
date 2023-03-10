@@ -3,10 +3,10 @@ package unibs.ids.ristorante;
 //classe che crea l'oggetto quantitaMerce per la lista della spesa
 
 public class QuantitaMerce {
-    private int quantita;
+    private double quantita;
     private String unitaMisura;
 
-    public QuantitaMerce(int quantita, String unitaMisura) {//Costruttore
+    public QuantitaMerce(double quantita, String unitaMisura) {//Costruttore
         this.quantita = quantita;
         this.unitaMisura = controlloUnitaMisura(unitaMisura);
     }
@@ -27,7 +27,7 @@ public class QuantitaMerce {
         }
     }
 
-    public int getQuantita() {
+    public double getQuantita() {
         return quantita;
     }
 
@@ -35,7 +35,7 @@ public class QuantitaMerce {
         return unitaMisura;
     }
 
-    public void setQuantita(int quantita) {
+    public void setQuantita(double quantita) {
         if(quantita < 0)
             this.quantita = 0;
         else

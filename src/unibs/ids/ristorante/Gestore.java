@@ -52,7 +52,7 @@ public class Gestore extends Utente {
             String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
             LocalDate dataInizio = InputDati.leggiData("Inserire data di inizio validità: ");
             LocalDate dataFine = InputDati.leggiData("Inserire data di fine validità: ");
-            int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione: ");
+            int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione in minuti: ");
             //todo: controllare che vada tutto bene
             Ricetta ricetta = creaRicetta(piatti);
             Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione, dataInizio, dataFine);
@@ -72,6 +72,7 @@ public class Gestore extends Utente {
         boolean scelta = true;
         do {
             String Ingrediente = InputDati.leggiStringa("Inserire nome ingrediente: ");
+            //todo: come mai avevamo fatto cosi e non double o int la dose?
             String dose = InputDati.leggiStringa("Inserire dose opportuna dell'ingrediente: ");
             ingredienti.put(Ingrediente, Integer.parseInt(dose));
             scelta = InputDati.yesOrNo("Vuoi inserire un altro ingrediente?");
@@ -130,8 +131,7 @@ public class Gestore extends Utente {
             double caricoLavoroMenu = calcoloLavoroMenuTematico(piattiDelMenu);
             MenuTematico myMenu = new MenuTematico(nome, piattiDelMenu,date.get(0),date.get(1),caricoLavoroMenu);
             menuTematici.add(myMenu);
-            scelta = InputDati.yesOrNo(nuovoMenuTematico);
-        } while (scelta);
+        } while(InputDati.yesOrNo(nuovoMenuTematico));
         return menuTematici;
     }
 
@@ -252,13 +252,13 @@ public class Gestore extends Utente {
         System.out.println(lineSeparator);
         System.out.println("CONFIGURAZIONE CONSUMO PRO CAPITE BEVANDE:");
         for (Bevanda bevanda: bevande) {
-            int quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + bevanda.getNome() + "' (l) : ");
+            double quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + bevanda.getNome() + "' (l) : ");
             QuantitaMerce quantitaMerce = new QuantitaMerce(quantita, "l");
             hashMapBevande.put(bevanda,quantitaMerce);
         }
         System.out.println("CONFIGURAZIONE CONSUMO PRO CAPITE GENERI ALIMENTARI EXTRA:");
         for (GenereAlimentareExtra genere: generi) {
-            int quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + genere.getNome() + "' (hg) : ");
+            double quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + genere.getNome() + "' (hg) : ");
             QuantitaMerce quantitaMerce = new QuantitaMerce(quantita, "hg");
             hashMapGeneri.put(genere,quantitaMerce);
         }
@@ -271,7 +271,7 @@ public class Gestore extends Utente {
         ConsumoProCapiteBevande consumoProCapiteBevande = new ConsumoProCapiteBevande();
         HashMap<Raggruppabile,QuantitaMerce> hashMapConsumo = new HashMap<>();
         for (Bevanda bevanda: bevande) {
-            int quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + bevanda.getNome() + "': ");
+            double quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + bevanda.getNome() + "': ");
             QuantitaMerce quantitaBevanda = new QuantitaMerce(quantita,"L");
             hashMapConsumo.put(bevanda, quantitaBevanda);
         }
@@ -283,7 +283,7 @@ public class Gestore extends Utente {
         ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra = new ConsumoProCapiteGeneriExtra();
         HashMap<Raggruppabile,QuantitaMerce> hashMapConsumo = new HashMap<>();
         for (GenereAlimentareExtra genere: generiAlimentari) {
-            int quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + genere.getNome() + "': ");
+            double quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + genere.getNome() + "': ");
             QuantitaMerce quantitaGenere = new QuantitaMerce(quantita,"HG");
             hashMapConsumo.put(genere, quantitaGenere);
         }
