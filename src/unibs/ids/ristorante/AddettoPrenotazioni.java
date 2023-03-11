@@ -28,6 +28,7 @@ public class AddettoPrenotazioni extends Utente {
      */
     public ArrayList<Prenotazione> creaPrenotazioni(int copertiMax, double caricoMax, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici) {
         ArrayList<Prenotazione> prenotazioni = new ArrayList<>();
+        System.out.println("Inserire di seguito le prenotazioni da fare: ");
         do{
             Prenotazione prenotazione = creaPrenotazione(prenotazioni, copertiMax, caricoMax, menuAllaCarta, menuTematici);
             if(prenotazione != null)
@@ -156,11 +157,26 @@ public class AddettoPrenotazioni extends Utente {
         //commit finto
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
         System.out.println("Inserire cortesemente l'ordine per ogni persona al tavolo");
-        for(int i = 0; i < numeroCoperti; i++){
+        for(int i = 0; i < numeroCoperti;){
             System.out.println("Ordine persona " + (i+1));
             Ordinabile ordinabile = chiediOrdinabile(menuAllaCarta, menuTematici);
             int quantita = InputDati.leggiIntero("Inserire quante persone hanno scelto questo menu/piatto: ");
+            if(ordinabile instanceof MenuTematico){
+                i = i + quantita;// ogni persona che ha preso un menutematico ha fatto il suo ordine
+            }
+            else if(ordinabile instanceof MenuCarta){//comunque se prendo due piatti uguali immagino siano per persone diverse
+                i = i + quantita;//questi due if li tolgo se confermiamo questa logica, e lascio solo i += quantita
+            }
             ordine.put(ordinabile, quantita);
+        }
+        if(InputDati.yesOrNo("E' stato ordinato almeno un piatto o menu tematico per persona, vuoi ordinare altri piatti dal menu alla carta?"))
+        {
+            Ordinabile ordinabile;
+            do{
+                ordinabile = chiediPiatto(menuAllaCarta);
+                int quantita = InputDati.leggiIntero("Inserire quante persone hanno scelto questo menu/piatto: ");
+                ordine.put(ordinabile,quantita);
+            }while(InputDati.yesOrNo("Vuoi inserirne un altro?"));
         }
         return ordine;
     }
@@ -202,7 +218,7 @@ public class AddettoPrenotazioni extends Utente {
      */
     private Ordinabile chiediPiatto(MenuCarta menuAllaCarta) {
         System.out.println("I piatti disponibili sono:");
-        menuAllaCarta.toString();
+        menuAllaCarta.visualizzaPiatti(); //DA TESTARE SE VA MEGLIO DEL TOSTRING
         Ordinabile piatto = null;
         int scelta = InputDati.leggiIntero("Inserire il numero del piatto che si desidera ordinare: ");
         Iterator<Piatto> iterator = menuAllaCarta.getElencoPiatti().iterator();
@@ -229,8 +245,8 @@ public class AddettoPrenotazioni extends Utente {
     private Ordinabile chiediMenu(Set<MenuTematico> menuTematici) {
         Ordinabile menuTematico = null;
         System.out.println("Di seguito sono riportati i menu tematici del nostro ristorante, ordinandone uno sara' servito tutto il menu");
+        int i = 1;
         for(MenuTematico m : menuTematici){
-            int i = 1;
             System.out.println(i + ") " + m.toStringMenuTematicoDisponibile());
             i++;
         }

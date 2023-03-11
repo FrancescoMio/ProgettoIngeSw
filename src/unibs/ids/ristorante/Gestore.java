@@ -48,6 +48,7 @@ public class Gestore extends Utente {
     public Set<Piatto> inserisciPiatti() {
         Set<Piatto> piatti = new HashSet<>();
         boolean scelta = true;
+        System.out.println("Inserire di seguito i piatti che comporranno i menu del ristorante: ");
         do {
             String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
             LocalDate dataInizio = InputDati.leggiData("Inserire data di inizio validità: ");
