@@ -53,7 +53,6 @@ public class Gestore extends Utente {
             LocalDate dataInizio = InputDati.leggiData("Inserire data di inizio validità: ");
             LocalDate dataFine = InputDati.leggiData("Inserire data di fine validità: ");
             int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione in minuti: ");
-            //todo: controllare che vada tutto bene
             Ricetta ricetta = creaRicetta(piatti);
             Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione, dataInizio, dataFine);
             piatti.add(piatto);

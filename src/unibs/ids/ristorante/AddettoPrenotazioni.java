@@ -145,6 +145,7 @@ public class AddettoPrenotazioni extends Utente {
      * @return
      */
     private HashMap<Ordinabile,Integer> chiediOrdine(int numeroCoperti, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
+        //commit finto
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
         System.out.println("Inserire cortesemente l'ordine per ogni persona al tavolo");
         for(int i = 0; i < numeroCoperti; i++){
