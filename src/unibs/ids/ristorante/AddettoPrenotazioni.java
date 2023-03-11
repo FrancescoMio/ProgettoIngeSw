@@ -18,6 +18,14 @@ public class AddettoPrenotazioni extends Utente {
         super();
     }
 
+    /**
+     * metodo per la creazione delle prenotazioni
+     * @param copertiMax
+     * @param caricoMax
+     * @param menuAllaCarta
+     * @param menuTematici
+     * @return
+     */
     public ArrayList<Prenotazione> creaPrenotazioni(int copertiMax, double caricoMax, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici) {
         ArrayList<Prenotazione> prenotazioni = new ArrayList<>();
         do{

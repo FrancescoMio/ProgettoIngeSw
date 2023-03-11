@@ -265,45 +265,6 @@ public class Gestore extends Utente {
         consumi.add(hashMapGeneri);
         return consumi;
     }
-
-    /*public ConsumoProCapiteBevande inizializzaConsumoBevande(Set<Bevanda> bevande){
-        ConsumoProCapiteBevande consumoProCapiteBevande = new ConsumoProCapiteBevande();
-        HashMap<Raggruppabile,QuantitaMerce> hashMapConsumo = new HashMap<>();
-        for (Bevanda bevanda: bevande) {
-            double quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + bevanda.getNome() + "': ");
-            QuantitaMerce quantitaBevanda = new QuantitaMerce(quantita,"L");
-            hashMapConsumo.put(bevanda, quantitaBevanda);
-        }
-        consumoProCapiteBevande.setConsumo(hashMapConsumo);
-        return consumoProCapiteBevande;
-    }
-
-    public ConsumoProCapiteGeneriExtra inizializzaConsumoGeneriExtra(Set<GenereAlimentareExtra> generiAlimentari){
-        ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra = new ConsumoProCapiteGeneriExtra();
-        HashMap<Raggruppabile,QuantitaMerce> hashMapConsumo = new HashMap<>();
-        for (GenereAlimentareExtra genere: generiAlimentari) {
-            double quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + genere.getNome() + "': ");
-            QuantitaMerce quantitaGenere = new QuantitaMerce(quantita,"HG");
-            hashMapConsumo.put(genere, quantitaGenere);
-        }
-        consumoProCapiteGeneriExtra.setConsumo(hashMapConsumo);
-        return consumoProCapiteGeneriExtra;
-    }
-
-    public Set<GenereAlimentareExtra> inizializzaGeneriAlimentari(){
-        Set<GenereAlimentareExtra> generi = new HashSet<>();
-        System.out.println(lineSeparator);
-        System.out.println("CONFIGURAZIONE INSIEME GENERI ALIMENTARI EXTRA:");
-        boolean scelta = true;
-        do {
-            String nomeGenere = InputDati.leggiStringaNonVuota("Inserire nome genere alimentare extra: ");
-            GenereAlimentareExtra genere = new GenereAlimentareExtra(nomeGenere);
-            generi.add(genere);
-            scelta = InputDati.yesOrNo(nuovaGenere);
-        } while (scelta);
-        return generi;
-    }*/
-
     private Ricetta creaRicetta(Set<Piatto> piatti){
         HashMap<String,Integer> ingredienti = inserisciIngredienti();
         Ricetta ricetta = controlloRicetta(ingredienti, piatti);

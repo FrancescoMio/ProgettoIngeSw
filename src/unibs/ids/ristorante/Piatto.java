@@ -68,6 +68,11 @@ public class Piatto implements Ordinabile {
                 ", dataFine=" + dataFine +
                 '}';
     }
+
+    /**
+     * metodo che ritorna la lista degli ingredienti
+     * @return
+     */
     public Merce getListaIngredienti(){
         return this.ricetta.getListaIngredienti();
     }
