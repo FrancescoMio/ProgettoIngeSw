@@ -252,13 +252,13 @@ public class Gestore extends Utente {
         System.out.println(lineSeparator);
         System.out.println("CONFIGURAZIONE CONSUMO PRO CAPITE BEVANDE:");
         for (Bevanda bevanda: bevande) {
-            double quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + bevanda.getNome() + "' (l) : ");
+            double quantita = InputDati.leggiDoubleConMinimo("Consumo pro capite '" + bevanda.getNome() + "' (l) : ",0.0);
             QuantitaMerce quantitaMerce = new QuantitaMerce(quantita, "l");
             hashMapBevande.put(bevanda,quantitaMerce);
         }
         System.out.println("CONFIGURAZIONE CONSUMO PRO CAPITE GENERI ALIMENTARI EXTRA:");
         for (GenereAlimentareExtra genere: generi) {
-            double quantita = InputDati.leggiInteroPositivo("Consumo pro capite '" + genere.getNome() + "' (hg) : ");
+            double quantita = InputDati.leggiDoubleConMinimo("Consumo pro capite '" + genere.getNome() + "' (hg) : ",0.0);
             QuantitaMerce quantitaMerce = new QuantitaMerce(quantita, "hg");
             hashMapGeneri.put(genere,quantitaMerce);
         }

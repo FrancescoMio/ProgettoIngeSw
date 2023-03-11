@@ -41,7 +41,7 @@ public class Ristorante {
         creaInsiemeBevandeEGeneri();
         creaConsumoProCapite();
 
-        //creaConsumoProCapite();
+
         //creaAddettoPrenotazioni();
         caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
         gestore.visualizzaMenuTematici(menuTematici);
@@ -49,6 +49,7 @@ public class Ristorante {
         Json.salvaConfigurazione(this,piatti);
         Json.salvaMenuTematici(menuTematici);
         Json.salvaMenuCarta(menuAllaCarta);
+        Json.salvaConsumiProCapite(consumoProCapiteBevande,consumoProCapiteGeneriExtra);
     }
 
     public Ristorante(String caricaConfigurazione){
@@ -102,6 +103,9 @@ public class Ristorante {
         menuAllaCarta = new MenuCarta("MenùAllaCarta",piattiDisponibili,MyUtil.getDataOdierna());
     }
 
+    /**
+     * Metodo per l'inizializzazione delle bevande e generi alimentari extra
+     */
     public void creaInsiemeBevandeEGeneri(){
         Set<Raggruppabile> bevandeEextra = gestore.inizializzaBevandeEgeneri();
         Set<Bevanda> insiemeBevande = new HashSet<>();
@@ -117,6 +121,11 @@ public class Ristorante {
         //System.out.println(generiAlimentariExtra);
     }
 
+    /**
+     * Metodo per l'inizializzazione del consumo pro capite delle bevande e generi alimentari extra,
+     * L'ArrayList contiene le due hashMap relative rispettivamente ai consumi pro capite delle bevande e
+     * dei generi alimentari extra
+     */
     public void creaConsumoProCapite(){
         ArrayList<HashMap<Raggruppabile,QuantitaMerce>> consumi = gestore.inizializzaConsumi(bevande,generiAlimentariExtra);
         ConsumoProCapiteBevande consumoBevande = new ConsumoProCapiteBevande();
@@ -125,8 +134,8 @@ public class Ristorante {
         consumoGeneri.setConsumo(consumi.get(1));
         this.consumoProCapiteBevande = consumoBevande;
         this.consumoProCapiteGeneriExtra = consumoGeneri;
-        //System.out.println(consumoProCapiteBevande);
-        //System.out.println(consumoProCapiteGeneriExtra);
+        System.out.println(consumoProCapiteBevande);
+        System.out.println(consumoProCapiteGeneriExtra);
     }
 
     /*public void creaConsumoProCapiteBevande(){

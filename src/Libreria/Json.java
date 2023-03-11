@@ -70,6 +70,31 @@ public class Json {
         salvaSuFile(menuCartaJson, "./menuCarta.json");
     }
 
+    public static void salvaConsumiProCapite(ConsumoProCapiteBevande bevande, ConsumoProCapiteGeneriExtra generi){
+        JSONObject elenco = new JSONObject();
+        ArrayList<JSONObject> elencoBevande = getElencoBevandeGeneriJson(bevande);
+        elenco.put("elencoBevande",elencoBevande);
+        ArrayList<JSONObject> elencoGeneriExtra = getElencoBevandeGeneriJson(generi);
+        elenco.put("elencoGeneriExtra", elencoGeneriExtra);
+        salvaSuFile(elenco,"./consumoProCapite.json");
+    }
+
+    public static ArrayList<JSONObject> getElencoBevandeGeneriJson(Consumo consumi){
+        ArrayList<JSONObject> elenco = new ArrayList<>();
+        HashMap<Raggruppabile,QuantitaMerce> hashMapConsumi = consumi.getConsumo();
+        for (Map.Entry<Raggruppabile, QuantitaMerce> entry : hashMapConsumi.entrySet()) {
+            JSONObject obj = new JSONObject();
+            obj.put("nome",entry.getKey().getNome());
+            QuantitaMerce quantitaMerce = entry.getValue();
+            double quantita = quantitaMerce.getQuantita();
+            String unitaMisura = quantitaMerce.getUnitaMisura();
+            obj.put("consumoProCapite", quantita);
+            obj.put("unitaMisura",unitaMisura);
+            elenco.add(obj);
+        }
+        return elenco;
+    }
+
 
     /**
      * Metodo grazie al quale passando come parametro un elenco di piatti ritorna l'elenco di tali piatti in formato JSON
