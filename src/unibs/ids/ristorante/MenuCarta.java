@@ -37,7 +37,7 @@ public class MenuCarta extends Menu{
                 '}';
     }
 
-    private String visualizzaPiatti(){
+    public String visualizzaPiatti(){
         String piatti = "";
         for(Piatto p : elencoPiatti){
             int i = 1;

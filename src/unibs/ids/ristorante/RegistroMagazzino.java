@@ -48,10 +48,9 @@ public class RegistroMagazzino {
             else{//se sono gia presenti dovro' aggiornare la quantita'
                 aggiuntaIngredientiGiaPresenti(listaSpesa);
             }
-
     }
 
-    private boolean controlloIngredientiGiaPresenti( Merce listaSpesa) {
+    private boolean controlloIngredientiGiaPresenti(Merce listaSpesa) {
         for(String nome : listaSpesa.getMerce().keySet()){
             if(ingredientiDisponibili.getMerce().containsKey(nome))
                 return true;

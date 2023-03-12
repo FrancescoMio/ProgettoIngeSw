@@ -18,6 +18,7 @@ public class Ristorante {
     private Set<Piatto> piatti;//lista di piatti che il ristorante può offrire, comprende anche quelli non disponibili
     private RegistroMagazzino registroMagazzino;
     private Gestore gestore; //gestore del ristorante
+    private Magazziniere magazziniere;//magazziniere del ristorante
     private AddettoPrenotazioni addettoPrenotazioni;//addetto alle prenotazioni del ristorante
     private Set<MenuTematico> menuTematici;
     private MenuCarta menuAllaCarta;
@@ -28,7 +29,7 @@ public class Ristorante {
     private ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra;
 
     /**
-     * Costruttore dedicato alla inizializzazione dei dati di configurazione del ristorante
+     * Costruttore dedicato all'inizializzazione dei dati di configurazione del ristorante
      */
     public Ristorante() {
         //creo gestore con cui inizializzare tutto
@@ -41,8 +42,8 @@ public class Ristorante {
         creaInsiemeBevandeEGeneri();
         creaConsumoProCapite();
 
-
-        //creaAddettoPrenotazioni();
+        creaAddettoPrenotazioni();
+        creaMagazziniere();
         caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
         gestore.visualizzaMenuTematici(menuTematici);
         gestore.visualizzaMenuAllaCarta(menuAllaCarta);
@@ -52,6 +53,7 @@ public class Ristorante {
         Json.salvaConsumiProCapite(consumoProCapiteBevande,consumoProCapiteGeneriExtra);
     }
 
+    //TODO: alla fine mettere privati tutti i metodi che non servono all'esterno
     public Ristorante(String caricaConfigurazione){
         gestore = new Gestore();
         piatti = new HashSet<>();
@@ -69,12 +71,19 @@ public class Ristorante {
         gestore = new Gestore(nome, cognome);
     }
 
-    public void creaAddettoPrenotazioni(){
+    private void creaMagazziniere(){
         System.out.println(lineSeparator);
-        System.out.println(nuovaConfigurazione);
+        String nome = InputDati.leggiStringaConSpazi("Inserire il nome del magazziniere: ");
+        String cognome = InputDati.leggiStringaConSpazi("Inserire il cognome: ");
+        Magazziniere magazziniere = new Magazziniere(nome, cognome);
+    }
+
+    private void creaAddettoPrenotazioni(){
+        System.out.println(lineSeparator);
         String nome = InputDati.leggiStringaConSpazi("Inserire il nome dell'addetto alle prenotazioni: ");
         String cognome = InputDati.leggiStringaConSpazi("Inserire il cognome: ");
         addettoPrenotazioni = new AddettoPrenotazioni(nome, cognome);
+        //metodo lo metterei da un'altra parte, qua creo solo l'addetto
         this.prenotazioni = addettoPrenotazioni.creaPrenotazioni(postiASedere,caricoDiLavoroSostenibile,menuAllaCarta,menuTematici);
     }
 
@@ -246,6 +255,20 @@ public class Ristorante {
                 ", menuTematici=" + menuTematici +
                 ", menuAllaCarta=" + menuAllaCarta +
                 '}';
+    }
+
+    private void gestisciFlussoMagazzino(){
+        //creo lista spesa
+        magazziniere.creaListaSpesaGiornaliera(prenotazioni, registroMagazzino);
+        magazziniere.stampaListaSpesa();
+        //flusso di prodotti acquistati
+        registroMagazzino.aggiungiIngredientiComprati(magazziniere.getListaSpesa());
+        //prodotti portati in cucina
+        //registroMagazzino.portatiInCucina(); come calcolo gli ingredienti portati in cucina?
+        //bevande e generi alimentari portati in sala, a più riprese?
+        //registroMagazzino.setBevandeEExtraPortatiInSala(); fare metodo che calcola bevande e extra per ogni persona?
+
+        //ultimi due punti di registro magazzino da discutere fares
     }
 
 }
