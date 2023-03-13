@@ -20,11 +20,11 @@ public class AddettoPrenotazioni extends Utente {
 
     /**
      * metodo per la creazione delle prenotazioni
-     * @param copertiMax
-     * @param caricoMax
-     * @param menuAllaCarta
-     * @param menuTematici
-     * @return
+     * @param copertiMax numero di coperti massimo del ristorante
+     * @param caricoMax carico massimo sostenibile del ristorante
+     * @param menuAllaCarta menu alla carta del ristorante, comprensivo di tutti i piatti disponibili
+     * @param menuTematici menu tematici del ristorante, ognuno comprendente piu piatti
+     * @return tutte le prenotazioni create
      */
     public ArrayList<Prenotazione> creaPrenotazioni(int copertiMax, double caricoMax, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici) {
         ArrayList<Prenotazione> prenotazioni = new ArrayList<>();
@@ -113,10 +113,10 @@ public class AddettoPrenotazioni extends Utente {
     /**
      * metodo che permette di controllare che il numero di coperti inseriti non superi il numero
      * massimo di coperti raggiungibili in una giornata
-     * @param numeroCoperti
-     * @param dataPrenotazione
-     * @param copertiMax
-     * @return
+     * @param numeroCoperti numero di coperti inseriti
+     * @param dataPrenotazione data della prenotazione
+     * @param copertiMax  numero massimo di coperti raggiungibili in una giornata
+     * @return true se il numero di coperti inseriti è accettabile, false altrimenti
      */
     private boolean controlloCoperti(ArrayList<Prenotazione> prenotazioni, int numeroCoperti, LocalDate dataPrenotazione, int copertiMax){
         int numeroCopertiGiaPrenotati = 0;
@@ -134,6 +134,7 @@ public class AddettoPrenotazioni extends Utente {
             return true;
     }
 
+    //todo: metodo da richiamare!
     /**
      * metodo che permette di eliminare automaticamente le prenotazioni scadute
      */
@@ -148,13 +149,12 @@ public class AddettoPrenotazioni extends Utente {
     /**
      * metodo che permette di chiedere all'utente l'ordine per ogni persona al tavolo,
      * ovvero una coppia menuTematico/piatto e quantità
-     * @param numeroCoperti
-     * @param menuAllaCarta
-     * @param menuTematici
-     * @return
+     * @param numeroCoperti numero di coperti inseriti
+     * @param menuAllaCarta menu alla carta
+     * @param menuTematici menu tematici
+     * @return ordine per ogni persona al tavolo
      */
     private HashMap<Ordinabile,Integer> chiediOrdine(int numeroCoperti, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
-        //commit finto
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
         System.out.println("Inserire cortesemente l'ordine per ogni persona al tavolo");
         for(int i = 0; i < numeroCoperti;){
@@ -184,9 +184,9 @@ public class AddettoPrenotazioni extends Utente {
     /**
      * metodo di supporto a chiediOrdine che permette invece di chiedere all'utente
      * il singolo piatto dal Menu alla Carta o il Menu Tematico
-     * @param menuAllaCarta
-     * @param menuTematici
-     * @return
+     * @param menuAllaCarta menu alla carta
+     * @param menuTematici menu tematici
+     * @return piatto o menu tematico scelto
      */
     private Ordinabile chiediOrdinabile(MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
         Ordinabile ordinabile = null;
@@ -213,8 +213,8 @@ public class AddettoPrenotazioni extends Utente {
     /**
      * Metodo di supporto a chiediOrdinabile che permette di chiedere all'utente
      * il singolo piatto dal menu alla carta che si desidera ordinare
-     * @param menuAllaCarta
-     * @return
+     * @param menuAllaCarta menu alla carta
+     * @return piatto scelto
      */
     private Ordinabile chiediPiatto(MenuCarta menuAllaCarta) {
         System.out.println("I piatti disponibili sono:");
@@ -239,8 +239,8 @@ public class AddettoPrenotazioni extends Utente {
     /**
      * Metodo di supporto a chiediOrdinabile che permette di chiedere all'utente
      * il menu tematico che si desidera ordinare
-     * @param menuTematici
-     * @return
+     * @param menuTematici menu tematici
+     * @return menu tematico scelto
      */
     private Ordinabile chiediMenu(Set<MenuTematico> menuTematici) {
         Ordinabile menuTematico = null;

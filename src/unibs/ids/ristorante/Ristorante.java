@@ -258,11 +258,12 @@ public class Ristorante {
     }
 
     private void gestisciFlussoMagazzino(){
-        //creo lista spesa
-        magazziniere.creaListaSpesaGiornaliera(prenotazioni, registroMagazzino);
+        magazziniere.creaListaSpesaGiornaliera(prenotazioni, registroMagazzino);//creo lista spesa
         magazziniere.stampaListaSpesa();
+
         //flusso di prodotti acquistati
         registroMagazzino.aggiungiIngredientiComprati(magazziniere.getListaSpesa());
+
         //prodotti portati in cucina
         //registroMagazzino.portatiInCucina(); come calcolo gli ingredienti portati in cucina?
         //bevande e generi alimentari portati in sala, a più riprese?

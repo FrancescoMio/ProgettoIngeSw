@@ -19,7 +19,7 @@ public class Gestore extends Utente {
 
     /**
      * metodo per inserire piatti a mano
-     * @return
+     * @return set di piatti
      */
     public Set<Piatto> inizializzaPiatti() {
         return inserisciPiatti();
@@ -43,9 +43,9 @@ public class Gestore extends Utente {
     /**
      * metodo per inserire piatti uno ad uno dall'utente
      *
-     * @return
+     * @return set di piatti
      */
-    public Set<Piatto> inserisciPiatti() {
+    private Set<Piatto> inserisciPiatti() {
         Set<Piatto> piatti = new HashSet<>();
         boolean scelta = true;
         System.out.println("Inserire di seguito i piatti che comporranno i menu del ristorante: ");
@@ -65,7 +65,7 @@ public class Gestore extends Utente {
     /**
      * metodo di utlita' per inserire gli ingredienti di un piatto
      *
-     * @return
+     * @return hashmap con nome ingrediente e dose
      */
     public HashMap<String, Integer> inserisciIngredienti() {
         HashMap<String, Integer> ingredienti = new HashMap<>();
@@ -83,9 +83,9 @@ public class Gestore extends Utente {
     /**
      * metodo di utilita' per controllare se la ricetta esiste già, se esiste la ritorna, altrimenti la crea e la ritorna
      *
-     * @param ingredienti
-     * @param piatti
-     * @return
+     * @param ingredienti set di ingredienti
+     * @param piatti     set di piatti
+     * @return ricetta
      */
     public Ricetta controlloRicetta(HashMap<String, Integer> ingredienti, Set<Piatto> piatti) {
         for (Piatto piatto : piatti) { //controllo esistenza della ricetta
@@ -100,7 +100,7 @@ public class Gestore extends Utente {
         return ricetta;
     }
 
-    //da sistemare
+    //todo: da sistemare
     private double controlloCaricoXPorzione(double caricoXPorzione) {
         boolean ok = false;
         do {
@@ -116,8 +116,8 @@ public class Gestore extends Utente {
 
     /**
      * Metodo per l'aggiunta di un menù tematico
-     * @param piatti
-     * @return
+     * @param piatti set di piatti
+     * @return menun tematici del ristorante
      */
     public Set<MenuTematico> creaMenuTematici(Set<Piatto> piatti,int caricoLavoroPersona) {
         Set<MenuTematico> menuTematici = new HashSet<>();
@@ -137,8 +137,8 @@ public class Gestore extends Utente {
 
     /**
      * metodo per l'aggiunta di piatti nel menù tematico
-     * @param elencoPiatti
-     * @return
+     * @param elencoPiatti set di piatti
+     * @return set di piatti del menù tematico
      */
     public Set<Piatto> inserisciPiattiMenuTematico(Set<Piatto> elencoPiatti,int caricoLavoroPersona) {
         Piatto[] piatti = elencoPiatti.toArray(new Piatto[elencoPiatti.size()]);
@@ -173,8 +173,8 @@ public class Gestore extends Utente {
 
     /**
      * Metodc per il calcolo del carico di lavoro del menù tematico
-     * @param piattiDelMenuTematico
-     * @return
+     * @param piattiDelMenuTematico set di piatti del menù tematico
+     * @return carico di lavoro del menù tematico
      */
     public double calcoloLavoroMenuTematico(Set<Piatto> piattiDelMenuTematico){
         double somma = 0;
@@ -185,7 +185,7 @@ public class Gestore extends Utente {
 
     /**
      * metodo per l'inserimento delle date in cui è disponibile un menù tematico
-     * @return
+     * @return arraylist di date
      */
     public ArrayList<LocalDate> inserisciDate(){
         ArrayList<LocalDate> date = new ArrayList<>();
@@ -213,6 +213,10 @@ public class Gestore extends Utente {
         magazzino.visualizzaMagazzino();
     }
 
+    /**
+     * metodo per l'inserimento di bevande e generi alimentari extra
+     * @return set di bevande e generi alimentari extra
+     */
     public Set<Raggruppabile> inizializzaBevandeEgeneri(){
         Set<Raggruppabile> insieme = new HashSet<>();
         System.out.println(lineSeparator);
@@ -241,9 +245,9 @@ public class Gestore extends Utente {
      * Metodo per l'inizializzazione delle bevande e generi alimentari extra
      * hashMapBevande contiene i consumi di tutte le bevande passate come parametro
      * hashMapGeneri contiene i consumi di tutti generi passati come parametro
-     * @param bevande
-     * @param generi
-     * @return
+     * @param bevande set di bevande
+     * @param generi set di generi alimentari extra
+     * @return arraylist di hashMap contenenti i consumi di bevande e generi alimentari extra
      */
     public ArrayList<HashMap<Raggruppabile,QuantitaMerce>> inizializzaConsumi(Set<Bevanda> bevande, Set<GenereAlimentareExtra> generi){
         ArrayList<HashMap<Raggruppabile,QuantitaMerce>> consumi = new ArrayList<>();

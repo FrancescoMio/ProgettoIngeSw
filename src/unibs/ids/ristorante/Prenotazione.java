@@ -16,7 +16,6 @@ public class Prenotazione {
     public Prenotazione(int numeroCoperti, LocalDate dataPrenotazione, HashMap<Ordinabile,Integer> ordine){
         this.numeroCoperti = numeroCoperti;
         this.dataPrenotazione = dataPrenotazione;
-        this.ordine = new HashMap<>();
         this.ordine = ordine;
     }
 
