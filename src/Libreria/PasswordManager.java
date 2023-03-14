@@ -8,8 +8,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-import static Libreria.Stringhe.titoloMenuAuth;
-import static Libreria.Stringhe.vociMenuAuth;
+import static Libreria.Stringhe.*;
 
 /**
  * Viene utilizzata la libreria Java Security in particolare la classe MessageDigest per generare un hash della password
@@ -41,54 +40,82 @@ public class PasswordManager {
         return hexString.toString();
     }
 
-    public static boolean autenticazione() throws NoSuchAlgorithmException {
+    /**
+     * Sistemare il metodo: sostituire gli if con un switch case, circondare il tutto con do-while, creare due metodi separati
+     * per la registrazione ed uno per l'accesso, creare un metodo unico per la lettura dal file JSON per la verifica della presenza
+     * delle credenziali
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    public static boolean autenticazione(String nomeFile) throws NoSuchAlgorithmException {
         JSONObject utentiJson = new JSONObject();
-        ArrayList<JSONObject> elencoUtenti = Json.caricaCredenziali();
-        MyMenu menuAuth = new MyMenu(titoloMenuAuth,vociMenuAuth);
-        int scelta = menuAuth.scegli();
-        if(scelta == 1){
-            String nome = InputDati.leggiStringaConSpazi("Inserire nome: ");
-            String cognome = InputDati.leggiStringaConSpazi("Inserire cognome: ");
-            String password = InputDati.leggiStringaNonVuota("Inserisci password: ");
-            String hashPassword = hashPassword(password);
-            JSONObject utenteJson = new JSONObject();
-            utenteJson.put("nome",nome);
-            utenteJson.put("cognome",cognome);
-            utenteJson.put("hashPassword",hashPassword);
-            elencoUtenti.add(utenteJson);
-            utentiJson.put("elencoUtenti",elencoUtenti);
-            Json.salvaCredenziali(utentiJson);
-            System.out.println("REGISTRAZIONE EFFETTUATA CORRETTAMENTE!");
-            return true;
-        }else if(scelta == 2){
-            String nome = InputDati.leggiStringaConSpazi("Inserire nome: ");
-            String cognome = InputDati.leggiStringaConSpazi("Inserire cognome: ");
-            String password = InputDati.leggiStringaNonVuota("Inserisci password: ");
-            String hashPassword = hashPassword(password);
-
-            JSONParser parser = new JSONParser();
-            try (FileReader reader = new FileReader("./credenziali.json")){
-                JSONObject jsonObject = (JSONObject) parser.parse(reader);
-                for (JSONObject utente: elencoUtenti) {
-                    String nomeUtente = (String) utente.get("nome");
-                    String cognomeUtente = (String) utente.get("cognome");
-                    String hashPasswordUtente = (String) utente.get("hashPassword");
-                    if(nome.equalsIgnoreCase(nomeUtente) && cognome.equalsIgnoreCase(cognomeUtente) && hashPassword.equals(hashPasswordUtente)){
-                        System.out.println("ACCESSO EFFETTUATO");
-                        return true;
-                    }
+        ArrayList<JSONObject> elencoUtenti = Json.caricaCredenziali(nomeFile);
+        MyMenu menuAuth = new MyMenu(titoloMenuAuth, vociMenuAuth);
+        boolean auth = false;
+        do {
+            int scelta = menuAuth.scegli();
+            if (scelta == 1) {
+                String nome = InputDati.leggiStringaConSpazi("Inserire nome: ");
+                String cognome = InputDati.leggiStringaConSpazi("Inserire cognome: ");
+                if (!controlloEsistenza(nome, cognome,"","registrazione",nomeFile)) {
+                    String password = InputDati.leggiStringaNonVuota("Inserisci password: ");
+                    String hashPassword = hashPassword(password);
+                    JSONObject utenteJson = new JSONObject();
+                    utenteJson.put("nome", nome);
+                    utenteJson.put("cognome", cognome);
+                    utenteJson.put("hashPassword", hashPassword);
+                    elencoUtenti.add(utenteJson);
+                    utentiJson.put("elencoUtenti", elencoUtenti);
+                    Json.salvaCredenziali(utentiJson,nomeFile);
+                    System.out.println(ANSI_GREEN + "REGISTRAZIONE EFFETTUATA CORRETTAMENTE!" + ANSI_RESET);
+                    return true;
                 }
-                System.err.println("ACCESSO NEGATO");
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else if (scelta == 2) {
+                String nome = InputDati.leggiStringaConSpazi("Inserire nome: ");
+                String cognome = InputDati.leggiStringaConSpazi("Inserire cognome: ");
+                String password = InputDati.leggiStringaNonVuota("Inserisci password: ");
+                String hashPassword = hashPassword(password);
+                if(controlloEsistenza(nome,cognome,hashPassword,"login",nomeFile))
+                    return true;
+                System.err.println(ANSI_RED + "\nACCESSO NEGATO\n" + ANSI_RESET);
+            } else {
+                System.out.println(ANSI_YELLOW + "---ARRIVEDERCI---" + ANSI_RESET);
+                auth = true;
             }
-        }else{
-            System.out.println("---ARRIVEDERCI---");
-            return false;
+        }while (!auth) ;
+        return false;
+    }
+
+    public static boolean controlloEsistenza(String nome, String cognome, String password, String tipo,String nomeFile){
+        ArrayList<JSONObject> elencoUtenti = Json.caricaCredenziali(nomeFile);
+        if(tipo.equalsIgnoreCase("registrazione")){
+            for (JSONObject utente : elencoUtenti) {
+                String nomeUtente = (String) utente.get("nome");
+                String cognomeUtente = (String) utente.get("cognome");
+                if (nome.equalsIgnoreCase(nomeUtente) && cognome.equalsIgnoreCase(cognomeUtente)) {
+                    System.out.println(ANSI_RED + "\nUTENTE GIA' REGISTRATO\n" + ANSI_RESET);
+                    return true;
+                }
+            }
+        } else if (tipo.equalsIgnoreCase("login")) {
+            for (JSONObject utente : elencoUtenti) {
+                String nomeUtente = (String) utente.get("nome");
+                String cognomeUtente = (String) utente.get("cognome");
+                String hashPasswordUtente = (String) utente.get("hashPassword");
+                if (nome.equalsIgnoreCase(nomeUtente) && cognome.equalsIgnoreCase(cognomeUtente) && hashPasswordUtente.equalsIgnoreCase(password)) {
+                    System.out.println(ANSI_GREEN + "\nACCESSO EFFETUATO\n" + ANSI_RESET);
+                    return true;
+                }
+            }
         }
         return false;
     }
 
+    /**
+     * Metodo per mascherare la password
+     * @param messaggio
+     * @return
+     */
     public static String leggiPassword (String messaggio) {
         EraserThread et = new EraserThread(messaggio);
         Thread mask = new Thread(et);

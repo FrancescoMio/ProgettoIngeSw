@@ -218,7 +218,7 @@ public class AddettoPrenotazioni extends Utente {
      */
     private Ordinabile chiediPiatto(MenuCarta menuAllaCarta) {
         System.out.println("I piatti disponibili sono:");
-        menuAllaCarta.visualizzaPiatti(); //DA TESTARE SE VA MEGLIO DEL TOSTRING
+        //menuAllaCarta.visualizzaPiatti(); //DA TESTARE SE VA MEGLIO DEL TOSTRING
         Ordinabile piatto = null;
         int scelta = InputDati.leggiIntero("Inserire il numero del piatto che si desidera ordinare: ");
         Iterator<Piatto> iterator = menuAllaCarta.getElencoPiatti().iterator();

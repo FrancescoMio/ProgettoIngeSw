@@ -5,13 +5,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import unibs.ids.ristorante.*;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import static Libreria.Stringhe.*;
 
 public class Json {
 
@@ -143,7 +143,7 @@ public class Json {
             file.write(object.toJSONString());
             file.flush();
             file.close();
-            System.out.println("Il file JSON '"+ nomeFile + "' è stato scritto con successo!");
+            //System.out.println("Il file JSON '"+ nomeFile + "' è stato scritto con successo!");
 
         } catch (Exception e) {
             System.err.println("Errore durante la scrittura del file JSON: " + e.getMessage());
@@ -227,6 +227,19 @@ public class Json {
             e.printStackTrace();
         }
 
+        System.out.print("CARICAMENTO CONFIGURAZIONE");
+        String str = "....\n";
+        int delay = 500; // ritardo in millisecondi tra i caratteri
+        for (int i = 0; i < str.length(); i++) {
+            System.out.print(str.charAt(i)); // stampa il carattere corrente
+            try {
+                Thread.sleep(delay); // metti in pausa l'esecuzione per il ritardo specificato
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println(ANSI_GREEN + configurazioneCaricata + ANSI_RESET);
         return ristorante;
     }
 
@@ -270,9 +283,9 @@ public class Json {
         return piatti;
     }
 
-    public static ArrayList<JSONObject> caricaCredenziali(){
+    public static ArrayList<JSONObject> caricaCredenziali(String nomeFile){
         JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader("./credenziali.json")){
+        try (FileReader reader = new FileReader(nomeFile)){
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             ArrayList<JSONObject> elencoUtentiJson = (ArrayList<JSONObject>) jsonObject.get("elencoUtenti");
             return elencoUtentiJson;
@@ -282,7 +295,7 @@ public class Json {
         return null;
     }
 
-    public static void salvaCredenziali(JSONObject utenti){
-        salvaSuFile(utenti, "./credenziali.json");
+    public static void salvaCredenziali(JSONObject utenti,String nomeFile){
+        salvaSuFile(utenti, nomeFile);
     }
 }
