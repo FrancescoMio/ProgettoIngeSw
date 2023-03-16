@@ -1,7 +1,9 @@
 package unibs.ids.ristorante;
 
 import Libreria.InputDati;
+import Libreria.MyUtil;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,30 +46,59 @@ public class AddettoPrenotazioni extends Utente {
      * @param caricoMax massimo carico sostenibile del ristorante
      */
     private Prenotazione creaPrenotazione(ArrayList<Prenotazione> prenotazioni, int copertiMax, double caricoMax,MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
-        HashMap<Ordinabile,Integer> ordine = new HashMap<>();
-        int numeroCoperti = InputDati.leggiIntero("Inserire numero coperti: ");
-        LocalDate dataPrenotazione = InputDati.leggiData("Inserire data prenotazione: ");
-        Prenotazione prenotazione;
-        //richiamo metodo che controlla se il numero di coperti inseriti supera il numero massimo di coperti raggiungibili in una giornata
-        if(controlloCoperti(prenotazioni, numeroCoperti, dataPrenotazione, copertiMax)){
-            //se numero di coperti è accettabile, creo l'ordine
-            ordine = chiediOrdine(numeroCoperti, menuAllaCarta, menuTematici);
-            //richiamo metodo che controlla se il carico di lavoro supera il carico massimo raggiungibile in una giornata
-            if(controlloCaricoLavoro(prenotazioni, dataPrenotazione, ordine, caricoMax)){
-                //se il carico di lavoro è accettabile, creo la prenotazione
-                prenotazione = new Prenotazione(numeroCoperti, dataPrenotazione, ordine);
-                return prenotazione;
+        LocalDate dataOdierna = LocalDate.now();
+        if(controlloDataOdierna(dataOdierna)){
+            HashMap<Ordinabile,Integer> ordine = new HashMap<>();
+            int numeroCoperti = InputDati.leggiIntero("Inserire numero coperti: ");
+            LocalDate dataPrenotazione;
+            do{
+                dataPrenotazione = InputDati.leggiData("Inserire data prenotazione: ");
+            }while(!prenotazioneValida(dataPrenotazione));
+
+            Prenotazione prenotazione;
+            //richiamo metodo che controlla se il numero di coperti inseriti supera il numero massimo di coperti raggiungibili in una giornata
+            if(controlloCoperti(prenotazioni, numeroCoperti, dataPrenotazione, copertiMax)){
+                //se numero di coperti è accettabile, creo l'ordine
+                ordine = chiediOrdine(numeroCoperti, menuAllaCarta, menuTematici);
+                //richiamo metodo che controlla se il carico di lavoro supera il carico massimo raggiungibile in una giornata
+                if(controlloCaricoLavoro(prenotazioni, dataPrenotazione, ordine, caricoMax)){
+                    //se il carico di lavoro è accettabile, creo la prenotazione
+                    prenotazione = new Prenotazione(numeroCoperti, dataPrenotazione, ordine);
+                    return prenotazione;
+                }
+                else{
+                    System.out.println("Prenotazione non effettuata, carico di lavoro troppo elevato");
+                    System.out.println("Tornate un altro giorno e saremo lieti di servirvi!");
+                }
             }
             else{
-                System.out.println("Prenotazione non effettuata, carico di lavoro troppo elevato");
+                System.out.println("Prenotazione non effettuata, carico di coperti troppo elevato");
                 System.out.println("Tornate un altro giorno e saremo lieti di servirvi!");
             }
         }
-        else{
-            System.out.println("Prenotazione non effettuata, carico di coperti troppo elevato");
-            System.out.println("Tornate un altro giorno e saremo lieti di servirvi!");
-        }
         return null;
+    }
+
+    private boolean prenotazioneValida(LocalDate dataPrenotazione){
+        LocalDate dataOdierna = MyUtil.getDataOdierna();
+        if(dataPrenotazione.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
+            System.err.println("Non è possibile prenotare per un giorno festivo!");
+            return false;
+        } else if (dataPrenotazione.isEqual(dataOdierna) ) {
+            System.err.println("Non è possibile prenotare per il giorno corrente!");
+            return false;
+        } else if (dataPrenotazione.isBefore(dataOdierna)) {
+            System.err.println("Data inserita non valida!");
+            return false;
+        }else return true;
+    }
+
+    private boolean controlloDataOdierna(LocalDate dataOdierna){
+        if(dataOdierna.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
+            System.out.println("Non è possibile prenotare in un giorno festivo!");
+            return false;
+        }
+        return true;
     }
 
     /**

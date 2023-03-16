@@ -38,6 +38,7 @@ public class GestioneUtenza {
             int scelta = menu.scegli();
             switch (scelta){
                 case 1:
+
                     break; //da continuare
                 default:
                     break;
