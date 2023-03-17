@@ -25,7 +25,7 @@ public class GestioneUtenza {
                 ristorante = new Ristorante();
             } else if (scelta == 2) {
                 ristorante = Json.caricaDati();
-
+                System.out.println(ristorante.getPrenotazioni());
             }else return;
         }
     }
@@ -38,7 +38,9 @@ public class GestioneUtenza {
             int scelta = menu.scegli();
             switch (scelta){
                 case 1:
-
+                    ristorante.creaNuovaPrenotazione();
+                    System.out.println(ristorante);
+                    System.out.println(ristorante.getPrenotazioni());
                     break; //da continuare
                 default:
                     break;

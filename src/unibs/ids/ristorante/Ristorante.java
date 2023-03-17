@@ -15,6 +15,7 @@ public class Ristorante {
     private int postiASedere;
     private int caricoDiLavoroSostenibile;//sarà da ricavare  moltiplicando il carico di lavoro per persona per i posti per 120/100
     private int caricoDiLavoroXPersona;//impegno richiesto per preparare cibo per una persona in un singolo pasto
+
     private Set<Piatto> piatti;//lista di piatti che il ristorante può offrire, comprende anche quelli non disponibili
     private RegistroMagazzino registroMagazzino;
     private Gestore gestore; //gestore del ristorante
@@ -147,16 +148,10 @@ public class Ristorante {
         System.out.println(consumoProCapiteGeneriExtra);
     }
 
-    /*public void creaConsumoProCapiteBevande(){
-        System.out.println(lineSeparator);
-        System.out.println("CONFIGURAZIONE CONSUMO PRO CAPITE MEDIO BEVANDE:");
-        consumoProCapiteBevande = gestore.inizializzaConsumoBevande(bevande);
+    public void creaNuovaPrenotazione(){
+        ArrayList<Prenotazione> nuovePrenotazioni = addettoPrenotazioni.creaPrenotazioni(postiASedere,caricoDiLavoroSostenibile,menuAllaCarta,menuTematici);
+        this.prenotazioni.addAll(nuovePrenotazioni);
     }
-    public void creaConsumoProCapiteGeneriExtra(){
-        System.out.println(lineSeparator);
-        System.out.println("CONFIGURAZIONE CONSUMO PRO CAPITE GENERI EXTRA:");
-        consumoProCapiteGeneriExtra = gestore.inizializzaConsumoGeneriExtra(generiAlimentari);
-    }*/
 
     public  int getCaricoXPersona() {
         return caricoDiLavoroXPersona;
@@ -239,6 +234,9 @@ public class Ristorante {
 
     public void setGeneriAlimentari(Set<GenereAlimentareExtra> generiAlimentari) {
         this.generiAlimentariExtra = generiAlimentari;
+    }
+    public ArrayList<Prenotazione> getPrenotazioni() {
+        return prenotazioni;
     }
 
     @Override
