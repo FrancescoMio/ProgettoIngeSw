@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
 import static Libreria.Stringhe.*;
 
 public class Ristorante {
@@ -62,6 +61,7 @@ public class Ristorante {
         addettoPrenotazioni = new AddettoPrenotazioni();
         menuTematici = new HashSet<>();
         menuAllaCarta = new MenuCarta();
+        prenotazioni = new ArrayList<>();
     }
 
     public void creaGestore(){
@@ -85,7 +85,7 @@ public class Ristorante {
         String cognome = InputDati.leggiStringaConSpazi("Inserire il cognome: ");
         addettoPrenotazioni = new AddettoPrenotazioni(nome, cognome);
         //metodo lo metterei da un'altra parte, qua creo solo l'addetto
-        this.prenotazioni = addettoPrenotazioni.creaPrenotazioni(postiASedere,caricoDiLavoroSostenibile,menuAllaCarta,menuTematici);
+        this.prenotazioni = addettoPrenotazioni.creaPrenotazioni(postiASedere,caricoDiLavoroSostenibile,menuAllaCarta,menuTematici,prenotazioni);
     }
 
     public void creaConfigurazione(){
@@ -149,7 +149,7 @@ public class Ristorante {
     }
 
     public void creaNuovaPrenotazione(){
-        ArrayList<Prenotazione> nuovePrenotazioni = addettoPrenotazioni.creaPrenotazioni(postiASedere,caricoDiLavoroSostenibile,menuAllaCarta,menuTematici);
+        ArrayList<Prenotazione> nuovePrenotazioni = addettoPrenotazioni.creaPrenotazioni(postiASedere,caricoDiLavoroSostenibile,menuAllaCarta,menuTematici,prenotazioni);
         this.prenotazioni.addAll(nuovePrenotazioni);
     }
 

@@ -26,6 +26,7 @@ public class GestioneUtenza {
             } else if (scelta == 2) {
                 ristorante = Json.caricaDati();
                 System.out.println(ristorante.getPrenotazioni());
+                System.out.println(ristorante.toString());
             }else return;
         }
     }
@@ -44,10 +45,8 @@ public class GestioneUtenza {
                     break; //da continuare
                 default:
                     break;
-
             }
         }
-
     }
 
     public void menuMagazziniere(){

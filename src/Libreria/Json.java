@@ -239,7 +239,7 @@ public class Json {
             }
         }
 
-        System.out.println(ANSI_GREEN + configurazioneCaricata + ANSI_RESET);
+        System.out.println("\n"+ANSI_GREEN + configurazioneCaricata + ANSI_RESET);
         return ristorante;
     }
 

@@ -22,12 +22,13 @@ public class Stringhe {
     public static String [] vociMenuAuth = {"REGISTRATI","ACCEDI"};
 
     public static final String erroreSceltaPiatto = "Numero piatto inserito non valido!";
+    public static final String erroreSceltaMenu = "Numero menù inserito non valido!";
 
     public static final String titoloMenuAddetto = "\u001B[36mSELEZIONARE OPERAZIONE:\u001B[0m";
     public static String [] vociMenuAddetto = {"Crea nuova prenotazione"};
     public static String configurazioneCaricata = "CONFIGURAZIONE CARICATA CORRETTAMENTE";
-
-
+    public static String titoloOrdine = "SELEZIONA ORDINE:";
+    public static String [] vociOrdine = {"Menù tematico","Piatto del menù alla carta"};
     public static final String ANSI_GREEN = "\u001B[32m";
     //ANSI escape sequences. These escape sequences are special character sequences that are interpreted by the console as instructions to change the text color
     public static final String ANSI_RESET = "\u001B[0m";

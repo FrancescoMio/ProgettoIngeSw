@@ -213,7 +213,6 @@ public class InputDati {
         LocalDate localDate = null;
         do {
             System.out.print(messaggio);
-
             try {
                 valoreLetto = lettore.next();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

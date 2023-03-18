@@ -63,4 +63,12 @@ public class Prenotazione {
             return true;
         return false;
     }
+    @Override
+    public String toString() {
+        return "Prenotazione{" +
+                "numeroCoperti=" + numeroCoperti +
+                ", dataPrenotazione=" + dataPrenotazione +
+                ", ordine=" + ordine +
+                '}';
+    }
 }
