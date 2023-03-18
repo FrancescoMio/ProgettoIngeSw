@@ -174,12 +174,13 @@ public class AddettoPrenotazioni extends Utente {
     /**
      * metodo che permette di eliminare automaticamente le prenotazioni scadute
      */
-    private void togliPrenotazioniScadute(ArrayList<Prenotazione> prenotazioni){
+    private ArrayList<Prenotazione> togliPrenotazioniScadute(ArrayList<Prenotazione> prenotazioni){
+        ArrayList<Prenotazione> prenotazioniAggiornate = new ArrayList<>();
         for(Prenotazione p : prenotazioni){
-            if(p.getDataPrenotazione().isBefore(LocalDate.now())){
-                prenotazioni.remove(p);
-            }
+            if(!p.getDataPrenotazione().isBefore(LocalDate.now()))
+                prenotazioniAggiornate.add(p);
         }
+        return prenotazioniAggiornate;
     }
 
     /**

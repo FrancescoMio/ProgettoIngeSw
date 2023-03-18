@@ -85,7 +85,7 @@ public class Ristorante {
         String cognome = InputDati.leggiStringaConSpazi("Inserire il cognome: ");
         addettoPrenotazioni = new AddettoPrenotazioni(nome, cognome);
         //metodo lo metterei da un'altra parte, qua creo solo l'addetto
-        this.prenotazioni = addettoPrenotazioni.creaPrenotazioni(postiASedere,caricoDiLavoroSostenibile,menuAllaCarta,menuTematici,prenotazioni);
+        //this.prenotazioni = addettoPrenotazioni.creaPrenotazioni(postiASedere,caricoDiLavoroSostenibile,menuAllaCarta,menuTematici,prenotazioni);
     }
 
     public void creaConfigurazione(){
@@ -127,8 +127,6 @@ public class Ristorante {
         }
         this.bevande = insiemeBevande;
         this.generiAlimentariExtra = insiemeGeneriExtra;
-        //System.out.println(bevande);
-        //System.out.println(generiAlimentariExtra);
     }
 
     /**
@@ -150,7 +148,8 @@ public class Ristorante {
 
     public void creaNuovaPrenotazione(){
         ArrayList<Prenotazione> nuovePrenotazioni = addettoPrenotazioni.creaPrenotazioni(postiASedere,caricoDiLavoroSostenibile,menuAllaCarta,menuTematici,prenotazioni);
-        this.prenotazioni.addAll(nuovePrenotazioni);
+        prenotazioni.addAll(nuovePrenotazioni);
+        Json.salvaPrenotazioni(prenotazioni);
     }
 
     public  int getCaricoXPersona() {

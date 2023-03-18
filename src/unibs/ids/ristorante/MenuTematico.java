@@ -98,6 +98,10 @@ public class MenuTematico extends Menu implements Ordinabile{
         return listaIngredienti;
     }
 
+    public String getNome(){
+        return nomeMenu;
+    }
+
     public String toStringMenuTematicoDisponibile(){
         if(disponibile)
             return "MenuTematico{" +

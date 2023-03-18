@@ -79,6 +79,40 @@ public class Json {
         salvaSuFile(elenco,"./consumoProCapite.json");
     }
 
+    public static void salvaPrenotazioni(ArrayList<Prenotazione> prenotazioni){
+        JSONObject prenotazioniJson = new JSONObject();
+        ArrayList<JSONObject> elencoPrenotazioni = getElencoPrenotazioniJson(prenotazioni);
+        prenotazioniJson.put("prenotazioni",elencoPrenotazioni);
+        salvaSuFile(prenotazioniJson,"./prenotazioni.json");
+    }
+
+    public static ArrayList<JSONObject> getElencoPrenotazioniJson(ArrayList<Prenotazione> prenotazioni){
+        ArrayList<JSONObject> elencoPrenotazioni = new ArrayList<>();
+        for (Prenotazione p: prenotazioni) {
+            JSONObject prenotazione = new JSONObject();
+            String dataPrenotazione = p.getDataPrenotazione().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            prenotazione.put("dataPrenotazione",dataPrenotazione);
+            prenotazione.put("numeroCoperti", p.getNumeroCoperti());
+            HashMap<Ordinabile, Integer> ordine = p.getOrdine();
+            ArrayList<JSONObject> portate = getPortateJson(ordine);
+            prenotazione.put("ordine",portate);
+            elencoPrenotazioni.add(prenotazione);
+        }
+        return elencoPrenotazioni;
+    }
+
+    private static ArrayList<JSONObject> getPortateJson(HashMap<Ordinabile,Integer> ordine){
+        ArrayList<JSONObject> portate = new ArrayList<>();
+        for (Map.Entry<Ordinabile,Integer> entry : ordine.entrySet()) {
+            JSONObject obj = new JSONObject();
+            obj.put("nome",entry.getKey().getNome());
+            obj.put("quantita",entry.getValue());
+            portate.add(obj);
+        }
+        return portate;
+    }
+
+
     public static ArrayList<JSONObject> getElencoBevandeGeneriJson(Consumo consumi){
         ArrayList<JSONObject> elenco = new ArrayList<>();
         HashMap<Raggruppabile,QuantitaMerce> hashMapConsumi = consumi.getConsumo();
@@ -193,6 +227,7 @@ public class Json {
         ristorante.creaMenuCarta();
         MenuCarta menuCarta = ristorante.getMenuAllaCarta();
         salvaMenuCarta(menuCarta);
+
 
         //caricamento menù tematici del ristorante
         try (FileReader reader = new FileReader("./menuTematici.json")) {

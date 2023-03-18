@@ -55,6 +55,9 @@ public class Piatto implements Ordinabile {
     public void setDataFine(LocalDate dataFine) {
         this.dataFine = dataFine;
     }
+    public String getNome(){
+        return this.denominazione;
+    }
 
 
     @Override
