@@ -223,15 +223,13 @@ public class AddettoPrenotazioni extends Utente {
         Ordinabile ordinabile = null;
         int scelta = 0;
         do{
-            System.out.println("1) Menu");
-            System.out.println("2) Piatto");
             scelta = InputDati.leggiIntero("Inserire:\n1 per scegliere un piatto dal menu alla carta,\n2 per scegliere un menu tematico");
             switch (scelta){
                 case 1:
-                    ordinabile = chiediMenu(menuTematici);
+                    ordinabile = chiediPiatto(menuAllaCarta);
                     break;
                 case 2:
-                    ordinabile = chiediPiatto(menuAllaCarta);
+                    ordinabile = chiediMenu(menuTematici);
                     break;
                 default:
                     System.out.println("Scelta non valida");
