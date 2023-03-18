@@ -149,6 +149,7 @@ public class Ristorante {
     public void creaNuovaPrenotazione(){
         ArrayList<Prenotazione> nuovePrenotazioni = addettoPrenotazioni.creaPrenotazioni(postiASedere,caricoDiLavoroSostenibile,menuAllaCarta,menuTematici,prenotazioni);
         prenotazioni.addAll(nuovePrenotazioni);
+        prenotazioni = addettoPrenotazioni.togliPrenotazioniScadute(prenotazioni);
         Json.salvaPrenotazioni(prenotazioni);
     }
 

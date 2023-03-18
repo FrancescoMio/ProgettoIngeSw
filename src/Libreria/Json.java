@@ -263,6 +263,7 @@ public class Json {
             e.printStackTrace();
         }
 
+        //caricamento delle prenotazioni del ristorante
         ArrayList<Prenotazione> prenotazioni = Json.caricaPrenotazioni(menuTematici,piatti);
         ristorante.setPrenotazioni(prenotazioni);
 
