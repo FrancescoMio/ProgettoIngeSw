@@ -192,6 +192,7 @@ public class Json {
         Ristorante ristorante = new Ristorante("caricaDati");
         JSONParser parser = new JSONParser();
 
+        Set<Piatto> piatti = new HashSet<>();
         //caricamento della configurazione del ristorante
         try (FileReader reader = new FileReader("./config.json")) {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
@@ -214,7 +215,7 @@ public class Json {
 
             //carico i piatti del ristorante
             ArrayList<JSONObject> elencoPiatti = (ArrayList<JSONObject>) jsonObject.get("elencoPiatti");
-            Set<Piatto> piatti = new HashSet<>();
+
             piatti = getPiatti(elencoPiatti);
             ristorante.setPiatti(piatti);
 
@@ -228,12 +229,12 @@ public class Json {
         MenuCarta menuCarta = ristorante.getMenuAllaCarta();
         salvaMenuCarta(menuCarta);
 
-
+        Set<MenuTematico> menuTematici = new HashSet<>();
         //caricamento menù tematici del ristorante
         try (FileReader reader = new FileReader("./menuTematici.json")) {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             ArrayList<JSONObject> menuTematiciJson = (ArrayList<JSONObject>) jsonObject.get("menuTematici");
-            Set<MenuTematico> menuTematici = new HashSet<>();
+
             for (JSONObject menuTematicoJson: menuTematiciJson) {
                 //recupero nome del menù tematico
                 String nomeMenu = (String) menuTematicoJson.get("nome");
@@ -262,6 +263,9 @@ public class Json {
             e.printStackTrace();
         }
 
+        ArrayList<Prenotazione> prenotazioni = Json.caricaPrenotazioni(menuTematici,piatti);
+        ristorante.setPrenotazioni(prenotazioni);
+
         System.out.print("CARICAMENTO CONFIGURAZIONE");
         String str = "....\n";
         int delay = 500; // ritardo in millisecondi tra i caratteri
@@ -276,6 +280,50 @@ public class Json {
 
         System.out.println("\n"+ANSI_GREEN + configurazioneCaricata + ANSI_RESET);
         return ristorante;
+    }
+
+    private static ArrayList<Prenotazione> caricaPrenotazioni(Set<MenuTematico> menuTematici, Set<Piatto> piatti){
+        ArrayList<Prenotazione> prenotazioni = new ArrayList<>();
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader("./prenotazioni.json")){
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            ArrayList<JSONObject> prenotazioniJson = (ArrayList<JSONObject>) jsonObject.get("prenotazioni");
+            for(JSONObject prenotazioneJson: prenotazioniJson){
+                long numeroCoperti = (long) prenotazioneJson.get("numeroCoperti");
+                String dataPrenotazioneStr = (String) prenotazioneJson.get("dataPrenotazione");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                dataPrenotazioneStr = dataPrenotazioneStr.replaceAll("'\\'", "");
+                LocalDate dataPrenotazione = LocalDate.parse(dataPrenotazioneStr, formatter);
+                ArrayList<JSONObject> portate = (ArrayList<JSONObject>) prenotazioneJson.get("ordine");
+                HashMap<Ordinabile, Integer> ordine = getOrdine(portate,menuTematici,piatti);
+                Prenotazione prenotazione = new Prenotazione((int)numeroCoperti,dataPrenotazione,ordine);
+                prenotazioni.add(prenotazione);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return prenotazioni;
+    }
+
+    private static HashMap<Ordinabile,Integer> getOrdine(ArrayList<JSONObject> portate, Set<MenuTematico> menuTematici, Set<Piatto>piatti){
+        HashMap<Ordinabile,Integer> ordine = new HashMap<>();
+        for(JSONObject portata : portate){
+            String nomePortata = (String) portata.get("nome");
+            long quantita = (long) portata.get("quantita");
+            Ordinabile ordinabile = getOrdinabile(nomePortata,menuTematici,piatti);
+            ordine.put(ordinabile,(int)quantita);
+        }
+        return ordine;
+    }
+
+    private static Ordinabile getOrdinabile(String nomePortata,Set<MenuTematico> menuTematici, Set<Piatto>piatti){
+        for (MenuTematico menu : menuTematici)
+            if(menu.getNomeMenu().equalsIgnoreCase(nomePortata))
+                return menu;
+        for(Piatto piatto : piatti)
+            if(piatto.getDenominazione().equalsIgnoreCase(nomePortata))
+                return piatto;
+        return null;
     }
 
     /**

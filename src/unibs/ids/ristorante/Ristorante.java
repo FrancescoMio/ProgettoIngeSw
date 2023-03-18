@@ -238,6 +238,10 @@ public class Ristorante {
         return prenotazioni;
     }
 
+    public void setPrenotazioni(ArrayList<Prenotazione> prenotazioni){
+        this.prenotazioni = prenotazioni;
+    }
+
     @Override
     public String toString() {
         return "Ristorante{" +
