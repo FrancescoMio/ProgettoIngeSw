@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import static Libreria.Stringhe.*;
+
 
 public class MenuTematico extends Menu implements Ordinabile{
 
@@ -75,18 +77,6 @@ public class MenuTematico extends Menu implements Ordinabile{
     public void setDataFine(LocalDate dataFine) {
         this.dataFine = dataFine;
     }
-
-    @Override
-    public String toString() {
-        return "MenuTematico{" +
-                "nomeMenu='" + nomeMenu +
-                ", caricoLavoroMenuTematico=" + caricoLavoroMenuTematico +
-                ", disponibile=" + disponibile +
-                ", dataInizio=" + dataInizio +
-                ", dataFine=" + dataFine +
-                ", elencoPiatti=" + elencoPiatti +
-                '}';
-    }
     public Merce getListaIngredienti(){
         Merce listaIngredienti = new Merce();
         Merce listaIngredientiPiatto = new Merce();
@@ -102,18 +92,10 @@ public class MenuTematico extends Menu implements Ordinabile{
         return nomeMenu;
     }
 
-    public String toStringMenuTematicoDisponibile(){
-        if(disponibile)
-            return "MenuTematico{" +
-                    "nomeMenu='" + nomeMenu +
-                    ", caricoLavoroMenuTematico=" + caricoLavoroMenuTematico +
-                    ", disponibile=" + disponibile +
-                    ", dataInizio=" + dataInizio +
-                    ", dataFine=" + dataFine +
-                    ", elencoPiatti=" + elencoPiatti +
-                    '}';
-        else
-            return "Non disponibile";
+    @Override
+    public String toString() {
+        return "- Nome: " + ANSI_CYAN + nomeMenu + ANSI_RESET + "\n- Carico lavoro: " + caricoLavoroMenuTematico
+                + "\n- Periodo validità : " + dataInizio + " -> " + dataFine + "\nElenco piatti:\n" + elencoPiatti;
     }
 
 }

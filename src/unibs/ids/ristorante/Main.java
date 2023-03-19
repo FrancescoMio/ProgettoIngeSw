@@ -23,6 +23,7 @@ public class Main {
                 gestioneUtenza.menuMagazziniere();
                 break;
             default:
+                System.out.println(ANSI_GREEN+"---ARRIVEDERCI!---"+ANSI_RESET);
                 break;
         }
     }

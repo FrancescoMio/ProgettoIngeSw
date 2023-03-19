@@ -197,7 +197,7 @@ public class Gestore extends Utente {
     }
     public void visualizzaMenuTematici(Set<MenuTematico> menuTematici){
         System.out.println(lineSeparator);
-        System.out.println("MENU' TEMATICI: ");
+        System.out.println("MENU' TEMATICI:");
         for (MenuTematico menu: menuTematici)
             System.out.println(menu.toString());
 
@@ -279,6 +279,47 @@ public class Gestore extends Utente {
     public void setGestore(String nome, String cognome){
         this.nome = nome;
         this.cognome = cognome;
+    }
+
+    public void visualizzaCaricoLavoroPersona(int caricoLavoroPersona){
+        System.out.println(ANSI_CYAN + "Carico lavoro per persona: " + ANSI_RESET + caricoLavoroPersona);
+    }
+
+    public void visualizzaPostiSedere(int posti){
+        System.out.println(ANSI_CYAN + "Posti a sedere disponibili nel ristorante: " + ANSI_RESET + posti);
+    }
+    public void visualizzaInsiemeBevande(Set<Bevanda> bevande){
+        System.out.println(ANSI_CYAN + "Insieme delle bevande:" + ANSI_RESET);
+        for (Bevanda bevanda : bevande)
+            System.out.println(bevanda);
+    }
+    public void visualizzaInsiemeGeneri(Set<GenereAlimentareExtra> generi){
+        System.out.println(ANSI_CYAN + "Insieme dei generi alimentari extra:" + ANSI_RESET);
+        for (GenereAlimentareExtra genere : generi)
+            System.out.println(genere);
+    }
+    public void visualizzaConsumoProCapite(Consumo consumo){
+        System.out.println(consumo.getConsumo());
+    }
+
+    public void visualizzaPiattoRicetta(Set<Piatto> piatti){
+        for (Piatto piatto: piatti)
+            System.out.println(piatto);
+    }
+
+    public void visualizzaPiattieValidita(Set<Piatto> piatti){
+        for (Piatto piatto : piatti) {
+            System.out.println(lineSeparator);
+            System.out.println("- Denominazione: " + piatto.getDenominazione());
+            System.out.println("- Periodo validità: " + piatto.getDataInizio() + " -> " + piatto.getDataFine());
+        }
+    }
+
+    public void visualizzaRicette(Set<Piatto> piatti){
+        for(Piatto piatto : piatti){
+            System.out.println(lineSeparator);
+            System.out.println(piatto.getRicetta());
+        }
     }
 
 }

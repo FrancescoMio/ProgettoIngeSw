@@ -267,7 +267,7 @@ public class Json {
         ArrayList<Prenotazione> prenotazioni = Json.caricaPrenotazioni(menuTematici,piatti);
         ristorante.setPrenotazioni(prenotazioni);
 
-        System.out.print("CARICAMENTO CONFIGURAZIONE");
+        System.out.print("\n"+ANSI_YELLOW+"CARICAMENTO CONFIGURAZIONE IN CORSO");
         String str = "....\n";
         int delay = 500; // ritardo in millisecondi tra i caratteri
         for (int i = 0; i < str.length(); i++) {
@@ -279,7 +279,7 @@ public class Json {
             }
         }
 
-        System.out.println("\n"+ANSI_GREEN + configurazioneCaricata + ANSI_RESET);
+        System.out.println(ANSI_RESET+"\n"+ANSI_GREEN + configurazioneCaricata + ANSI_RESET);
         return ristorante;
     }
 

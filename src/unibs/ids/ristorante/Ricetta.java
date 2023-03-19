@@ -2,6 +2,7 @@ package unibs.ids.ristorante;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import static Libreria.Stringhe.*;
 
 public class Ricetta {
     private HashMap<String, Integer> ingredienti;//ingrediente come chiave e valore opportuno come valore
@@ -35,18 +36,14 @@ public class Ricetta {
     public int getNumeroPorzioni() {
         return numeroPorzioni;
     }
-
-    @Override
-    public String toString() {
-        return "Ricetta{" +
-                "ingredienti=" + ingredienti +
-                ", numeroPorzioni=" + numeroPorzioni +
-                ", caricoDiLavoroXPorzione=" + caricoDiLavoroXPorzione +
-                '}';
-    }
-
     public Merce getListaIngredienti() {
         Merce listaIngredienti = getListaIngredienti().aggiungiIngrediente(ingredienti);
         return listaIngredienti;
+    }
+
+    @Override
+    public String toString() {
+        return ANSI_BLUE + "* RICETTA:\n"+ ANSI_RESET +"- Numero porzioni: " + numeroPorzioni + "\n- Carico lavoro per porzione: " + caricoDiLavoroXPorzione + ANSI_RESET+
+                ANSI_CYAN + "\n* Ingredienti:\n" + ANSI_RESET + ingredienti;
     }
 }

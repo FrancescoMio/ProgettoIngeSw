@@ -17,8 +17,6 @@ public class GenereAlimentareExtra implements Raggruppabile{
 
     @Override
     public String toString() {
-        return "GenereAlimentareExtra{" +
-                "nome='" + nome + '\'' +
-                '}';
+        return "- " + nome + "\n";
     }
 }

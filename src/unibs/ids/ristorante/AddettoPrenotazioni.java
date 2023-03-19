@@ -34,11 +34,13 @@ public class AddettoPrenotazioni extends Utente {
         ArrayList<Prenotazione> nuovePrenotazioni = new ArrayList<>();
         do{
             Prenotazione prenotazione = creaPrenotazione(storicoPrenotazioni, copertiMax, caricoMax, menuAllaCarta, menuTematici);
-            if(prenotazione != null)
+            if(prenotazione != null){
                 nuovePrenotazioni.add(prenotazione);
+                System.out.println(ANSI_GREEN+"---PRENOTAZIONE CREATA CORRETTAMENTE---"+ANSI_RESET);
+            }
             else
-                System.out.println(ANSI_RED+"---La prenotazione è stata cancellata!---"+ANSI_RESET);
-        }while (InputDati.yesOrNo("Creare un'altra prenotazione?"));
+                System.out.println(ANSI_RED+"---LA PRENOTAZIONE E' STATA CANCELLATA!---"+ANSI_RESET);
+        }while (InputDati.yesOrNo(ANSI_CYAN+"Creare un'altra prenotazione?"+ANSI_RESET));
         return nuovePrenotazioni;
     }
 
@@ -170,7 +172,6 @@ public class AddettoPrenotazioni extends Utente {
             return true;
     }
 
-    //todo: metodo da richiamare!
     /**
      * metodo che permette di eliminare automaticamente le prenotazioni scadute
      */
@@ -194,9 +195,8 @@ public class AddettoPrenotazioni extends Utente {
     private HashMap<Ordinabile,Integer> chiediOrdine(int numeroCoperti, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
         MyMenu menuOrdine = new MyMenu(titoloOrdine, vociOrdine);
-        System.out.println(ANSI_CYAN+"INSERIMENTO ORDINI PRENOTAZIONE:"+ANSI_RESET);
         for(int i = 0; i < numeroCoperti; i++){
-            System.out.println("-Ordine persona " + (i+1) + ":");
+            System.out.println("\n"+ANSI_CYAN+"-ORDINE PERSONA " + (i+1) + ":"+ANSI_RESET);
             int scelta = menuOrdine.scegli();
             if(scelta == 1){
                 MenuTematico menu = chiediMenu(menuTematici);

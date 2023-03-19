@@ -1,12 +1,13 @@
 package unibs.ids.ristorante;
 
+import static Libreria.Stringhe.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Piatto implements Ordinabile {
     private String denominazione;
-    //private boolean disponibile;
     private Ricetta ricetta;
 
     private int tempoPreparazione;//in minuti
@@ -62,14 +63,8 @@ public class Piatto implements Ordinabile {
 
     @Override
     public String toString() {
-        return "Piatto{" +
-                "denominazione='" + denominazione + '\'' +
-                ", ricetta=" + ricetta +
-                ", tempoPreparazione=" + tempoPreparazione +
-                ", caricoLavoro=" + caricoLavoro +
-                ", dataInizio=" + dataInizio +
-                ", dataFine=" + dataFine +
-                '}';
+        return  lineSeparator + "\n- Denominazione: " + denominazione + "\n- Tempo preparazione: " + tempoPreparazione
+                + "min\n" + ricetta;
     }
 
     /**

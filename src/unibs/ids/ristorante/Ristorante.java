@@ -2,6 +2,7 @@ package unibs.ids.ristorante;
 
 import Libreria.InputDati;
 import Libreria.Json;
+import Libreria.MyMenu;
 import Libreria.MyUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -241,6 +242,47 @@ public class Ristorante {
 
     public void setPrenotazioni(ArrayList<Prenotazione> prenotazioni){
         this.prenotazioni = prenotazioni;
+    }
+
+    public void visualizzaParametri(){
+        MyMenu menuVisualizzazione = new MyMenu(titoloMenuVisualizzazione, vociMenuVisualizzazione);
+        boolean finito = false;
+        do{
+            int scelta = menuVisualizzazione.scegli();
+            switch (scelta){
+                case 1:
+                    gestore.visualizzaCaricoLavoroPersona(caricoDiLavoroXPersona);
+                    break;
+                case 2:
+                    gestore.visualizzaPostiSedere(postiASedere);
+                    break;
+                case 3:
+                    gestore.visualizzaInsiemeBevande(bevande);
+                case 4:
+                    gestore.visualizzaInsiemeGeneri(generiAlimentariExtra);
+                    break;
+                case 5:
+                    gestore.visualizzaConsumoProCapite(consumoProCapiteBevande);
+                    break;
+                case 6:
+                    gestore.visualizzaConsumoProCapite(consumoProCapiteGeneriExtra);
+                    break;
+                case 7:
+                    gestore.visualizzaPiattoRicetta(piatti);
+                case 8:
+                    gestore.visualizzaPiattieValidita(piatti);
+                    break;
+                case 9:
+                    gestore.visualizzaRicette(piatti);
+                    break;
+                case 10:
+                    gestore.visualizzaMenuTematici(menuTematici);
+                    break;
+                default: finito = true;
+            }
+        }while(!finito);
+
+
     }
 
     @Override

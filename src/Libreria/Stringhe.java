@@ -17,7 +17,12 @@ public class Stringhe {
     public static String [] vociMenu = {"Gestore","Addetto alle prenotazioni","Magazziniere"};
 
     public static final String titoloMenuGestore = "SELEZIONARE MODALITA' UTILIZZO: ";
-    public static String [] vociMenuGestore = {"Crea nuova configurazione","Carica configurazione"};
+    public static String [] vociMenuGestore = {"Crea nuova configurazione","Carica configurazione","Visualizza parametri ristorante"};
+    public static String titoloMenuVisualizzazione = "\u001B[34mSELEZIONARE COSA DESIDERA VISUALIZZARE\u001B[0m";
+    public static String [] vociMenuVisualizzazione = {"Carico lavoro per persona", "Posti a sedere","Insieme delle bevande",
+                                                         "Insieme dei generi alimentari extra","Consumo pro-capite bevande",
+                                                        "Consumo pro-capite generi alimentari extra","Corrispondenza piatto-ricetta",
+                                                        "Denominazione e periodo validità di ciascun piatto","Ricette","Menù tematici"};
     public static final String titoloMenuAuth = "\u001B[33mFASE DI AUTENTICAZIONE:\u001B[0m";
     public static String [] vociMenuAuth = {"REGISTRATI","ACCEDI"};
 
@@ -36,4 +41,17 @@ public class Stringhe {
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_CYAN = "\u001B[36m";
+
+    public static void presentazione(){
+        String presentazione = "PROGETTO INGEGNERIA DEL SOFTWARE (A.A 2022/2023)\nAUTORI:\n-Francesco Mio\n-Matteo Cropelli";
+        incorniciaStringa(presentazione);
+    }
+    public static void incorniciaStringa(String stringa){
+        String stringaa = "Stringa da incornici";
+        String cornice = "╔════════════════════════╗\n";
+        cornice += "║                        ║\n";
+        cornice += "╚════════════════════════╝\n";
+        String stringaIncorniciata = String.format("%s║ %-22s ║\n%s", cornice, stringaa, cornice);
+        System.out.println(stringaIncorniciata);
+    }
 }
