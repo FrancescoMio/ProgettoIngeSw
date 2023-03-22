@@ -356,11 +356,11 @@ public class Json {
             ArrayList<JSONObject> elencoIngredienti = (ArrayList<JSONObject>)ricettaJson.get("elencoIngredienti");
             HashMap<String,Double> ingredienti = new HashMap<>();
             for (JSONObject ingrediente: elencoIngredienti) {
-                double dose = (double) ingrediente.get("dose");
+                long dose = (long) ingrediente.get("dose");
                 String nomeIngrediente = (String) ingrediente.get("nome");
-                ingredienti.put(nomeIngrediente,dose);
+                ingredienti.put(nomeIngrediente,(double)dose);
             }
-            Ricetta ricetta = new Ricetta(ingredienti, (int)numeroPorzioni, caricoLavoroXporzione);
+            Ricetta ricetta = new Ricetta(ingredienti, (int)numeroPorzioni, (double)caricoLavoroXporzione);
             Piatto piatto = new Piatto(denominazione,ricetta,(int)tempoPreparazione,dataInizio,dataFine);
             piatti.add(piatto);
         }

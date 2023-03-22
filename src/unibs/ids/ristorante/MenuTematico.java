@@ -84,10 +84,13 @@ public class MenuTematico extends Menu implements Ordinabile{
             HashMap<String, Double> listaIngredientiPiatto = piatto.getListaIngredienti(1);
             for (Map.Entry<String, Double> entry : listaIngredientiPiatto.entrySet()){
                 String nomeIngrediente = entry.getKey();
+                double quantita = entry.getValue();
                 if(listaIngredientiPiatti.containsKey(nomeIngrediente)){
                     double quantitaOld = listaIngredientiPiatti.get(nomeIngrediente);
-                    double quantita = listaIngredientiPiatto.get(nomeIngrediente);
                     listaIngredientiPiatti.put(nomeIngrediente, quantitaOld + quantita);
+                }
+                else{
+                    listaIngredientiPiatti.put(nomeIngrediente,quantita);
                 }
             }
         }

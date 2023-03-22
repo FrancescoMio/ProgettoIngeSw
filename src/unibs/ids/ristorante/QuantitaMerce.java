@@ -8,7 +8,8 @@ public class QuantitaMerce {
 
     public QuantitaMerce(double quantita, String unitaMisura) {//Costruttore
         this.quantita = quantita;
-        this.unitaMisura = controlloUnitaMisura(unitaMisura);
+        //this.unitaMisura = controlloUnitaMisura(unitaMisura);
+        this.unitaMisura = unitaMisura;
     }
 
     /**

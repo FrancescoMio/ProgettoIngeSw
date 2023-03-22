@@ -60,6 +60,7 @@ public class Ristorante {
         piatti = new HashSet<>();
         registroMagazzino = new RegistroMagazzino();
         addettoPrenotazioni = new AddettoPrenotazioni();
+        magazziniere = new Magazziniere();
         menuTematici = new HashSet<>();
         menuAllaCarta = new MenuCarta();
         prenotazioni = new ArrayList<>();

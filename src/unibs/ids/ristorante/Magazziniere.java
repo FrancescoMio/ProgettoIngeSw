@@ -15,10 +15,15 @@ public class Magazziniere extends Utente {
     public Magazziniere(String nome, String cognome) {
         super(nome, cognome);
     }
+    public Magazziniere(){
+        super();
+    }
 
     public void creaListaSpesaGiornaliera(ArrayList<Prenotazione> prenotazioni, RegistroMagazzino registro){
         Merce listaSpesa = new Merce();
         ArrayList<Prenotazione> prenotazioniGiornaliere = filtraPrenotazioniGiornaliere(prenotazioni);
+        for(Prenotazione prenotazione: prenotazioniGiornaliere)
+            prenotazione.visualizzaPrenotazione();
         for(Prenotazione prenotazione : prenotazioniGiornaliere){
             HashMap<Ordinabile, Integer> ordinePrenotazione = prenotazione.getOrdine();
             for (Map.Entry<Ordinabile, Integer> entry : ordinePrenotazione.entrySet()) {
@@ -28,6 +33,7 @@ public class Magazziniere extends Utente {
                 listaSpesa.aggiornaMerce(listaIngredienti);
             }
         }
+        listaSpesa.visualizzaMerce();
     }
 
     /**

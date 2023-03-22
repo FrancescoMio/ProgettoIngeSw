@@ -63,6 +63,13 @@ public class Prenotazione {
             return true;
         return false;
     }
+
+    public void visualizzaPrenotazione(){
+        System.out.println("Prenotazione: "+dataPrenotazione+"\nnumero coperti: " + numeroCoperti);
+        for (Map.Entry<Ordinabile, Integer> entry : ordine.entrySet()){
+            System.out.println("ordine: " + entry.getKey().getNome() + " quantita: " + entry.getValue());
+        }
+    }
     @Override
     public String toString() {
         return "Prenotazione{" +
