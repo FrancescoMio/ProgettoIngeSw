@@ -267,6 +267,26 @@ public class Json {
         ArrayList<Prenotazione> prenotazioni = Json.caricaPrenotazioni(menuTematici,piatti);
         ristorante.setPrenotazioni(prenotazioni);
 
+        //caricamento delle bevande del ristorante
+        Set<Bevanda> bevande = Json.caricaBevande();
+        ristorante.setBevande(bevande);
+        System.out.println(ristorante.getBevande());
+
+        //caricamento dei generi alimentari extra
+        Set<GenereAlimentareExtra> generiAlimentari = Json.caricaGeneriAlimentari();
+        ristorante.setGeneriAlimentari(generiAlimentari);
+        System.out.println(ristorante.getGeneriAlimentari());
+
+        //caricamento consumo pro capite bevande
+        ConsumoProCapiteBevande consumoProCapiteBevande = Json.caricaConsumoProCapiteBevande();
+        ristorante.setConsumoProCapiteBevande(consumoProCapiteBevande);
+        System.out.println(ristorante.getConsumoProCapiteBevande());
+
+        //caricamento consumo pro capite generi alimentari
+        ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra = Json.caricaConsumoProCapiteGeneriAlimentari();
+        ristorante.setConsumoProCapiteGeneriExtra(consumoProCapiteGeneriExtra);
+        System.out.println(ristorante.getConsumoProCapiteGeneriExtra());
+
         System.out.print("\n"+ANSI_YELLOW+"CARICAMENTO CONFIGURAZIONE IN CORSO");
         String str = "....\n";
         int delay = 500; // ritardo in millisecondi tra i caratteri
@@ -281,6 +301,84 @@ public class Json {
 
         System.out.println(ANSI_RESET+"\n"+ANSI_GREEN + configurazioneCaricata + ANSI_RESET);
         return ristorante;
+    }
+
+    private static Set<Bevanda> caricaBevande(){
+        Set<Bevanda> bevande = new HashSet<>();
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader("./consumoProCapite.json")){
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            ArrayList<JSONObject> elencoBevandeJson = (ArrayList<JSONObject>) jsonObject.get("elencoBevande");
+            for(JSONObject bevandaJson : elencoBevandeJson){
+                String nomeBevanda = (String) bevandaJson.get("nome");
+                Bevanda bevanda = new Bevanda(nomeBevanda);
+                bevande.add(bevanda);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return bevande;
+    }
+
+    private static Set<GenereAlimentareExtra> caricaGeneriAlimentari(){
+        Set<GenereAlimentareExtra> generiAlimentari = new HashSet<>();
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader("./consumoProCapite.json")){
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            ArrayList<JSONObject> elencoGeneriJson = (ArrayList<JSONObject>) jsonObject.get("elencoGeneriExtra");
+            for(JSONObject genereJson : elencoGeneriJson){
+                String nomeGenere = (String) genereJson.get("nome");
+                GenereAlimentareExtra genere = new GenereAlimentareExtra(nomeGenere);
+                generiAlimentari.add(genere);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return generiAlimentari;
+    }
+
+    private static ConsumoProCapiteBevande caricaConsumoProCapiteBevande(){
+        ConsumoProCapiteBevande consumoProCapiteBevande = new ConsumoProCapiteBevande();
+        HashMap<Raggruppabile, QuantitaMerce> hashMapConsumoBevande= new HashMap<>();
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader("./consumoProCapite.json")){
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            ArrayList<JSONObject> elencoBevandeJson = (ArrayList<JSONObject>) jsonObject.get("elencoBevande");
+            for(JSONObject bevandaJson : elencoBevandeJson){
+                String nomeBevanda = (String) bevandaJson.get("nome");
+                double consumoProCapite = (double) bevandaJson.get("consumoProCapite");
+                String unitaMisura = (String) bevandaJson.get("unitaMisura");
+                Bevanda bevanda = new Bevanda(nomeBevanda);
+                QuantitaMerce quantitaBevanda = new QuantitaMerce(consumoProCapite,unitaMisura);
+                hashMapConsumoBevande.put(bevanda, quantitaBevanda);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        consumoProCapiteBevande.setConsumo(hashMapConsumoBevande);
+        return consumoProCapiteBevande;
+    }
+
+    private static ConsumoProCapiteGeneriExtra caricaConsumoProCapiteGeneriAlimentari(){
+        ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra = new ConsumoProCapiteGeneriExtra();
+        HashMap<Raggruppabile, QuantitaMerce> hashMapConsumoGeneri= new HashMap<>();
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader("./consumoProCapite.json")){
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            ArrayList<JSONObject> elencoGeneriJson = (ArrayList<JSONObject>) jsonObject.get("elencoGeneriExtra");
+            for(JSONObject bevandaJson : elencoGeneriJson){
+                String nomeGenere = (String) bevandaJson.get("nome");
+                double consumoProCapite = (double) bevandaJson.get("consumoProCapite");
+                String unitaMisura = (String) bevandaJson.get("unitaMisura");
+                GenereAlimentareExtra genereAlimentareExtra = new GenereAlimentareExtra(nomeGenere);
+                QuantitaMerce quantitaGenere = new QuantitaMerce(consumoProCapite,unitaMisura);
+                hashMapConsumoGeneri.put(genereAlimentareExtra, quantitaGenere);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        consumoProCapiteGeneriExtra.setConsumo(hashMapConsumoGeneri);
+        return consumoProCapiteGeneriExtra;
     }
 
     private static ArrayList<Prenotazione> caricaPrenotazioni(Set<MenuTematico> menuTematici, Set<Piatto> piatti){

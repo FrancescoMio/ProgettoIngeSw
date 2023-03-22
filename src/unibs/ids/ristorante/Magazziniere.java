@@ -3,10 +3,7 @@ package unibs.ids.ristorante;
 import Libreria.MyUtil;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class Magazziniere extends Utente {
 
@@ -19,20 +16,25 @@ public class Magazziniere extends Utente {
         super();
     }
 
-    public void creaListaSpesaGiornaliera(ArrayList<Prenotazione> prenotazioni, RegistroMagazzino registro){
+    public void creaListaSpesaGiornaliera(ArrayList<Prenotazione> prenotazioni, RegistroMagazzino registro, ConsumoProCapiteBevande consumoProCapiteBevande, ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra){
         Merce listaSpesa = new Merce();
+        int numeroCoperti = 0;
         ArrayList<Prenotazione> prenotazioniGiornaliere = filtraPrenotazioniGiornaliere(prenotazioni);
         for(Prenotazione prenotazione: prenotazioniGiornaliere)
             prenotazione.visualizzaPrenotazione();
         for(Prenotazione prenotazione : prenotazioniGiornaliere){
+            numeroCoperti += prenotazione.getNumeroCoperti();
             HashMap<Ordinabile, Integer> ordinePrenotazione = prenotazione.getOrdine();
             for (Map.Entry<Ordinabile, Integer> entry : ordinePrenotazione.entrySet()) {
                 Ordinabile ordinabile = entry.getKey();
                 int quantitaOrdine = entry.getValue();
                 HashMap<String, Double> listaIngredienti = ordinabile.getListaIngredienti(quantitaOrdine);
-                listaSpesa.aggiornaMerce(listaIngredienti);
+                listaSpesa.aggiungiIngredienti(listaIngredienti);
             }
         }
+        listaSpesa.aggiungiBevandeGeneri(consumoProCapiteBevande,consumoProCapiteGeneriExtra, numeroCoperti);
+        listaSpesa.differenzaScorte(registro.getArticoliDisponibili());
+        listaSpesa.incrementoPercentuale();
         listaSpesa.visualizzaMerce();
     }
 

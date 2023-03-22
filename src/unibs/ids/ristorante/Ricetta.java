@@ -36,10 +36,6 @@ public class Ricetta {
     public int getNumeroPorzioni() {
         return numeroPorzioni;
     }
-    public Merce getListaIngredienti() {
-        Merce listaIngredienti = getListaIngredienti().aggiungiIngrediente(ingredienti);
-        return listaIngredienti;
-    }
 
     @Override
     public String toString() {

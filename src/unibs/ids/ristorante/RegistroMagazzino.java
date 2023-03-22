@@ -259,4 +259,11 @@ public class RegistroMagazzino {
             articoliDisponibili.getArticoli().get(nome).setQuantita(totale / 100);
         }
     }
+    public void setArticoliDisponibili(Merce articoliDisponibili) {
+        this.articoliDisponibili = articoliDisponibili;
+    }
+
+    public Merce getArticoliDisponibili() {
+        return articoliDisponibili;
+    }
 }

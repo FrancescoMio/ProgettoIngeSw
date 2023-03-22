@@ -49,7 +49,7 @@ public class Merce{
      * Il valore dell'hashmap rappresenta la quantità dell'ingrediente in GRAMMI
      * @param listaIngredienti
      */
-    public void aggiornaMerce(HashMap<String, Double> listaIngredienti){
+    public void aggiungiIngredienti(HashMap<String, Double> listaIngredienti){
         for (Map.Entry<String, Double> entry : listaIngredienti.entrySet()) {
             String nomeIngrediente = entry.getKey();
             double quantita = entry.getValue();
@@ -62,6 +62,50 @@ public class Merce{
                 QuantitaMerce quantitaMerceNuova = new QuantitaMerce(quantita,"g");
                 articoli.put(nomeIngrediente,quantitaMerceNuova);
             }
+        }
+    }
+
+    public void differenzaScorte(Merce merceMagazzino){
+        HashMap<String, QuantitaMerce> articoliDisponibiliMagazzino = merceMagazzino.getArticoli();
+        for (Map.Entry<String, QuantitaMerce> entry : articoli.entrySet()){
+            String nomeArticolo = entry.getKey();
+            if(articoliDisponibiliMagazzino.containsKey(nomeArticolo)){
+                QuantitaMerce quantitaMagazzino = articoliDisponibiliMagazzino.get(nomeArticolo);
+                double quantitaNelMagazzino = quantitaMagazzino.getQuantita();
+                QuantitaMerce quantitaArticolo = articoli.get(nomeArticolo);
+                double quantitaAttuale = quantitaArticolo.getQuantita();
+                QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaAttuale - quantitaNelMagazzino,"g");
+                articoli.put(nomeArticolo,quantitaAggiornata);
+            }
+        }
+    }
+
+    public void incrementoPercentuale(){
+        for (Map.Entry<String, QuantitaMerce> entry : articoli.entrySet()){
+            String nomeArticolo = entry.getKey();
+            QuantitaMerce quantita = entry.getValue();
+            double quantitaPercentuale = quantita.getQuantita() * 110 / 100;
+            QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaPercentuale,"g");
+            articoli.put(nomeArticolo,quantitaAggiornata);
+        }
+    }
+
+    public void aggiungiBevandeGeneri(ConsumoProCapiteBevande consumoProCapiteBevande, ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra, int numeroCoperti){
+        HashMap<Raggruppabile, QuantitaMerce> consumoBevande = consumoProCapiteBevande.getConsumo();
+        HashMap<Raggruppabile, QuantitaMerce> consumoGeneri = consumoProCapiteGeneriExtra.getConsumo();
+        for (Map.Entry<Raggruppabile, QuantitaMerce> entry : consumoBevande.entrySet()){
+            Raggruppabile raggruppabile = entry.getKey();
+            QuantitaMerce quantitaMerce = entry.getValue();
+            double quantitaBevanda = quantitaMerce.getQuantita() * numeroCoperti;
+            QuantitaMerce quantitaNuova = new QuantitaMerce(quantitaBevanda,"l");
+            articoli.put(raggruppabile.getNome(),quantitaNuova);
+        }
+        for (Map.Entry<Raggruppabile, QuantitaMerce> entry : consumoGeneri.entrySet()){
+            Raggruppabile raggruppabile = entry.getKey();
+            QuantitaMerce quantitaMerce = entry.getValue();
+            double quantitaGenere = quantitaMerce.getQuantita() * numeroCoperti;
+            QuantitaMerce quantitaNuova = new QuantitaMerce(quantitaGenere,"hg");
+            articoli.put(raggruppabile.getNome(),quantitaNuova);
         }
     }
 

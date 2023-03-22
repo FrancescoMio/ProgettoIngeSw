@@ -46,11 +46,4 @@ public class MenuCarta extends Menu{
         }
         return piatti;
     }
-    public Merce getListaIngredienti(){
-        Merce listaIngredienti = new Merce();
-        for(Piatto p : elencoPiatti){
-            listaIngredienti.aggiungiIngrediente(p.getRicetta().getIngredienti());
-        }
-        return listaIngredienti;
-    }
 }

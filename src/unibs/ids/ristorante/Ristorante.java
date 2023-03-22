@@ -64,6 +64,10 @@ public class Ristorante {
         menuTematici = new HashSet<>();
         menuAllaCarta = new MenuCarta();
         prenotazioni = new ArrayList<>();
+        bevande = new HashSet<>();
+        generiAlimentariExtra = new HashSet<>();
+        consumoProCapiteBevande = new ConsumoProCapiteBevande();
+        consumoProCapiteGeneriExtra = new ConsumoProCapiteGeneriExtra();
     }
 
     public void creaGestore(){
@@ -244,6 +248,20 @@ public class Ristorante {
     public void setPrenotazioni(ArrayList<Prenotazione> prenotazioni){
         this.prenotazioni = prenotazioni;
     }
+    public void setConsumoProCapiteBevande(ConsumoProCapiteBevande consumoProCapiteBevande){
+        this.consumoProCapiteBevande = consumoProCapiteBevande;
+    }
+    public void setConsumoProCapiteGeneriExtra(ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra){
+        this.consumoProCapiteGeneriExtra = consumoProCapiteGeneriExtra;
+    }
+
+    public ConsumoProCapiteBevande getConsumoProCapiteBevande() {
+        return consumoProCapiteBevande;
+    }
+
+    public ConsumoProCapiteGeneriExtra getConsumoProCapiteGeneriExtra() {
+        return consumoProCapiteGeneriExtra;
+    }
 
     public void visualizzaParametri(){
         MyMenu menuVisualizzazione = new MyMenu(titoloMenuVisualizzazione, vociMenuVisualizzazione);
@@ -285,7 +303,7 @@ public class Ristorante {
     }
 
     public void creaListaSpesa(){
-        magazziniere.creaListaSpesaGiornaliera(prenotazioni,registroMagazzino);
+        magazziniere.creaListaSpesaGiornaliera(prenotazioni,registroMagazzino,consumoProCapiteBevande,consumoProCapiteGeneriExtra);
     }
     public void portaIngredientiInCucina(){
 
