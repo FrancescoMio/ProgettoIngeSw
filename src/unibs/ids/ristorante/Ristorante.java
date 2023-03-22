@@ -15,7 +15,6 @@ public class Ristorante {
     private int postiASedere;
     private int caricoDiLavoroSostenibile;//sarà da ricavare  moltiplicando il carico di lavoro per persona per i posti per 120/100
     private int caricoDiLavoroXPersona;//impegno richiesto per preparare cibo per una persona in un singolo pasto
-
     private Set<Piatto> piatti;//lista di piatti che il ristorante può offrire, comprende anche quelli non disponibili
     private RegistroMagazzino registroMagazzino;
     private Gestore gestore; //gestore del ristorante
@@ -304,6 +303,9 @@ public class Ristorante {
 
     public void creaListaSpesa(){
         magazziniere.creaListaSpesaGiornaliera(prenotazioni,registroMagazzino,consumoProCapiteBevande,consumoProCapiteGeneriExtra);
+        registroMagazzino.aggiungiArticoliComprati(magazziniere.getListaSpesa());
+        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO:"+ANSI_RESET);
+        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
     }
     public void portaIngredientiInCucina(){
 
@@ -318,20 +320,6 @@ public class Ristorante {
 
     public void rimuoviScartiDalMagazzino(){
 
-    }
-    private void gestisciFlussoMagazzino(){
-       // magazziniere.creaListaSpesaGiornaliera(prenotazioni, registroMagazzino);//creo lista spesa
-        magazziniere.stampaListaSpesa();
-
-        //flusso di prodotti acquistati
-        registroMagazzino.aggiungiIngredientiComprati(magazziniere.getListaSpesa());
-
-        //prodotti portati in cucina
-        //registroMagazzino.portatiInCucina(); come calcolo gli ingredienti portati in cucina?
-        //bevande e generi alimentari portati in sala, a più riprese?
-        //registroMagazzino.setBevandeEExtraPortatiInSala(); fare metodo che calcola bevande e extra per ogni persona?
-
-        //ultimi due punti di registro magazzino da discutere fares
     }
     @Override
     public String toString() {

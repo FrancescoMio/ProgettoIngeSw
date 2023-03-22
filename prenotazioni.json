@@ -85,6 +85,16 @@
       ],
       "numeroCoperti": 2,
       "dataPrenotazione": "22/03/2023"
+    },
+    {
+      "ordine": [
+        {
+          "nome": "fritto misto",
+          "quantita": 1
+        }
+      ],
+      "numeroCoperti": 1,
+      "dataPrenotazione": "22/03/2023"
     }
   ]
 }

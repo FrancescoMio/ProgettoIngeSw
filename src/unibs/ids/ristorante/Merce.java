@@ -22,6 +22,9 @@ public class Merce{
     public HashMap<String, QuantitaMerce> getArticoli() {
         return articoli;
     }
+    public void setArticoli(HashMap<String, QuantitaMerce> articoli) {
+        this.articoli = articoli;
+    }
 
     public Merce aggregaMerci(Merce listaSpesa, Merce aggiunta){
         for(String nome : aggiunta.getArticoli().keySet()) {
@@ -67,15 +70,19 @@ public class Merce{
 
     public void differenzaScorte(Merce merceMagazzino){
         HashMap<String, QuantitaMerce> articoliDisponibiliMagazzino = merceMagazzino.getArticoli();
-        for (Map.Entry<String, QuantitaMerce> entry : articoli.entrySet()){
+        HashMap<String, QuantitaMerce> articoliTemp = new HashMap<>();
+        articoliTemp.putAll(articoli);
+        for (Map.Entry<String, QuantitaMerce> entry : articoliTemp.entrySet()){
             String nomeArticolo = entry.getKey();
             if(articoliDisponibiliMagazzino.containsKey(nomeArticolo)){
                 QuantitaMerce quantitaMagazzino = articoliDisponibiliMagazzino.get(nomeArticolo);
                 double quantitaNelMagazzino = quantitaMagazzino.getQuantita();
-                QuantitaMerce quantitaArticolo = articoli.get(nomeArticolo);
-                double quantitaAttuale = quantitaArticolo.getQuantita();
-                QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaAttuale - quantitaNelMagazzino,"g");
-                articoli.put(nomeArticolo,quantitaAggiornata);
+                QuantitaMerce quantitaArticoloDaAcquistare = articoli.get(nomeArticolo);
+                double quantitaDaAcquistare = quantitaArticoloDaAcquistare.getQuantita();
+                if(quantitaNelMagazzino < quantitaDaAcquistare){
+                    QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaDaAcquistare - quantitaNelMagazzino,"g");
+                    articoli.put(nomeArticolo,quantitaAggiornata);
+                }else articoli.remove(nomeArticolo);
             }
         }
     }

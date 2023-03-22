@@ -15,9 +15,8 @@ public class Magazziniere extends Utente {
     public Magazziniere(){
         super();
     }
-
     public void creaListaSpesaGiornaliera(ArrayList<Prenotazione> prenotazioni, RegistroMagazzino registro, ConsumoProCapiteBevande consumoProCapiteBevande, ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra){
-        Merce listaSpesa = new Merce();
+        listaSpesa = new Merce();
         int numeroCoperti = 0;
         ArrayList<Prenotazione> prenotazioniGiornaliere = filtraPrenotazioniGiornaliere(prenotazioni);
         for(Prenotazione prenotazione: prenotazioniGiornaliere)
@@ -33,8 +32,8 @@ public class Magazziniere extends Utente {
             }
         }
         listaSpesa.aggiungiBevandeGeneri(consumoProCapiteBevande,consumoProCapiteGeneriExtra, numeroCoperti);
-        listaSpesa.differenzaScorte(registro.getArticoliDisponibili());
         listaSpesa.incrementoPercentuale();
+        listaSpesa.differenzaScorte(registro.getArticoliDisponibili());
         listaSpesa.visualizzaMerce();
     }
 

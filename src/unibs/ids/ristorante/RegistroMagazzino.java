@@ -1,6 +1,8 @@
 package unibs.ids.ristorante;
 
 import Libreria.InputDati;
+import static Libreria.Stringhe.*;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -39,30 +41,35 @@ public class RegistroMagazzino {
      * Compito di registro magazzino di aggiungere gli ingredienti acquistati alla lista dei prodotti disponibili
      * In particolare se gli ingredienti sono gia in magazzino si aggiorna la quantita'
      */
-    public void aggiungiIngredientiComprati(Merce listaSpesa){
-        if(listaSpesa.getArticoli().isEmpty())//se la lista è vuota non aggiungo nulla
-            System.out.println("Non ci sono prodotti acquistati");
-        else
-            aggiuntaArticoliGiaPresenti(listaSpesa);
+    public void aggiungiArticoliComprati(Merce listaSpesa){
+        HashMap<String, QuantitaMerce> articoliAcquistati = listaSpesa.getArticoli();
+        HashMap<String, QuantitaMerce> hashMaparticoliDisponibili = articoliDisponibili.getArticoli();
+        if(articoliAcquistati.isEmpty())
+            System.out.println(ANSI_YELLOW +"ATTENZIONE: Non ci sono prodotti acquistati" + ANSI_RESET);
+        else {
+            for (Map.Entry<String, QuantitaMerce> entry : articoliAcquistati.entrySet()){
+                String nomeArticolo = entry.getKey();
+                QuantitaMerce quantitaArticoloAcquistato = entry.getValue();
+                double quantitaArticolo = quantitaArticoloAcquistato.getQuantita();
+                if(articoloGiaPresente(nomeArticolo)){
+                    QuantitaMerce quantitaArticoloOld = hashMaparticoliDisponibili.get(nomeArticolo);
+                    double quantitaOld = quantitaArticoloOld.getQuantita();
+                    QuantitaMerce quantitaArticoloNuova = new QuantitaMerce(quantitaOld+quantitaArticolo,"g");
+                    hashMaparticoliDisponibili.put(nomeArticolo,quantitaArticoloNuova);
+                }
+                else hashMaparticoliDisponibili.put(nomeArticolo,quantitaArticoloAcquistato);
+            }
+            articoliDisponibili.setArticoli(hashMaparticoliDisponibili);
+        }
     }
 
-   /**
-     * Metodo di supporto per aggiungere gli ingredienti acquistati alla lista dei prodotti disponibili
-     * vige anche la logica per cui in magazzino le unità di misura devono essere uguali
-     * @param listaSpesa
-     */
-    private void aggiuntaArticoliGiaPresenti(Merce listaSpesa) {
-        HashMap<Raggruppabile, QuantitaMerce> bevEExtra = bevandeEExtra.getConsumo();
-        for(String nome : listaSpesa.getArticoli().keySet()){
-            if(articoliDisponibili.getArticoli().containsKey(nome)){
-                inputQuantita(nome, listaSpesa.getArticoli().get(nome).getQuantita());
-            }
-            else if(bevEExtra.containsKey(nome)){
-                inputQuantita(nome, listaSpesa.getArticoli().get(nome).getQuantita());
-            }
-            else
-                System.err.println("Errore");
+    private boolean articoloGiaPresente(String nomeArticolo){
+        HashMap<String, QuantitaMerce> hashMaparticoliDisponibili = articoliDisponibili.getArticoli();
+        for (Map.Entry<String, QuantitaMerce> entry : hashMaparticoliDisponibili.entrySet()){
+            if(entry.getKey().equalsIgnoreCase(nomeArticolo))
+                return true;
         }
+        return false;
     }
 
     /**
