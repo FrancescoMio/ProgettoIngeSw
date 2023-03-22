@@ -160,10 +160,10 @@ public class Json {
     public static ArrayList<JSONObject> setRicettaJson(Ricetta ricetta){
         ArrayList<JSONObject> ingredientiJson = new ArrayList<>();
 
-        Iterator<Map.Entry<String, Integer>> iterator = ricetta.getIngredienti().entrySet().iterator();
+        Iterator<Map.Entry<String, Double>> iterator = ricetta.getIngredienti().entrySet().iterator();
         while (iterator.hasNext()) {
             JSONObject obj = new JSONObject();
-            Map.Entry<String, Integer> entry = iterator.next();
+            Map.Entry<String, Double> entry = iterator.next();
             obj.put("nome",entry.getKey());
             obj.put("dose",entry.getValue());
             ingredientiJson.add(obj);
@@ -354,13 +354,13 @@ public class Json {
             long numeroPorzioni = (long) ricettaJson.get("numeroPorzioni");
             double caricoLavoroXporzione = (double) ricettaJson.get("caricoLavoroXporzione");
             ArrayList<JSONObject> elencoIngredienti = (ArrayList<JSONObject>)ricettaJson.get("elencoIngredienti");
-            HashMap<String,Integer> ingredienti = new HashMap<>();
+            HashMap<String,Double> ingredienti = new HashMap<>();
             for (JSONObject ingrediente: elencoIngredienti) {
-                long dose = (long) ingrediente.get("dose");
+                double dose = (double) ingrediente.get("dose");
                 String nomeIngrediente = (String) ingrediente.get("nome");
-                ingredienti.put(nomeIngrediente,(int)dose);
+                ingredienti.put(nomeIngrediente,dose);
             }
-            Ricetta ricetta = new Ricetta(ingredienti, (int)numeroPorzioni, (double)caricoLavoroXporzione);
+            Ricetta ricetta = new Ricetta(ingredienti, (int)numeroPorzioni, caricoLavoroXporzione);
             Piatto piatto = new Piatto(denominazione,ricetta,(int)tempoPreparazione,dataInizio,dataFine);
             piatti.add(piatto);
         }

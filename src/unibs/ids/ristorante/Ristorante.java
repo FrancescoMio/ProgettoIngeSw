@@ -281,10 +281,39 @@ public class Ristorante {
                 default: finito = true;
             }
         }while(!finito);
+    }
 
+    public void creaListaSpesa(){
+        magazziniere.creaListaSpesaGiornaliera(prenotazioni,registroMagazzino);
+    }
+    public void portaIngredientiInCucina(){
+
+    }
+    public void portaBevandaGenereInSala(){
 
     }
 
+    public void riportaIngredientiNonConsumati(){
+
+    }
+
+    public void rimuoviScartiDalMagazzino(){
+
+    }
+    private void gestisciFlussoMagazzino(){
+       // magazziniere.creaListaSpesaGiornaliera(prenotazioni, registroMagazzino);//creo lista spesa
+        magazziniere.stampaListaSpesa();
+
+        //flusso di prodotti acquistati
+        registroMagazzino.aggiungiIngredientiComprati(magazziniere.getListaSpesa());
+
+        //prodotti portati in cucina
+        //registroMagazzino.portatiInCucina(); come calcolo gli ingredienti portati in cucina?
+        //bevande e generi alimentari portati in sala, a più riprese?
+        //registroMagazzino.setBevandeEExtraPortatiInSala(); fare metodo che calcola bevande e extra per ogni persona?
+
+        //ultimi due punti di registro magazzino da discutere fares
+    }
     @Override
     public String toString() {
         return "Ristorante{" +
@@ -299,21 +328,6 @@ public class Ristorante {
                 ", menuTematici=" + menuTematici +
                 ", menuAllaCarta=" + menuAllaCarta +
                 '}';
-    }
-
-    private void gestisciFlussoMagazzino(){
-        magazziniere.creaListaSpesaGiornaliera(prenotazioni, registroMagazzino);//creo lista spesa
-        magazziniere.stampaListaSpesa();
-
-        //flusso di prodotti acquistati
-        registroMagazzino.aggiungiIngredientiComprati(magazziniere.getListaSpesa());
-
-        //prodotti portati in cucina
-        //registroMagazzino.portatiInCucina(); come calcolo gli ingredienti portati in cucina?
-        //bevande e generi alimentari portati in sala, a più riprese?
-        //registroMagazzino.setBevandeEExtraPortatiInSala(); fare metodo che calcola bevande e extra per ogni persona?
-
-        //ultimi due punti di registro magazzino da discutere fares
     }
 
 }

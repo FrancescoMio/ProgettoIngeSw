@@ -1,5 +1,8 @@
 package unibs.ids.ristorante;
 
+import Libreria.MyUtil;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,33 +12,37 @@ public class Magazziniere extends Utente {
 
     private Merce listaSpesa;
 
-    public Magazziniere(String nome, String cognome) {//Costruttore
+    public Magazziniere(String nome, String cognome) {
         super(nome, cognome);
-        listaSpesa = new Merce();
     }
 
-    //TODO: da gestire possibile incremento del quantitativo (110% tipo)
-    public void creaListaSpesaGiornaliera(ArrayList<Prenotazione> prenotazioni, RegistroMagazzino registroMagazzino) {
-        //ogni volta la riinizializzo a 0
-        listaSpesa = new Merce();
-        listaSpesa = aggiuntaBevandeEExtra(listaSpesa, registroMagazzino.getBevandeEExtra());
-        for(Prenotazione prenotazione : prenotazioni){
-            Iterator<Map.Entry<Ordinabile,Integer>> iterator= prenotazione.getOrdine().entrySet().iterator(); //Iteratore per scorrere la mappa
-            do{
-                Map.Entry<Ordinabile,Integer> entry = iterator.next();//seleziono elemento con chiave Ordinabile e valore quantita di piatti o menu scelti
-                Ordinabile menu = entry.getKey();//seleziono il menu
-                //si puo fare senza if perchè se è un menuTematico o un menuCarta è anche un ordinabile
-                //dopo lo tolgo
-                if(menu instanceof MenuTematico){
-                    Merce listaIngredientiTematici = ((MenuTematico) menu).getListaIngredienti();
-                    listaSpesa = listaSpesa.aggregaMerci(listaSpesa, listaIngredientiTematici);
-                }
-                else if(menu instanceof MenuCarta){
-                    Merce listaIngredientiPiatti = ((MenuCarta) menu).getListaIngredienti();
-                    listaSpesa = listaSpesa.aggregaMerci(listaSpesa, listaIngredientiPiatti);
-                }
-            }while(iterator.hasNext());
+    public void creaListaSpesaGiornaliera(ArrayList<Prenotazione> prenotazioni, RegistroMagazzino registro){
+        Merce listaSpesa = new Merce();
+        ArrayList<Prenotazione> prenotazioniGiornaliere = filtraPrenotazioniGiornaliere(prenotazioni);
+        for(Prenotazione prenotazione : prenotazioniGiornaliere){
+            HashMap<Ordinabile, Integer> ordinePrenotazione = prenotazione.getOrdine();
+            for (Map.Entry<Ordinabile, Integer> entry : ordinePrenotazione.entrySet()) {
+                Ordinabile ordinabile = entry.getKey();
+                int quantitaOrdine = entry.getValue();
+                HashMap<String, Double> listaIngredienti = ordinabile.getListaIngredienti(quantitaOrdine);
+                listaSpesa.aggiornaMerce(listaIngredienti);
+            }
         }
+    }
+
+    /**
+     * Metodo che filtra tutte le prenotazioni del ristorante e ritorna solo quelle corrispondenti al giorno odierno
+     * @param prenotazioni
+     * @return
+     */
+    private ArrayList<Prenotazione> filtraPrenotazioniGiornaliere(ArrayList<Prenotazione> prenotazioni){
+        ArrayList<Prenotazione> prenotazioniGiornaliere = new ArrayList<>();
+        for(Prenotazione prenotazione : prenotazioni){
+            LocalDate dataPrenotazione = prenotazione.getDataPrenotazione();
+            if(dataPrenotazione.isEqual(MyUtil.getDataOdierna()))
+                prenotazioniGiornaliere.add(prenotazione);
+        }
+        return prenotazioniGiornaliere;
     }
 
     public Merce getListaSpesa() {

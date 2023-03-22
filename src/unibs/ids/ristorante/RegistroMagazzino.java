@@ -7,16 +7,16 @@ import java.util.Map;
 import java.util.Set;
 
 public class RegistroMagazzino {
-    private Merce ingredientiDisponibili; //lista dei prodotti disponibili nel magazzino
+    private Merce articoliDisponibili; //lista dei prodotti disponibili nel magazzino
     private Consumo bevandeEExtra;
 
     public RegistroMagazzino(){
-        ingredientiDisponibili = new Merce();
+        articoliDisponibili = new Merce();
         bevandeEExtra = new Consumo();
     }
 
     public RegistroMagazzino(Merce disponibili, Consumo bevandeEExtra) {
-        this.ingredientiDisponibili = disponibili;
+        this.articoliDisponibili = disponibili;
         this.bevandeEExtra = bevandeEExtra;
     }
 
@@ -26,12 +26,13 @@ public class RegistroMagazzino {
         visualizzaBevande();
         visualizzaGeneriExtra();
     }
+
     /**
      * Compito di registro magazzino di visualizzare gli ingredienti presenti in magazzino
      */
     private void comunicaQuantitaIngredienti(){
         System.out.println("I prodotti disponibili con le rispettive quantita' sono:");
-        ingredientiDisponibili.visualizzaMerce();
+        articoliDisponibili.visualizzaMerce();
     }
 
     /**
@@ -39,23 +40,29 @@ public class RegistroMagazzino {
      * In particolare se gli ingredienti sono gia in magazzino si aggiorna la quantita'
      */
     public void aggiungiIngredientiComprati(Merce listaSpesa){
-        if(listaSpesa.getMerce().isEmpty())//se la lista è vuota non aggiungo nulla
+        if(listaSpesa.getArticoli().isEmpty())//se la lista è vuota non aggiungo nulla
             System.out.println("Non ci sono prodotti acquistati");
         else
-            if(!controlloIngredientiGiaPresenti(listaSpesa)) {//metodo un po' inutile
-                System.out.println("E' stato comprato un ingrediente non utile in lista della spesa");
-            }
-            else{//se sono gia presenti dovro' aggiornare la quantita'
-                aggiuntaIngredientiGiaPresenti(listaSpesa);
-            }
+            aggiuntaArticoliGiaPresenti(listaSpesa);
     }
 
-    private boolean controlloIngredientiGiaPresenti(Merce listaSpesa) {
-        for(String nome : listaSpesa.getMerce().keySet()){
-            if(ingredientiDisponibili.getMerce().containsKey(nome))
-                return true;
+   /**
+     * Metodo di supporto per aggiungere gli ingredienti acquistati alla lista dei prodotti disponibili
+     * vige anche la logica per cui in magazzino le unità di misura devono essere uguali
+     * @param listaSpesa
+     */
+    private void aggiuntaArticoliGiaPresenti(Merce listaSpesa) {
+        HashMap<Raggruppabile, QuantitaMerce> bevEExtra = bevandeEExtra.getConsumo();
+        for(String nome : listaSpesa.getArticoli().keySet()){
+            if(articoliDisponibili.getArticoli().containsKey(nome)){
+                inputQuantita(nome, listaSpesa.getArticoli().get(nome).getQuantita());
+            }
+            else if(bevEExtra.containsKey(nome)){
+                inputQuantita(nome, listaSpesa.getArticoli().get(nome).getQuantita());
+            }
+            else
+                System.err.println("Errore");
         }
-        return false;
     }
 
     /**
@@ -63,18 +70,18 @@ public class RegistroMagazzino {
     * @param ingredienti utilizzati per la preparazione del piatto
      */
     public void portatiInCucina(Merce ingredienti){
-        if(ingredientiDisponibili.getMerce().isEmpty())
+        if(articoliDisponibili.getArticoli().isEmpty())
             System.out.println("ingredienti non presenti in magazzino");
         else {
             System.out.println("I prodotti disponibili con le rispettive quantita' prima dell'ordine sono:");
-            ingredientiDisponibili.visualizzaMerce();
-            for(String nome : ingredienti.getMerce().keySet()){
-                if(ingredientiDisponibili.getMerce().containsKey(nome)){//se c'è l'ingrediente in magazzino
-                    //immagino di sfruttare sempre il 10% di scarto
-                    double quantita = ingredientiDisponibili.getMerce().get(nome).getQuantita()*110/100 - ingredienti.getMerce().get(nome).getQuantita();
+            articoliDisponibili.visualizzaMerce();
+            for(String nome : ingredienti.getArticoli().keySet()){
+                if(articoliDisponibili.getArticoli().containsKey(nome)){//se c'è l'ingrediente in magazzino
+                    //il 10% di scarto lo tengo? o lo considero nella lista della spesa e basta?
+                    double quantita = articoliDisponibili.getArticoli().get(nome).getQuantita()*110/100 - ingredienti.getArticoli().get(nome).getQuantita();
                     if(quantita < 0)
                         System.out.println("Errore: ingredienti non presenti in quantita accettabile in magazzino");
-                    ingredientiDisponibili.getMerce().get(nome).setQuantita(quantita);//tolgo dal magazzino ciò che ho utilizzato
+                    articoliDisponibili.getArticoli().get(nome).setQuantita(quantita);//tolgo dal magazzino ciò che ho utilizzato
                 }
                 else
                     System.out.println("Errore: ingredienti non presenti in magazzino");
@@ -196,60 +203,60 @@ public class RegistroMagazzino {
 
     //suppongo che per generi extra e  ingredienti l'utente inserisca sempre la quantità in grammi
     private void outputQuantita(String nome, double quantita){
-        if(ingredientiDisponibili.getMerce().get(nome).getUnitaMisura().equalsIgnoreCase("g")){
-            double rimanenti = ingredientiDisponibili.getMerce().get(nome).getQuantita() - quantita;
+        if(articoliDisponibili.getArticoli().get(nome).getUnitaMisura().equalsIgnoreCase("g")){
+            double rimanenti = articoliDisponibili.getArticoli().get(nome).getQuantita() - quantita;
             if(rimanenti < 0)
                 System.out.println("Errore: ingrediente non presente in quantita accettabile in magazzino");
             else
-                ingredientiDisponibili.getMerce().get(nome).setQuantita(rimanenti);
+                articoliDisponibili.getArticoli().get(nome).setQuantita(rimanenti);
         }
-        else if(ingredientiDisponibili.getMerce().get(nome).getUnitaMisura().equalsIgnoreCase("l")){
-            double rimanenti = ingredientiDisponibili.getMerce().get(nome).getQuantita() - quantita;
+        else if(articoliDisponibili.getArticoli().get(nome).getUnitaMisura().equalsIgnoreCase("l")){
+            double rimanenti = articoliDisponibili.getArticoli().get(nome).getQuantita() - quantita;
             if(rimanenti < 0)
                 System.out.println("Errore: bevanda non presenta in quantita accettabile in magazzino");
             else
-                ingredientiDisponibili.getMerce().get(nome).setQuantita(rimanenti);
+                articoliDisponibili.getArticoli().get(nome).setQuantita(rimanenti);
         }
-        else if(ingredientiDisponibili.getMerce().get(nome).getUnitaMisura().equalsIgnoreCase("kg")){
-            double quantitaInGrammi = ingredientiDisponibili.getMerce().get(nome).getQuantita() * 1000;
+        else if(articoliDisponibili.getArticoli().get(nome).getUnitaMisura().equalsIgnoreCase("kg")){
+            double quantitaInGrammi = articoliDisponibili.getArticoli().get(nome).getQuantita() * 1000;
             double rimanenti = quantitaInGrammi - quantita;
             if(rimanenti < 0)
                 System.out.println("Errore: ingrediente non presente in quantita accettabile in magazzino");
             else
                 //riporto in kg
-                ingredientiDisponibili.getMerce().get(nome).setQuantita(rimanenti / 1000);
+                articoliDisponibili.getArticoli().get(nome).setQuantita(rimanenti / 1000);
         }
-        else if(ingredientiDisponibili.getMerce().get(nome).getUnitaMisura().equalsIgnoreCase("hg")){
-            double quantitaInGrammi = ingredientiDisponibili.getMerce().get(nome).getQuantita() * 100;
+        else if(articoliDisponibili.getArticoli().get(nome).getUnitaMisura().equalsIgnoreCase("hg")){
+            double quantitaInGrammi = articoliDisponibili.getArticoli().get(nome).getQuantita() * 100;
             double rimanenti = quantitaInGrammi - quantita;
             if(rimanenti < 0)
                 System.out.println("Errore: ingrediente non presente in quantita accettabile in magazzino");
             else
                 //riporto in hg
-                ingredientiDisponibili.getMerce().get(nome).setQuantita(rimanenti / 100);
+                articoliDisponibili.getArticoli().get(nome).setQuantita(rimanenti / 100);
         }
     }
 
     private void inputQuantita(String nome, double quantita){
-        if(ingredientiDisponibili.getMerce().get(nome).getUnitaMisura().equalsIgnoreCase("g")){
-            double totale = ingredientiDisponibili.getMerce().get(nome).getQuantita() + quantita;
-            ingredientiDisponibili.getMerce().get(nome).setQuantita(totale);
+        if(articoliDisponibili.getArticoli().get(nome).getUnitaMisura().equalsIgnoreCase("g")){
+            double totale = articoliDisponibili.getArticoli().get(nome).getQuantita() + quantita;
+            articoliDisponibili.getArticoli().get(nome).setQuantita(totale);
         }
-        else if(ingredientiDisponibili.getMerce().get(nome).getUnitaMisura().equalsIgnoreCase("l")){
-            double totale = ingredientiDisponibili.getMerce().get(nome).getQuantita() + quantita;
-            ingredientiDisponibili.getMerce().get(nome).setQuantita(totale);
+        else if(articoliDisponibili.getArticoli().get(nome).getUnitaMisura().equalsIgnoreCase("l")){
+            double totale = articoliDisponibili.getArticoli().get(nome).getQuantita() + quantita;
+            articoliDisponibili.getArticoli().get(nome).setQuantita(totale);
         }
-        else if(ingredientiDisponibili.getMerce().get(nome).getUnitaMisura().equalsIgnoreCase("kg")){
-            double quantitaInGrammi = ingredientiDisponibili.getMerce().get(nome).getQuantita() * 1000;
+        else if(articoliDisponibili.getArticoli().get(nome).getUnitaMisura().equalsIgnoreCase("kg")){
+            double quantitaInGrammi = articoliDisponibili.getArticoli().get(nome).getQuantita() * 1000;
             double totale = quantitaInGrammi + quantita;
             //riporto in kg
-            ingredientiDisponibili.getMerce().get(nome).setQuantita(totale / 1000);
+            articoliDisponibili.getArticoli().get(nome).setQuantita(totale / 1000);
         }
-        else if(ingredientiDisponibili.getMerce().get(nome).getUnitaMisura().equalsIgnoreCase("hg")){
-            double quantitaInGrammi = ingredientiDisponibili.getMerce().get(nome).getQuantita() * 100;
+        else if(articoliDisponibili.getArticoli().get(nome).getUnitaMisura().equalsIgnoreCase("hg")){
+            double quantitaInGrammi = articoliDisponibili.getArticoli().get(nome).getQuantita() * 100;
             double totale = quantitaInGrammi + quantita;
             //riporto in hg
-            ingredientiDisponibili.getMerce().get(nome).setQuantita(totale / 100);
+            articoliDisponibili.getArticoli().get(nome).setQuantita(totale / 100);
         }
     }
 }

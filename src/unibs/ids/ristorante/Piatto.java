@@ -5,6 +5,8 @@ import static Libreria.Stringhe.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Piatto implements Ordinabile {
     private String denominazione;
@@ -59,19 +61,28 @@ public class Piatto implements Ordinabile {
     public String getNome(){
         return this.denominazione;
     }
-
-
-    @Override
-    public String toString() {
-        return  lineSeparator + "\n- Denominazione: " + denominazione + "\n- Tempo preparazione: " + tempoPreparazione
-                + "min\n" + ricetta;
-    }
-
     /**
      * metodo che ritorna la lista degli ingredienti
      * @return
      */
-    public Merce getListaIngredienti(){
-        return this.ricetta.getListaIngredienti();
+    public HashMap<String,Double> getListaIngredienti(int quantitaOrdine){
+        int numeroPorzioni = ricetta.getNumeroPorzioni();
+        HashMap<String, Double> ingredienti = ricetta.getIngredienti();
+        if(numeroPorzioni == 1)
+            return ingredienti;
+        else{
+            HashMap<String, Double> listaIngredienti = new HashMap<>();
+            for (Map.Entry<String, Double> entry : ingredienti.entrySet()) {
+                String chiave = entry.getKey();
+                Double valore = entry.getValue() / numeroPorzioni * quantitaOrdine;
+                listaIngredienti.put(chiave, valore);
+            }
+            return listaIngredienti;
+        }
+    }
+    @Override
+    public String toString() {
+        return  lineSeparator + "\n- Denominazione: " + denominazione + "\n- Tempo preparazione: " + tempoPreparazione
+                + "min\n" + ricetta;
     }
 }

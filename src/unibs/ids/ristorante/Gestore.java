@@ -67,8 +67,8 @@ public class Gestore extends Utente {
      *
      * @return hashmap con nome ingrediente e dose
      */
-    public HashMap<String, Integer> inserisciIngredienti() {
-        HashMap<String, Integer> ingredienti = new HashMap<>();
+    public HashMap<String, Double> inserisciIngredienti() {
+        HashMap<String, Double> ingredienti = new HashMap<>();
         boolean scelta = true;
         do {
             String Ingrediente = InputDati.leggiStringa("Inserire nome ingrediente: ");
@@ -87,7 +87,7 @@ public class Gestore extends Utente {
      * @param piatti     set di piatti
      * @return ricetta
      */
-    public Ricetta controlloRicetta(HashMap<String, Integer> ingredienti, Set<Piatto> piatti) {
+    public Ricetta controlloRicetta(HashMap<String, Double> ingredienti, Set<Piatto> piatti) {
         for (Piatto piatto : piatti) { //controllo esistenza della ricetta
             if (piatto.getRicetta().getIngredienti().equals(ingredienti)) {
                 return piatto.getRicetta();
@@ -271,7 +271,7 @@ public class Gestore extends Utente {
         return consumi;
     }
     private Ricetta creaRicetta(Set<Piatto> piatti){
-        HashMap<String,Integer> ingredienti = inserisciIngredienti();
+        HashMap<String,Double> ingredienti = inserisciIngredienti();
         Ricetta ricetta = controlloRicetta(ingredienti, piatti);
         return ricetta;
     }

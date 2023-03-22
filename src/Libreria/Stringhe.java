@@ -25,6 +25,10 @@ public class Stringhe {
                                                         "Denominazione e periodo validità di ciascun piatto","Ricette","Menù tematici"};
     public static final String titoloMenuAuth = "\u001B[33mFASE DI AUTENTICAZIONE:\u001B[0m";
     public static String [] vociMenuAuth = {"REGISTRATI","ACCEDI"};
+    public static final String titoloMenuMagazziniere = "\u001B[36mSELEZIONARE OPERAZIONE:\u001B[0m";
+    public static String [] vociMenuMagazziniere = {"Crea lista della spesa","Porta ingredienti in cucina","Porta bevanda/genere " +
+            "                                       alimentare in sala", "Riporta in magazzino ingredienti non consumati",
+                                                    "Rimuovi scarti dal magazzino"};
 
     public static final String erroreSceltaPiatto = "Numero piatto inserito non valido!";
     public static final String erroreSceltaMenu = "Numero menù inserito non valido!";

@@ -46,14 +46,36 @@ public class GestioneUtenza {
             switch (scelta){
                 case 1:
                     ristorante.creaNuovaPrenotazione();
-                    break; //da continuare
+                    break;
                 default:
                     break;
             }
         }
     }
 
-    public void menuMagazziniere(){
-
+    public void menuMagazziniere() throws NoSuchAlgorithmException {
+        if(PasswordManager.autenticazione("./credenzialiMagazziniere.json")){
+            if(this.ristorante == null)
+                ristorante = Json.caricaDati();
+            MyMenu menu = new MyMenu(titoloMenuMagazziniere, vociMenuMagazziniere);
+            boolean finito = false;
+            do {
+                int scelta = menu.scegli();
+                if (scelta == 1) {
+                    ristorante.creaListaSpesa();
+                } else if (scelta == 2) {
+                    ristorante.portaIngredientiInCucina();
+                } else if (scelta == 3) {
+                    ristorante.portaBevandaGenereInSala();
+                }else if (scelta == 4) {
+                    ristorante.riportaIngredientiNonConsumati();
+                } else if (scelta == 5) {
+                    ristorante.rimuoviScartiDalMagazzino();
+                }else {
+                    System.out.println(ANSI_GREEN + "---ARRIVEDERCI!---" + ANSI_RESET);
+                    finito = true;
+                }
+            }while (!finito);
+        }
     }
 }

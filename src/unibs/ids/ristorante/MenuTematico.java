@@ -5,6 +5,7 @@ import Libreria.MyUtil;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import static Libreria.Stringhe.*;
 
@@ -77,15 +78,25 @@ public class MenuTematico extends Menu implements Ordinabile{
     public void setDataFine(LocalDate dataFine) {
         this.dataFine = dataFine;
     }
-    public Merce getListaIngredienti(){
-        Merce listaIngredienti = new Merce();
-        Merce listaIngredientiPiatto = new Merce();
-        for(Piatto piatto : elencoPiatti){
-            //per ogni piatto del menu associo la lista di ingredienti
-            listaIngredientiPiatto = piatto.getRicetta().getListaIngredienti();
-            listaIngredienti = listaIngredienti.aggregaMerci(listaIngredienti, listaIngredientiPiatto);//sta roba è bruttissima
+    public HashMap<String,Double> getListaIngredienti(int quantitaOrdine) {
+        HashMap<String, Double> listaIngredientiPiatti = new HashMap<>();
+        for (Piatto piatto : elencoPiatti) {
+            HashMap<String, Double> listaIngredientiPiatto = piatto.getListaIngredienti(1);
+            for (Map.Entry<String, Double> entry : listaIngredientiPiatto.entrySet()){
+                String nomeIngrediente = entry.getKey();
+                if(listaIngredientiPiatti.containsKey(nomeIngrediente)){
+                    double quantitaOld = listaIngredientiPiatti.get(nomeIngrediente);
+                    double quantita = listaIngredientiPiatto.get(nomeIngrediente);
+                    listaIngredientiPiatti.put(nomeIngrediente, quantitaOld + quantita);
+                }
+            }
         }
-        return listaIngredienti;
+        for (Map.Entry<String, Double> entry : listaIngredientiPiatti.entrySet()){
+            String nomeIngrediente = entry.getKey();
+            double quantitaOld = entry.getValue();
+            listaIngredientiPiatti.put(nomeIngrediente,quantitaOld * quantitaOrdine);
+        }
+        return  listaIngredientiPiatti;
     }
 
     public String getNome(){
