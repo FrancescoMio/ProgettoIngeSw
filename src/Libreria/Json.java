@@ -86,6 +86,31 @@ public class Json {
         salvaSuFile(prenotazioniJson,"./prenotazioni.json");
     }
 
+    public static void salvaRegistroMagazzino(RegistroMagazzino registroMagazzino){
+        JSONObject registroJson = new JSONObject();
+        Merce merceMagazzino = registroMagazzino.getArticoliDisponibili();
+        HashMap<String, QuantitaMerce> articoliMagazzino = merceMagazzino.getArticoli();
+        ArrayList<JSONObject> elencoArticoliMagazzino = getArticoliMagazzinoJson(articoliMagazzino);
+        registroJson.put("articoli",elencoArticoliMagazzino);
+        salvaSuFile(registroJson,"./registroMagazzino.json");
+    }
+
+    public static ArrayList<JSONObject> getArticoliMagazzinoJson(HashMap<String,QuantitaMerce> articoliMagazzino){
+        ArrayList<JSONObject> elencoArticoliMagazzino = new ArrayList<>();
+        for (Map.Entry<String, QuantitaMerce> entry : articoliMagazzino.entrySet()){
+            JSONObject articoloJson = new JSONObject();
+            String nomeArticolo = entry.getKey();
+            QuantitaMerce quantitaArticolo = entry.getValue();
+            double quantita = quantitaArticolo.getQuantita();
+            String unitaMisura = quantitaArticolo.getUnitaMisura();
+            articoloJson.put("nome",nomeArticolo);
+            articoloJson.put("quantita",quantita);
+            articoloJson.put("unitaMisura",unitaMisura);
+            elencoArticoliMagazzino.add(articoloJson);
+        }
+        return elencoArticoliMagazzino;
+    }
+
     public static ArrayList<JSONObject> getElencoPrenotazioniJson(ArrayList<Prenotazione> prenotazioni){
         ArrayList<JSONObject> elencoPrenotazioni = new ArrayList<>();
         for (Prenotazione p: prenotazioni) {
@@ -282,12 +307,15 @@ public class Json {
         //caricamento consumo pro capite bevande
         ConsumoProCapiteBevande consumoProCapiteBevande = Json.caricaConsumoProCapiteBevande();
         ristorante.setConsumoProCapiteBevande(consumoProCapiteBevande);
-        System.out.println(ristorante.getConsumoProCapiteBevande());
 
         //caricamento consumo pro capite generi alimentari
         ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra = Json.caricaConsumoProCapiteGeneriAlimentari();
         ristorante.setConsumoProCapiteGeneriExtra(consumoProCapiteGeneriExtra);
-        System.out.println(ristorante.getConsumoProCapiteGeneriExtra());
+
+        RegistroMagazzino registroMagazzino = Json.caricaRegistroMagazzino();
+        ristorante.setRegistroMagazzino(registroMagazzino);
+        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO"+ANSI_RESET);
+        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
 
         System.out.print("\n"+ANSI_YELLOW+"CARICAMENTO CONFIGURAZIONE IN CORSO");
         String str = "....\n";
@@ -303,6 +331,25 @@ public class Json {
 
         System.out.println(ANSI_RESET+"\n"+ANSI_GREEN + configurazioneCaricata + ANSI_RESET);
         return ristorante;
+    }
+
+    private static RegistroMagazzino caricaRegistroMagazzino(){
+        RegistroMagazzino registroMagazzino = new RegistroMagazzino();
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader("./registroMagazzino.json")){
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            ArrayList<JSONObject> articoliMagazzinoJson = (ArrayList<JSONObject>) jsonObject.get("articoli");
+            for(JSONObject articoloJson : articoliMagazzinoJson){
+                String nomeArticolo = (String) articoloJson.get("nome");
+                String unitaMisura = (String) articoloJson.get("unitaMisura");
+                double quantita = (double) articoloJson.get("quantita");
+                QuantitaMerce quantitaArticolo = new QuantitaMerce(quantita,unitaMisura);
+                registroMagazzino.caricaArticolo(nomeArticolo,quantitaArticolo);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return registroMagazzino;
     }
 
     private static Set<Bevanda> caricaBevande(){

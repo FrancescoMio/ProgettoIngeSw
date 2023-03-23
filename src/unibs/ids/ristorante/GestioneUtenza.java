@@ -42,6 +42,7 @@ public class GestioneUtenza {
             if(this.ristorante == null)
                 ristorante = Json.caricaDati();
             MyMenu menu = new MyMenu(titoloMenuAddetto,vociMenuAddetto);
+            ristorante.filtraPrenotazioni();
             int scelta = menu.scegli();
             switch (scelta){
                 case 1:

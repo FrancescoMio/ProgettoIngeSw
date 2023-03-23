@@ -250,10 +250,12 @@ public class Gestore extends Utente {
         consumi.add(hashMapGeneri);
         return consumi;
     }
+
+    //todo: da mettere a posto il carico lavoro per porzione
     private Ricetta creaRicetta(){
         HashMap<String,QuantitaMerce> ingredienti = inserisciIngredienti();
         int numeroPorzioni = InputDati.leggiIntero("Inserire numero porzioni che derivano dalla preparazione della ricetta: ");
-        double caricoXPorzione = InputDati.leggiDouble("Inserire carico di lavoro per porzione: ");//DA METTERE A POSTO, DEVE ESSERE UNA PORZIONE DI CARICO DI LAVORO PER PERSONA
+        double caricoXPorzione = InputDati.leggiDouble("Inserire carico di lavoro per porzione: ");
         caricoXPorzione = controlloCaricoXPorzione(caricoXPorzione);
         Ricetta ricetta = new Ricetta(ingredienti, numeroPorzioni, caricoXPorzione);
         return ricetta;

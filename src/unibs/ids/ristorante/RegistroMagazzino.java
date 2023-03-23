@@ -22,7 +22,6 @@ public class RegistroMagazzino {
         this.bevandeEExtra = bevandeEExtra;
     }
 
-    //TODO: DA GESTIRE BENE L'UNITA' DI MISURA IN TUTTI I METODI
     public void visualizzaMagazzino(){
         comunicaQuantitaIngredienti();
         visualizzaBevande();
@@ -45,7 +44,7 @@ public class RegistroMagazzino {
         HashMap<String, QuantitaMerce> articoliAcquistati = listaSpesa.getArticoli();
         HashMap<String, QuantitaMerce> hashMaparticoliDisponibili = articoliDisponibili.getArticoli();
         if(articoliAcquistati.isEmpty())
-            System.out.println(ANSI_YELLOW +"ATTENZIONE: Non ci sono prodotti acquistati" + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + "ATTENZIONE: Nessun prodotto acquistato perchè il magazzino dispone di scorte sufficienti" + ANSI_RESET);
         else {
             for (Map.Entry<String, QuantitaMerce> entry : articoliAcquistati.entrySet()){
                 String nomeArticolo = entry.getKey();
@@ -71,6 +70,10 @@ public class RegistroMagazzino {
                 return true;
         }
         return false;
+    }
+
+    public void caricaArticolo(String nomeArticolo, QuantitaMerce quantitaArticolo){
+        articoliDisponibili.aggiungiMerce(nomeArticolo,quantitaArticolo);
     }
 
     /**

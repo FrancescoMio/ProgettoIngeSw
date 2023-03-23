@@ -154,6 +154,10 @@ public class Ristorante {
     public void creaNuovaPrenotazione(){
         ArrayList<Prenotazione> nuovePrenotazioni = addettoPrenotazioni.creaPrenotazioni(postiASedere,caricoDiLavoroSostenibile,menuAllaCarta,menuTematici,prenotazioni);
         prenotazioni.addAll(nuovePrenotazioni);
+        Json.salvaPrenotazioni(prenotazioni);
+    }
+
+    public void filtraPrenotazioni(){
         prenotazioni = addettoPrenotazioni.togliPrenotazioniScadute(prenotazioni);
         Json.salvaPrenotazioni(prenotazioni);
     }
@@ -306,6 +310,7 @@ public class Ristorante {
         registroMagazzino.aggiungiArticoliComprati(magazziniere.getListaSpesa());
         System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
+        Json.salvaRegistroMagazzino(registroMagazzino);
     }
     public void portaIngredientiInCucina(){
 

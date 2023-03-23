@@ -3,11 +3,11 @@
     {
       "ordine": [
         {
-          "nome": "pranzo in mensa",
+          "nome": "cena al mare",
           "quantita": 1
         },
         {
-          "nome": "cena al mare",
+          "nome": "pranzo in mensa",
           "quantita": 1
         },
         {
@@ -65,36 +65,12 @@
     {
       "ordine": [
         {
-          "nome": "pranzo in mensa",
+          "nome": "risotto ai funghi",
           "quantita": 1
         }
       ],
       "numeroCoperti": 1,
-      "dataPrenotazione": "22/03/2023"
-    },
-    {
-      "ordine": [
-        {
-          "nome": "pranzo in mensa",
-          "quantita": 1
-        },
-        {
-          "nome": "fritto misto",
-          "quantita": 1
-        }
-      ],
-      "numeroCoperti": 2,
-      "dataPrenotazione": "22/03/2023"
-    },
-    {
-      "ordine": [
-        {
-          "nome": "fritto misto",
-          "quantita": 1
-        }
-      ],
-      "numeroCoperti": 1,
-      "dataPrenotazione": "22/03/2023"
+      "dataPrenotazione": "23/03/2023"
     }
   ]
 }
