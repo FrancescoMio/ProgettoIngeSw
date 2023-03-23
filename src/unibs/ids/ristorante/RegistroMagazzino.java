@@ -51,10 +51,11 @@ public class RegistroMagazzino {
                 String nomeArticolo = entry.getKey();
                 QuantitaMerce quantitaArticoloAcquistato = entry.getValue();
                 double quantitaArticolo = quantitaArticoloAcquistato.getQuantita();
+                String unitaMisura = quantitaArticoloAcquistato.getUnitaMisura();
                 if(articoloGiaPresente(nomeArticolo)){
                     QuantitaMerce quantitaArticoloOld = hashMaparticoliDisponibili.get(nomeArticolo);
                     double quantitaOld = quantitaArticoloOld.getQuantita();
-                    QuantitaMerce quantitaArticoloNuova = new QuantitaMerce(quantitaOld+quantitaArticolo,"g");
+                    QuantitaMerce quantitaArticoloNuova = new QuantitaMerce(quantitaOld+quantitaArticolo,unitaMisura);
                     hashMaparticoliDisponibili.put(nomeArticolo,quantitaArticoloNuova);
                 }
                 else hashMaparticoliDisponibili.put(nomeArticolo,quantitaArticoloAcquistato);

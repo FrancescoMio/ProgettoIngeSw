@@ -27,7 +27,7 @@ public class Magazziniere extends Utente {
             for (Map.Entry<Ordinabile, Integer> entry : ordinePrenotazione.entrySet()) {
                 Ordinabile ordinabile = entry.getKey();
                 int quantitaOrdine = entry.getValue();
-                HashMap<String, Double> listaIngredienti = ordinabile.getListaIngredienti(quantitaOrdine);
+                HashMap<String, QuantitaMerce> listaIngredienti = ordinabile.getListaIngredienti(quantitaOrdine);
                 listaSpesa.aggiungiIngredienti(listaIngredienti);
             }
         }

@@ -5,29 +5,20 @@ import java.util.HashMap;
 import static Libreria.Stringhe.*;
 
 public class Ricetta {
-    private HashMap<String, Double> ingredienti;//ingrediente come chiave e valore opportuno come valore
+    private HashMap<String, QuantitaMerce> ingredienti;//ingrediente come chiave e valore opportuno come valore
     private int numeroPorzioni;
     private double caricoDiLavoroXPorzione; //sarà una frazione<1 di carico per persona, controllo poi in Ristorante
 
     public Ricetta() {
     }
-    public Ricetta( HashMap<String, Double> ingredienti, int numeroPorzioni, double caricoDiLavoroXPorzione) {
+    public Ricetta( HashMap<String, QuantitaMerce> ingredienti, int numeroPorzioni, double caricoDiLavoroXPorzione) {
         this.ingredienti = ingredienti;
         this.numeroPorzioni = numeroPorzioni;
         this.caricoDiLavoroXPorzione = caricoDiLavoroXPorzione;
     }
 
-    public HashMap<String, Double> getIngredienti() {
+    public HashMap<String, QuantitaMerce> getIngredienti() {
         return ingredienti;
-    }
-
-    /**
-     * ritorna la dose opportuna di un ingrediente per una porzione
-     * @param ingrediente
-     * @return
-     */
-    public double getValoreIngrediente(String ingrediente){
-        return ingredienti.get(ingrediente);
     }
 
     public double getCaricoLavoro() {

@@ -5,6 +5,6 @@ import java.util.HashMap;
 
 public interface Ordinabile {
     public double getCaricoLavoro();
-    public HashMap<String,Double> getListaIngredienti(int quantitaOrdine);
+    public HashMap<String,QuantitaMerce> getListaIngredienti(int quantitaOrdine);
     public String getNome();
 }

@@ -54,7 +54,7 @@ public class Gestore extends Utente {
             LocalDate dataInizio = InputDati.leggiData("Inserire data di inizio validità: ");
             LocalDate dataFine = InputDati.leggiData("Inserire data di fine validità: ");
             int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione in minuti: ");
-            Ricetta ricetta = creaRicetta(piatti);
+            Ricetta ricetta = creaRicetta();
             Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione, dataInizio, dataFine);
             piatti.add(piatto);
             scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
@@ -67,8 +67,8 @@ public class Gestore extends Utente {
      *
      * @return hashmap con nome ingrediente e dose
      */
-    public HashMap<String, Double> inserisciIngredienti() {
-        HashMap<String, Double> ingredienti = new HashMap<>();
+    public HashMap<String, QuantitaMerce> inserisciIngredienti() {
+        HashMap<String, QuantitaMerce> ingredienti = new HashMap<>();
         boolean scelta = true;
         do {
             String Ingrediente = InputDati.leggiStringa("Inserire nome ingrediente: ");
@@ -78,26 +78,6 @@ public class Gestore extends Utente {
             scelta = InputDati.yesOrNo("Vuoi inserire un altro ingrediente?");
         } while (scelta);
         return ingredienti;
-    }
-
-    /**
-     * metodo di utilita' per controllare se la ricetta esiste già, se esiste la ritorna, altrimenti la crea e la ritorna
-     *
-     * @param ingredienti set di ingredienti
-     * @param piatti     set di piatti
-     * @return ricetta
-     */
-    public Ricetta controlloRicetta(HashMap<String, Double> ingredienti, Set<Piatto> piatti) {
-        for (Piatto piatto : piatti) { //controllo esistenza della ricetta
-            if (piatto.getRicetta().getIngredienti().equals(ingredienti)) {
-                return piatto.getRicetta();
-            }
-        }//se non esiste la ricetta, la creo e la ritorno per la creazione del piatto
-        int numeroPorzioni = InputDati.leggiIntero("Inserire numero porzioni che derivano dalla preparazione della ricetta: ");
-        double caricoXPorzione = InputDati.leggiDouble("Inserire carico di lavoro per porzione: ");//DA METTERE A POSTO, DEVE ESSERE UNA PORZIONE DI CARICO DI LAVORO PER PERSONA
-        caricoXPorzione = controlloCaricoXPorzione(caricoXPorzione);
-        Ricetta ricetta = new Ricetta(ingredienti, numeroPorzioni, caricoXPorzione);
-        return ricetta;
     }
 
     //todo: da sistemare
@@ -270,9 +250,12 @@ public class Gestore extends Utente {
         consumi.add(hashMapGeneri);
         return consumi;
     }
-    private Ricetta creaRicetta(Set<Piatto> piatti){
-        HashMap<String,Double> ingredienti = inserisciIngredienti();
-        Ricetta ricetta = controlloRicetta(ingredienti, piatti);
+    private Ricetta creaRicetta(){
+        HashMap<String,QuantitaMerce> ingredienti = inserisciIngredienti();
+        int numeroPorzioni = InputDati.leggiIntero("Inserire numero porzioni che derivano dalla preparazione della ricetta: ");
+        double caricoXPorzione = InputDati.leggiDouble("Inserire carico di lavoro per porzione: ");//DA METTERE A POSTO, DEVE ESSERE UNA PORZIONE DI CARICO DI LAVORO PER PERSONA
+        caricoXPorzione = controlloCaricoXPorzione(caricoXPorzione);
+        Ricetta ricetta = new Ricetta(ingredienti, numeroPorzioni, caricoXPorzione);
         return ricetta;
     }
 

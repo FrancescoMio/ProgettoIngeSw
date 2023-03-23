@@ -65,17 +65,21 @@ public class Piatto implements Ordinabile {
      * metodo che ritorna la lista degli ingredienti
      * @return
      */
-    public HashMap<String,Double> getListaIngredienti(int quantitaOrdine){
+    public HashMap<String,QuantitaMerce> getListaIngredienti(int quantitaOrdine){
         int numeroPorzioni = ricetta.getNumeroPorzioni();
-        HashMap<String, Double> ingredienti = ricetta.getIngredienti();
+        HashMap<String, QuantitaMerce> ingredienti = ricetta.getIngredienti();
         if(numeroPorzioni == 1)
             return ingredienti;
         else{
-            HashMap<String, Double> listaIngredienti = new HashMap<>();
-            for (Map.Entry<String, Double> entry : ingredienti.entrySet()) {
-                String chiave = entry.getKey();
-                Double valore = entry.getValue() / numeroPorzioni * quantitaOrdine;
-                listaIngredienti.put(chiave, valore);
+            HashMap<String, QuantitaMerce> listaIngredienti = new HashMap<>();
+            for (Map.Entry<String, QuantitaMerce> entry : ingredienti.entrySet()) {
+                String nomeIngrediente = entry.getKey();
+                QuantitaMerce quantitaIngrediente = entry.getValue();
+                String unitaMisura = quantitaIngrediente.getUnitaMisura();
+                double quantita = quantitaIngrediente.getQuantita();
+                double quantitaAggiornata = quantita / numeroPorzioni * quantitaOrdine;
+                QuantitaMerce quantitaIngredienteAggiornata = new QuantitaMerce(quantitaAggiornata,unitaMisura);
+                listaIngredienti.put(nomeIngrediente, quantitaIngredienteAggiornata);
             }
             return listaIngredienti;
         }

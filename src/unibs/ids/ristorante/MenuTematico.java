@@ -78,26 +78,34 @@ public class MenuTematico extends Menu implements Ordinabile{
     public void setDataFine(LocalDate dataFine) {
         this.dataFine = dataFine;
     }
-    public HashMap<String,Double> getListaIngredienti(int quantitaOrdine) {
-        HashMap<String, Double> listaIngredientiPiatti = new HashMap<>();
+    public HashMap<String,QuantitaMerce> getListaIngredienti(int quantitaOrdine) {
+        HashMap<String, QuantitaMerce> listaIngredientiPiatti = new HashMap<>();
         for (Piatto piatto : elencoPiatti) {
-            HashMap<String, Double> listaIngredientiPiatto = piatto.getListaIngredienti(1);
-            for (Map.Entry<String, Double> entry : listaIngredientiPiatto.entrySet()){
+            HashMap<String, QuantitaMerce> listaIngredientiPiatto = piatto.getListaIngredienti(1);
+            for (Map.Entry<String, QuantitaMerce> entry : listaIngredientiPiatto.entrySet()){
                 String nomeIngrediente = entry.getKey();
-                double quantita = entry.getValue();
+                QuantitaMerce quantitaMerce = entry.getValue();
+                double quantita = quantitaMerce.getQuantita();
+                String unitaMisura = quantitaMerce.getUnitaMisura();
                 if(listaIngredientiPiatti.containsKey(nomeIngrediente)){
-                    double quantitaOld = listaIngredientiPiatti.get(nomeIngrediente);
-                    listaIngredientiPiatti.put(nomeIngrediente, quantitaOld + quantita);
+                    QuantitaMerce quantitaMerceOld = listaIngredientiPiatti.get(nomeIngrediente);
+                    double quantitaOld = quantitaMerceOld.getQuantita();
+                    QuantitaMerce quantitaNuova = new QuantitaMerce(quantitaOld + quantita,unitaMisura);
+                    listaIngredientiPiatti.put(nomeIngrediente, quantitaNuova);
                 }
                 else{
-                    listaIngredientiPiatti.put(nomeIngrediente,quantita);
+                    listaIngredientiPiatti.put(nomeIngrediente,quantitaMerce);
                 }
             }
         }
-        for (Map.Entry<String, Double> entry : listaIngredientiPiatti.entrySet()){
+        for (Map.Entry<String, QuantitaMerce> entry : listaIngredientiPiatti.entrySet()){
             String nomeIngrediente = entry.getKey();
-            double quantitaOld = entry.getValue();
-            listaIngredientiPiatti.put(nomeIngrediente,quantitaOld * quantitaOrdine);
+            QuantitaMerce quantitaIngrediente = entry.getValue();
+            String unitaMisura = quantitaIngrediente.getUnitaMisura();
+            double quantitaOld = quantitaIngrediente.getQuantita();
+            double quantitaAggiornata = quantitaOld * quantitaOrdine;
+            QuantitaMerce quantitaIngredienteNuova = new QuantitaMerce(quantitaAggiornata,unitaMisura);
+            listaIngredientiPiatti.put(nomeIngrediente,quantitaIngredienteNuova);
         }
         return  listaIngredientiPiatti;
     }

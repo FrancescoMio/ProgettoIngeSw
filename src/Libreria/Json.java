@@ -160,12 +160,14 @@ public class Json {
     public static ArrayList<JSONObject> setRicettaJson(Ricetta ricetta){
         ArrayList<JSONObject> ingredientiJson = new ArrayList<>();
 
-        Iterator<Map.Entry<String, Double>> iterator = ricetta.getIngredienti().entrySet().iterator();
+        Iterator<Map.Entry<String, QuantitaMerce>> iterator = ricetta.getIngredienti().entrySet().iterator();
         while (iterator.hasNext()) {
             JSONObject obj = new JSONObject();
-            Map.Entry<String, Double> entry = iterator.next();
+            Map.Entry<String, QuantitaMerce> entry = iterator.next();
             obj.put("nome",entry.getKey());
-            obj.put("dose",entry.getValue());
+            QuantitaMerce quantitaIngrediente = entry.getValue();
+            obj.put("dose",quantitaIngrediente.getQuantita());
+            obj.put("unitaMisura",quantitaIngrediente.getUnitaMisura());
             ingredientiJson.add(obj);
         }
         return  ingredientiJson;
@@ -452,11 +454,13 @@ public class Json {
             long numeroPorzioni = (long) ricettaJson.get("numeroPorzioni");
             double caricoLavoroXporzione = (double) ricettaJson.get("caricoLavoroXporzione");
             ArrayList<JSONObject> elencoIngredienti = (ArrayList<JSONObject>)ricettaJson.get("elencoIngredienti");
-            HashMap<String,Double> ingredienti = new HashMap<>();
+            HashMap<String,QuantitaMerce> ingredienti = new HashMap<>();
             for (JSONObject ingrediente: elencoIngredienti) {
-                long dose = (long) ingrediente.get("dose");
+                double dose = (double) ingrediente.get("dose");
                 String nomeIngrediente = (String) ingrediente.get("nome");
-                ingredienti.put(nomeIngrediente,(double)dose);
+                String unitaMisura = (String) ingrediente.get("unitaMisura");
+                QuantitaMerce quantitaIngrediente = new QuantitaMerce(dose,unitaMisura);
+                ingredienti.put(nomeIngrediente,quantitaIngrediente);
             }
             Ricetta ricetta = new Ricetta(ingredienti, (int)numeroPorzioni, (double)caricoLavoroXporzione);
             Piatto piatto = new Piatto(denominazione,ricetta,(int)tempoPreparazione,dataInizio,dataFine);

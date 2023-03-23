@@ -52,17 +52,19 @@ public class Merce{
      * Il valore dell'hashmap rappresenta la quantità dell'ingrediente in GRAMMI
      * @param listaIngredienti
      */
-    public void aggiungiIngredienti(HashMap<String, Double> listaIngredienti){
-        for (Map.Entry<String, Double> entry : listaIngredienti.entrySet()) {
+    public void aggiungiIngredienti(HashMap<String, QuantitaMerce> listaIngredienti){
+        for (Map.Entry<String, QuantitaMerce> entry : listaIngredienti.entrySet()) {
             String nomeIngrediente = entry.getKey();
-            double quantita = entry.getValue();
+            QuantitaMerce quantitaIngrediente = entry.getValue();
+            double quantita = quantitaIngrediente.getQuantita();
+            String unitaMisura = quantitaIngrediente.getUnitaMisura();
             if(articoli.containsKey(nomeIngrediente)){
                 QuantitaMerce quantitaMerce = articoli.get(nomeIngrediente);
                 double quantitaOld = quantitaMerce.getQuantita();
-                QuantitaMerce quantitaMerceNuova = new QuantitaMerce(quantitaOld+quantita,"g");
+                QuantitaMerce quantitaMerceNuova = new QuantitaMerce(quantitaOld+quantita,unitaMisura);
                 articoli.put(nomeIngrediente,quantitaMerceNuova);
             }else{
-                QuantitaMerce quantitaMerceNuova = new QuantitaMerce(quantita,"g");
+                QuantitaMerce quantitaMerceNuova = new QuantitaMerce(quantita,unitaMisura);
                 articoli.put(nomeIngrediente,quantitaMerceNuova);
             }
         }
@@ -79,8 +81,9 @@ public class Merce{
                 double quantitaNelMagazzino = quantitaMagazzino.getQuantita();
                 QuantitaMerce quantitaArticoloDaAcquistare = articoli.get(nomeArticolo);
                 double quantitaDaAcquistare = quantitaArticoloDaAcquistare.getQuantita();
+                String unitaMisura = quantitaArticoloDaAcquistare.getUnitaMisura();
                 if(quantitaNelMagazzino < quantitaDaAcquistare){
-                    QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaDaAcquistare - quantitaNelMagazzino,"g");
+                    QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaDaAcquistare - quantitaNelMagazzino,unitaMisura);
                     articoli.put(nomeArticolo,quantitaAggiornata);
                 }else articoli.remove(nomeArticolo);
             }
@@ -92,7 +95,8 @@ public class Merce{
             String nomeArticolo = entry.getKey();
             QuantitaMerce quantita = entry.getValue();
             double quantitaPercentuale = quantita.getQuantita() * 110 / 100;
-            QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaPercentuale,"g");
+            String unitaMisura = quantita.getUnitaMisura();
+            QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaPercentuale,unitaMisura);
             articoli.put(nomeArticolo,quantitaAggiornata);
         }
     }
