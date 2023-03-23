@@ -171,6 +171,22 @@ public class InputDati {
         return valoreLetto;
     }
 
+    public static double leggiDoubleCompreso(String messaggio, double minimo, double massimo){
+        boolean finito = false;
+        double valoreLetto = 0.0D;
+
+        do {
+            valoreLetto = leggiDouble(messaggio);
+            if (valoreLetto >= minimo && valoreLetto <= massimo) {
+                finito = true;
+            } else {
+                System.out.println("Attenzione: e' richiesto un valore maggiore o uguale a " + minimo + " e minore o uguale a " + massimo);
+            }
+        } while(!finito);
+
+        return valoreLetto;
+    }
+
     public static double leggiDoubleConMinimo(String messaggio, double minimo) {
         boolean finito = false;
         double valoreLetto = 0.0D;

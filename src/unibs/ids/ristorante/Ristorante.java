@@ -4,10 +4,9 @@ import Libreria.InputDati;
 import Libreria.Json;
 import Libreria.MyMenu;
 import Libreria.MyUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
+
 import static Libreria.Stringhe.*;
 
 public class Ristorante {
@@ -27,14 +26,16 @@ public class Ristorante {
     private ArrayList<Prenotazione> prenotazioni;
     private ConsumoProCapiteBevande consumoProCapiteBevande;
     private ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra;
+    private Merce merceInCucina;
+    private Merce merceDaPortareInCucina;
 
     /**
      * Costruttore dedicato all'inizializzazione dei dati di configurazione del ristorante
      */
     public Ristorante() {
-        //creo gestore con cui inizializzare tutto
         registroMagazzino = new RegistroMagazzino();
-
+        merceInCucina = new Merce();
+        merceDaPortareInCucina = new Merce();
         creaGestore();
         creaConfigurazione();
         creaMenuTematici();
@@ -53,7 +54,6 @@ public class Ristorante {
         Json.salvaConsumiProCapite(consumoProCapiteBevande,consumoProCapiteGeneriExtra);
     }
 
-    //TODO: alla fine mettere privati tutti i metodi che non servono all'esterno
     public Ristorante(String caricaConfigurazione){
         gestore = new Gestore();
         piatti = new HashSet<>();
@@ -67,6 +67,8 @@ public class Ristorante {
         generiAlimentariExtra = new HashSet<>();
         consumoProCapiteBevande = new ConsumoProCapiteBevande();
         consumoProCapiteGeneriExtra = new ConsumoProCapiteGeneriExtra();
+        merceInCucina = new Merce();
+        merceDaPortareInCucina = new Merce();
     }
 
     public void creaGestore(){
@@ -307,13 +309,42 @@ public class Ristorante {
 
     public void creaListaSpesa(){
         magazziniere.creaListaSpesaGiornaliera(prenotazioni,registroMagazzino,consumoProCapiteBevande,consumoProCapiteGeneriExtra);
-        registroMagazzino.aggiungiArticoliComprati(magazziniere.getListaSpesa());
+        Merce listaSpesa = magazziniere.getListaSpesa();
+        registroMagazzino.aggiungiArticoliComprati(listaSpesa);
+        if(!listaSpesa.getArticoli().isEmpty()){ //se lista spesa non è vuota, quindi è stata fatta
+            merceDaPortareInCucina = magazziniere.portaIngredientiInCucina(prenotazioni);
+            //Json.salvaCucina(prodottiDaPortareInCucina,prodottiInCucina);
+        }
         System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         Json.salvaRegistroMagazzino(registroMagazzino);
     }
     public void portaIngredientiInCucina(){
-
+        HashMap<String,QuantitaMerce> prodottiDaPortareInCucina = merceDaPortareInCucina.getArticoli();
+        HashMap<String,QuantitaMerce> ingredientiDaAggiungere = new HashMap<>();
+        do {
+            System.out.println(lineSeparator);
+            System.out.println(ANSI_BLUE + "---INGREDIENTI DA PORTARE IN CUCINA---" + ANSI_RESET);
+            merceDaPortareInCucina.visualizzaMerce();
+            boolean ingredientePresente = false;
+            String nomeIngrediente = "";
+            do {
+                nomeIngrediente = InputDati.leggiStringaNonVuota("Inserire nome ingrediente da portare in cucina: ");
+                if (prodottiDaPortareInCucina.containsKey(nomeIngrediente))
+                    ingredientePresente = true;
+                else System.err.println("Ingrediente non presente nella lista!");
+            } while (!ingredientePresente);
+            QuantitaMerce quantitaIngrediente = prodottiDaPortareInCucina.get(nomeIngrediente);
+            double quantitaMax = quantitaIngrediente.getQuantita();
+            String unitaMisura = quantitaIngrediente.getUnitaMisura();
+            double quantitaDaPortare = InputDati.leggiDoubleCompreso("Inserire quantità ingrediente da portare in cucina: ", 0, quantitaMax);
+            QuantitaMerce quantitaIngredienteDaPortare = new QuantitaMerce(quantitaDaPortare, unitaMisura);
+            QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaMax - quantitaDaPortare, unitaMisura);
+            prodottiDaPortareInCucina.replace(nomeIngrediente, quantitaIngrediente, quantitaAggiornata);
+            ingredientiDaAggiungere.put(nomeIngrediente, quantitaIngredienteDaPortare);
+        }while (InputDati.yesOrNo(ANSI_GREEN + "Portare un altro ingrediente in cucina?" + ANSI_RESET));
+        merceInCucina.aggiungiIngredienti(ingredientiDaAggiungere);
+        registroMagazzino.rimuoviPortatiInCucina(ingredientiDaAggiungere); //metodo per la rimozione dal registro magazzino degli ingredienti portati in cucina
     }
     public void portaBevandaGenereInSala(){
 

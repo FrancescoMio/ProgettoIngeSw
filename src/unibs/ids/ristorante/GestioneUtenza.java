@@ -43,14 +43,19 @@ public class GestioneUtenza {
                 ristorante = Json.caricaDati();
             MyMenu menu = new MyMenu(titoloMenuAddetto,vociMenuAddetto);
             ristorante.filtraPrenotazioni();
-            int scelta = menu.scegli();
-            switch (scelta){
-                case 1:
-                    ristorante.creaNuovaPrenotazione();
-                    break;
-                default:
-                    break;
-            }
+            boolean finito = false;
+            do{
+                int scelta = menu.scegli();
+                switch (scelta){
+                    case 1:
+                        ristorante.creaNuovaPrenotazione();
+                        break;
+                    default:
+                        System.out.println(ANSI_GREEN + "---ARRIVEDERCI!---" + ANSI_RESET);
+                        finito = true;
+                        break;
+                }
+            }while (!finito);
         }
     }
 

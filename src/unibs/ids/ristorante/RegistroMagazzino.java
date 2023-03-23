@@ -72,6 +72,10 @@ public class RegistroMagazzino {
         return false;
     }
 
+    public void rimuoviPortatiInCucina(HashMap<String,QuantitaMerce> ingredientiDaRimuovere){
+
+    }
+
     public void caricaArticolo(String nomeArticolo, QuantitaMerce quantitaArticolo){
         articoliDisponibili.aggiungiMerce(nomeArticolo,quantitaArticolo);
     }

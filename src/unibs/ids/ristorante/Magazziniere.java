@@ -37,6 +37,23 @@ public class Magazziniere extends Utente {
         listaSpesa.visualizzaMerce();
     }
 
+    public Merce portaIngredientiInCucina(ArrayList<Prenotazione> prenotazioni){
+        Merce prodottiDaPortareInCucina = new Merce();
+        ArrayList<Prenotazione> prenotazioniGiornaliere = filtraPrenotazioniGiornaliere(prenotazioni);
+        int numeroCoperti = 0;
+        for(Prenotazione prenotazione : prenotazioniGiornaliere){
+            numeroCoperti += prenotazione.getNumeroCoperti();
+            HashMap<Ordinabile, Integer> ordinePrenotazione = prenotazione.getOrdine();
+            for (Map.Entry<Ordinabile, Integer> entry : ordinePrenotazione.entrySet()) {
+                Ordinabile ordinabile = entry.getKey();
+                int quantitaOrdine = entry.getValue();
+                HashMap<String, QuantitaMerce> listaIngredienti = ordinabile.getListaIngredienti(quantitaOrdine);
+                prodottiDaPortareInCucina.aggiungiIngredienti(listaIngredienti);
+            }
+        }
+        return prodottiDaPortareInCucina;
+    }
+
     /**
      * Metodo che filtra tutte le prenotazioni del ristorante e ritorna solo quelle corrispondenti al giorno odierno
      * @param prenotazioni
