@@ -1,9 +1,12 @@
 package unibs.ids.ristorante;
 
+import Libreria.InputDati;
 import Libreria.MyUtil;
 
 import java.time.LocalDate;
 import java.util.*;
+
+import static Libreria.Stringhe.*;
 
 public class Magazziniere extends Utente {
 
@@ -52,6 +55,34 @@ public class Magazziniere extends Utente {
             }
         }
         return prodottiDaPortareInCucina;
+    }
+
+    public HashMap<String,QuantitaMerce> portaBevandaGenereInSala(RegistroMagazzino registroMagazzino, Set<Bevanda> bevande, Set<GenereAlimentareExtra> generiAlimentari){
+        HashMap<String, QuantitaMerce> prodottiInSala = new HashMap<>();
+        HashMap<String,QuantitaMerce> articoliInMagazzino = registroMagazzino.getArticoliDisponibili().getArticoli();
+        System.out.println(lineSeparator);
+        do{
+            String nomeArticolo = "";
+            boolean prodottoPresente = false;
+            do{
+                System.out.println(ANSI_BLUE + "---BEVANDE/GENERI ALIMENTARI NEL MAGAZZINO---" + ANSI_RESET);
+                System.out.println(bevande);
+                System.out.println(generiAlimentari);
+                nomeArticolo = InputDati.leggiStringaConSpazi("Inserire nome della bevanda/genere alimentare extra: ");
+                if(!registroMagazzino.articoloGiaPresente(nomeArticolo)){
+                    System.err.println("Bevanda/Genere alimentare non presente!");
+                }else prodottoPresente = true;
+            }while (!prodottoPresente);
+            QuantitaMerce quantitaProdottoMagazzino = articoliInMagazzino.get(nomeArticolo);
+            double quantitaMaxMagazzino = quantitaProdottoMagazzino.getQuantita();
+            String unitaMisura = quantitaProdottoMagazzino.getUnitaMisura();
+            double quantitaDaPortare = InputDati.leggiDoubleCompreso("Inserire quantita da portare in sala (" + unitaMisura +"): ",0,quantitaMaxMagazzino);
+            QuantitaMerce quantitaProdotto = new QuantitaMerce(quantitaDaPortare,unitaMisura);
+            QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaMaxMagazzino - quantitaDaPortare,unitaMisura);
+            //articoliInMagazzino.replace(nomeArticolo,quantitaProdottoMagazzino,quantitaAggiornata);
+            prodottiInSala.put(nomeArticolo,quantitaProdotto);
+        }while(InputDati.yesOrNo("Portare ancora una bevanda o genere alimentare extra in sala?"));
+        return prodottiInSala;
     }
 
     /**

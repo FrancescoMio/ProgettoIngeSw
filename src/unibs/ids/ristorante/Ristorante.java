@@ -307,14 +307,14 @@ public class Ristorante {
         }while(!finito);
     }
 
+    //todo: fare in modo che lista della spesa venga creata una sola volta in automatico
     public void creaListaSpesa(){
         magazziniere.creaListaSpesaGiornaliera(prenotazioni,registroMagazzino,consumoProCapiteBevande,consumoProCapiteGeneriExtra);
         Merce listaSpesa = magazziniere.getListaSpesa();
         registroMagazzino.aggiungiArticoliComprati(listaSpesa);
-        if(!listaSpesa.getArticoli().isEmpty()){ //se lista spesa non è vuota, quindi è stata fatta
-            merceDaPortareInCucina = magazziniere.portaIngredientiInCucina(prenotazioni);
-            //Json.salvaCucina(prodottiDaPortareInCucina,prodottiInCucina);
-        }
+        merceDaPortareInCucina = magazziniere.portaIngredientiInCucina(prenotazioni);
+        System.out.println(ANSI_CYAN+"MERCE DA PORTARE IN CUCINA:"+ANSI_RESET);
+        merceDaPortareInCucina.visualizzaMerce();
         System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         Json.salvaRegistroMagazzino(registroMagazzino);
@@ -337,17 +337,26 @@ public class Ristorante {
             QuantitaMerce quantitaIngrediente = prodottiDaPortareInCucina.get(nomeIngrediente);
             double quantitaMax = quantitaIngrediente.getQuantita();
             String unitaMisura = quantitaIngrediente.getUnitaMisura();
-            double quantitaDaPortare = InputDati.leggiDoubleCompreso("Inserire quantità ingrediente da portare in cucina: ", 0, quantitaMax);
+            double quantitaDaPortare = InputDati.leggiDoubleCompreso("Inserire quantità ingrediente da portare in cucina ("+unitaMisura+"): ", 0, quantitaMax);
             QuantitaMerce quantitaIngredienteDaPortare = new QuantitaMerce(quantitaDaPortare, unitaMisura);
             QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaMax - quantitaDaPortare, unitaMisura);
             prodottiDaPortareInCucina.replace(nomeIngrediente, quantitaIngrediente, quantitaAggiornata);
             ingredientiDaAggiungere.put(nomeIngrediente, quantitaIngredienteDaPortare);
         }while (InputDati.yesOrNo(ANSI_GREEN + "Portare un altro ingrediente in cucina?" + ANSI_RESET));
         merceInCucina.aggiungiIngredienti(ingredientiDaAggiungere);
-        registroMagazzino.rimuoviPortatiInCucina(ingredientiDaAggiungere); //metodo per la rimozione dal registro magazzino degli ingredienti portati in cucina
+        System.out.println(ANSI_CYAN+"MERCE PORTATA IN CUCINA:"+ANSI_RESET);
+        merceInCucina.visualizzaMerce();
+        registroMagazzino.rimuoviProdotti(ingredientiDaAggiungere); //metodo per la rimozione dal registro magazzino degli ingredienti portati in cucina
+        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
+        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
+        //Json.salvaRegistroMagazzino(registroMagazzino);
     }
     public void portaBevandaGenereInSala(){
-
+        HashMap<String, QuantitaMerce> prodottiInSala = magazziniere.portaBevandaGenereInSala(registroMagazzino,bevande,generiAlimentariExtra);
+        registroMagazzino.rimuoviProdotti(prodottiInSala);
+        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
+        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
+        //Json.salvaRegistroMagazzino(registroMagazzino);
     }
 
     public void riportaIngredientiNonConsumati(){

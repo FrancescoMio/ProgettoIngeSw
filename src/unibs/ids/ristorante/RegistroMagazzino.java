@@ -63,7 +63,7 @@ public class RegistroMagazzino {
         }
     }
 
-    private boolean articoloGiaPresente(String nomeArticolo){
+    public boolean articoloGiaPresente(String nomeArticolo){
         HashMap<String, QuantitaMerce> hashMaparticoliDisponibili = articoliDisponibili.getArticoli();
         for (Map.Entry<String, QuantitaMerce> entry : hashMaparticoliDisponibili.entrySet()){
             if(entry.getKey().equalsIgnoreCase(nomeArticolo))
@@ -72,8 +72,25 @@ public class RegistroMagazzino {
         return false;
     }
 
-    public void rimuoviPortatiInCucina(HashMap<String,QuantitaMerce> ingredientiDaRimuovere){
-
+    /**
+     * Metodo per la rimozione dei prodotti dal magazzino
+     * @param prodottiDaRimuovere
+     */
+    public void rimuoviProdotti(HashMap<String,QuantitaMerce> prodottiDaRimuovere){
+        HashMap<String,QuantitaMerce> articoliMagazzino = articoliDisponibili.getArticoli();
+        for (Map.Entry<String, QuantitaMerce> entry : prodottiDaRimuovere.entrySet()){
+            String nomeArticolo = entry.getKey();
+            QuantitaMerce quantitaArticolo = entry.getValue();
+            double quantita = quantitaArticolo.getQuantita();
+            String unitaMisura = quantitaArticolo.getUnitaMisura();
+            if(articoliMagazzino.containsKey(nomeArticolo)){
+                QuantitaMerce quantitaMerceOld = articoliMagazzino.get(nomeArticolo);
+                double quantitaOld = quantitaMerceOld.getQuantita();
+                QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaOld-quantita,unitaMisura);
+                articoliMagazzino.replace(nomeArticolo,quantitaAggiornata);
+            }
+        }
+        articoliDisponibili.setArticoli(articoliMagazzino);
     }
 
     public void caricaArticolo(String nomeArticolo, QuantitaMerce quantitaArticolo){

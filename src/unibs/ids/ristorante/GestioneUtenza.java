@@ -41,8 +41,8 @@ public class GestioneUtenza {
         if(PasswordManager.autenticazione("./credenzialiAddettoPrenotazioni.json")){
             if(this.ristorante == null)
                 ristorante = Json.caricaDati();
-            MyMenu menu = new MyMenu(titoloMenuAddetto,vociMenuAddetto);
             ristorante.filtraPrenotazioni();
+            MyMenu menu = new MyMenu(titoloMenuAddetto,vociMenuAddetto);
             boolean finito = false;
             do{
                 int scelta = menu.scegli();
@@ -63,6 +63,7 @@ public class GestioneUtenza {
         if(PasswordManager.autenticazione("./credenzialiMagazziniere.json")){
             if(this.ristorante == null)
                 ristorante = Json.caricaDati();
+            ristorante.filtraPrenotazioni();
             MyMenu menu = new MyMenu(titoloMenuMagazziniere, vociMenuMagazziniere);
             boolean finito = false;
             do {
