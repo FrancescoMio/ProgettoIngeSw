@@ -160,25 +160,6 @@ public class RegistroMagazzino {
     }
 
 
-    /**
-     * Metodo di supporto per aggiungere gli ingredienti acquistati alla lista dei prodotti disponibili
-     * vige anche la logica per cui in magazzino le unità di misura devono essere uguali
-     * @param listaSpesa
-     */
-    private void aggiuntaIngredientiGiaPresenti(Merce listaSpesa) {
-        HashMap<Raggruppabile, QuantitaMerce> bevEExtra = bevandeEExtra.getConsumo();
-        for(String nome : listaSpesa.getMerce().keySet()){
-            if(ingredientiDisponibili.getMerce().containsKey(nome)){
-                inputQuantita(nome, listaSpesa.getMerce().get(nome).getQuantita());
-            }
-            else if(bevEExtra.containsKey(nome)){
-                inputQuantita(nome, listaSpesa.getMerce().get(nome).getQuantita());
-            }
-            else
-                System.out.println("Errore");
-        }
-    }
-
     public void addGenereAlimentareExtra(){
         String nome = InputDati.leggiStringa("Inserisci il nome del genere alimentare extra:");
         //generiAlimentariExtra.add(new GenereAlimentareExtra(nome));

@@ -71,10 +71,11 @@ public class Gestore extends Utente {
         HashMap<String, QuantitaMerce> ingredienti = new HashMap<>();
         boolean scelta = true;
         do {
-            String Ingrediente = InputDati.leggiStringa("Inserire nome ingrediente: ");
-            //todo: come mai avevamo fatto cosi e non double o int la dose?
-            String dose = InputDati.leggiStringa("Inserire dose opportuna dell'ingrediente: ");
-            ingredienti.put(Ingrediente, Integer.parseInt(dose));
+            String nomIngrediente = InputDati.leggiStringa("Inserire nome ingrediente: ");
+            double dose = InputDati.leggiDoubleConMinimo("Inserire dose opportuna dell'ingrediente: ",0);
+            String unitaMisura = InputDati.leggiStringaNonVuota("Inserire unità di misura: ");
+            QuantitaMerce quantitaIngrediente = new QuantitaMerce(dose,unitaMisura);
+            ingredienti.put(nomIngrediente,quantitaIngrediente);
             scelta = InputDati.yesOrNo("Vuoi inserire un altro ingrediente?");
         } while (scelta);
         return ingredienti;
