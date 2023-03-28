@@ -93,6 +93,10 @@ public class RegistroMagazzino {
         articoliDisponibili.setArticoli(articoliMagazzino);
     }
 
+    public void riportaProdotti(HashMap<String,QuantitaMerce> prodottiDaRiportare){
+        articoliDisponibili.aggiungiIngredienti(prodottiDaRiportare);
+    }
+
     public void caricaArticolo(String nomeArticolo, QuantitaMerce quantitaArticolo){
         articoliDisponibili.aggiungiMerce(nomeArticolo,quantitaArticolo);
     }

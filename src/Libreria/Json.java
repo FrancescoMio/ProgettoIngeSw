@@ -95,6 +95,16 @@ public class Json {
         salvaSuFile(registroJson,"./registroMagazzino.json");
     }
 
+    //todo: rinominare il metodo "getArticoliMagazzinoJson"
+    public static void salvaCucina(Merce merceDaPortareInCucina, Merce merceInCucina){
+        JSONObject cucinaJson = new JSONObject();
+        ArrayList<JSONObject> merceDaPortareInCucinaJson = getArticoliMagazzinoJson(merceDaPortareInCucina.getArticoli());
+        ArrayList<JSONObject> merceInCucinaJson = getArticoliMagazzinoJson(merceInCucina.getArticoli());
+        cucinaJson.put("merceDaPortareInCucina",merceDaPortareInCucinaJson);
+        cucinaJson.put("merceInCucina",merceInCucinaJson);
+        salvaSuFile(cucinaJson,"./cucina.json");
+    }
+
     public static ArrayList<JSONObject> getArticoliMagazzinoJson(HashMap<String,QuantitaMerce> articoliMagazzino){
         ArrayList<JSONObject> elencoArticoliMagazzino = new ArrayList<>();
         for (Map.Entry<String, QuantitaMerce> entry : articoliMagazzino.entrySet()){

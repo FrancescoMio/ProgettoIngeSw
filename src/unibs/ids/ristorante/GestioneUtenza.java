@@ -75,7 +75,7 @@ public class GestioneUtenza {
                 } else if (scelta == 3) {
                     ristorante.portaBevandaGenereInSala();
                 }else if (scelta == 4) {
-                    ristorante.riportaIngredientiNonConsumati();
+                    ristorante.riportaInMagazzinoNonConsumati();
                 } else if (scelta == 5) {
                     ristorante.rimuoviScartiDalMagazzino();
                 }else {

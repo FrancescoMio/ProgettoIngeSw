@@ -13,11 +13,18 @@ public class Merce{
         articoli.put(nome, quantitaMerce);
     }
 
-    public void rimuoviMerce(String nome) {
-        if(articoli.containsKey(nome))
-            articoli.remove(nome);
-        else
-            System.out.println("Merce non presente nella lista");
+    public void rimuoviProdotti(HashMap<String,QuantitaMerce> prodottiDaRimuovere) {
+        for (Map.Entry<String, QuantitaMerce> entry : prodottiDaRimuovere.entrySet()){
+            String nomeArticolo = entry.getKey();
+            QuantitaMerce quantitaArticolo = entry.getValue();
+            double quantita = quantitaArticolo.getQuantita();
+            String unitaMisura = quantitaArticolo.getUnitaMisura();
+
+            QuantitaMerce quantitaArticoloOld = articoli.get(nomeArticolo);
+            double quantitaOld = quantitaArticoloOld.getQuantita();
+            QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaOld-quantita,unitaMisura);
+            articoli.replace(nomeArticolo,quantitaArticoloOld,quantitaAggiornata);
+        }
     }
     public HashMap<String, QuantitaMerce> getArticoli() {
         return articoli;

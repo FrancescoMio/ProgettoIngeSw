@@ -180,7 +180,7 @@ public class InputDati {
             if (valoreLetto >= minimo && valoreLetto <= massimo) {
                 finito = true;
             } else {
-                System.out.println("Attenzione: e' richiesto un valore maggiore o uguale a " + minimo + " e minore o uguale a " + massimo);
+                System.err.println("Attenzione: e' richiesto un valore maggiore o uguale a " + minimo + " e minore o uguale a " + massimo);
             }
         } while(!finito);
 

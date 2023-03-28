@@ -318,6 +318,7 @@ public class Ristorante {
         System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         Json.salvaRegistroMagazzino(registroMagazzino);
+        Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
     }
     public void portaIngredientiInCucina(){
         HashMap<String,QuantitaMerce> prodottiDaPortareInCucina = merceDaPortareInCucina.getArticoli();
@@ -346,25 +347,45 @@ public class Ristorante {
         merceInCucina.aggiungiIngredienti(ingredientiDaAggiungere);
         System.out.println(ANSI_CYAN+"MERCE PORTATA IN CUCINA:"+ANSI_RESET);
         merceInCucina.visualizzaMerce();
+        System.out.println(ANSI_CYAN+"MERCE RIMASTA DA PORTARE IN CUCINA:"+ANSI_RESET);
+        merceDaPortareInCucina.visualizzaMerce();
         registroMagazzino.rimuoviProdotti(ingredientiDaAggiungere); //metodo per la rimozione dal registro magazzino degli ingredienti portati in cucina
         System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         //Json.salvaRegistroMagazzino(registroMagazzino);
+        Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
     }
     public void portaBevandaGenereInSala(){
-        HashMap<String, QuantitaMerce> prodottiInSala = magazziniere.portaBevandaGenereInSala(registroMagazzino,bevande,generiAlimentariExtra);
+        Set<Raggruppabile> bevandeEGeneri = new HashSet<>();
+        bevandeEGeneri.addAll(bevande);
+        bevandeEGeneri.addAll(generiAlimentariExtra);
+        HashMap<String, QuantitaMerce> prodottiInSala = magazziniere.portaBevandaGenereInSala(registroMagazzino,bevandeEGeneri);
         registroMagazzino.rimuoviProdotti(prodottiInSala);
         System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         //Json.salvaRegistroMagazzino(registroMagazzino);
     }
 
-    public void riportaIngredientiNonConsumati(){
-
+    public void riportaInMagazzinoNonConsumati(){
+        HashMap<String,QuantitaMerce> prodottiDaRiportare = magazziniere.riportaInMagazzino(merceInCucina);
+        merceInCucina.rimuoviProdotti(prodottiDaRiportare);
+        System.out.println(ANSI_CYAN+"MERCE IN CUCINA RIMASTA:"+ANSI_RESET);
+        merceInCucina.visualizzaMerce();
+        registroMagazzino.riportaProdotti(prodottiDaRiportare);
+        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO CON PRODOTTI RIPORTATI:"+ANSI_RESET);
+        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
+        //Json.salvaRegistroMagazzino(registroMagazzino);
+        Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
     }
 
     public void rimuoviScartiDalMagazzino(){
-
+        HashMap<String,QuantitaMerce> scarti = magazziniere.rimuoviScarti(registroMagazzino);
+        System.out.println(ANSI_CYAN+"PRDOTTI DA SCARTARE:"+ANSI_RESET);
+        System.out.println(scarti);
+        registroMagazzino.rimuoviProdotti(scarti);
+        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO CON PRODOTTI SCARTATI:"+ANSI_RESET);
+        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
+        //Json.salvaRegistroMagazzino(registroMagazzino);
     }
     @Override
     public String toString() {
