@@ -59,12 +59,12 @@ public class Magazziniere extends Utente {
     public HashMap<String,QuantitaMerce> rimuoviScarti(RegistroMagazzino registroMagazzino){
         HashMap<String,QuantitaMerce> articoliMagazzino = registroMagazzino.getArticoliDisponibili().getArticoli();
         HashMap<String,QuantitaMerce> scarti = new HashMap<>();
+        System.out.println(ANSI_CYAN+"MERCE IN MAGAZZINO:"+ANSI_RESET);
+        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         do{
             boolean prodottoPresente = false;
             String nomeProdotto = "";
             do {
-                System.out.println(ANSI_CYAN+"MERCE IN MAGAZZINO:"+ANSI_RESET);
-                registroMagazzino.getArticoliDisponibili().visualizzaMerce();
                 nomeProdotto = InputDati.leggiStringaNonVuota("Inserire nome del prodotto da scartare: ");
                 if (articoliMagazzino.containsKey(nomeProdotto))
                     prodottoPresente = true;

@@ -18,7 +18,7 @@ public class GestioneUtenza {
     public GestioneUtenza(){}
 
     public void menuGestore() throws IOException, NoSuchAlgorithmException {
-        if(PasswordManager.autenticazione("./credenzialiGestore.json")){
+        if(PasswordManager.autenticazione("dati/credenzialiGestore.json")){
             MyMenu menuIniziale = new MyMenu(titoloMenuGestore,vociMenuGestore);
             boolean finito = false;
             do {
@@ -38,7 +38,7 @@ public class GestioneUtenza {
     }
 
     public void menuAddettoPrenotazioni() throws NoSuchAlgorithmException {
-        if(PasswordManager.autenticazione("./credenzialiAddettoPrenotazioni.json")){
+        if(PasswordManager.autenticazione("dati/credenzialiAddettoPrenotazioni.json")){
             if(this.ristorante == null)
                 ristorante = Json.caricaDati();
             ristorante.filtraPrenotazioni();
@@ -60,7 +60,7 @@ public class GestioneUtenza {
     }
 
     public void menuMagazziniere() throws NoSuchAlgorithmException {
-        if(PasswordManager.autenticazione("./credenzialiMagazziniere.json")){
+        if(PasswordManager.autenticazione("dati/credenzialiMagazziniere.json")){
             if(this.ristorante == null)
                 ristorante = Json.caricaDati();
             ristorante.filtraPrenotazioni();

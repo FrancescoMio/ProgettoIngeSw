@@ -5,6 +5,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import unibs.ids.ristorante.*;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -29,9 +30,7 @@ public class Json {
         obj.put("caricoLavoroSostenibile",ristorante.getCaricoDiLavoroSostenibile());
         ArrayList<JSONObject> elencoPiattiJson = getElencoPiattiJson(piatti);
         obj.put("elencoPiatti",elencoPiattiJson);
-        //ArrayList<JSONObject>  elencoBevande = getRaggruppabileJSon(ristorante.getBevande());
-        //ArrayList<JSONObject>  elencoGeneriExtra = getRaggruppabileJSon(ristorante.getGeneriAlimentari());
-        salvaSuFile(obj,"./config.json");
+        salvaSuFile(obj,"dati/config.json");
     }
 
     /**
@@ -56,7 +55,7 @@ public class Json {
             elencoMenuTematiciJson.add(menuJson);
         }
         menuTematiciJson.put("menuTematici", elencoMenuTematiciJson);
-        salvaSuFile(menuTematiciJson,"./menuTematici.json");
+        salvaSuFile(menuTematiciJson,"dati/menuTematici.json");
     }
 
 
@@ -67,7 +66,7 @@ public class Json {
         menuCartaJson.put("data",data);
         ArrayList<JSONObject> piattiJson = getElencoPiattiJson(menuCarta.getElencoPiatti());
         menuCartaJson.put("elencoPiatti", piattiJson);
-        salvaSuFile(menuCartaJson, "./menuCarta.json");
+        salvaSuFile(menuCartaJson, "dati/menuCarta.json");
     }
 
     public static void salvaConsumiProCapite(ConsumoProCapiteBevande bevande, ConsumoProCapiteGeneriExtra generi){
@@ -76,14 +75,14 @@ public class Json {
         elenco.put("elencoBevande",elencoBevande);
         ArrayList<JSONObject> elencoGeneriExtra = getElencoBevandeGeneriJson(generi);
         elenco.put("elencoGeneriExtra", elencoGeneriExtra);
-        salvaSuFile(elenco,"./consumoProCapite.json");
+        salvaSuFile(elenco,"dati/consumoProCapite.json");
     }
 
     public static void salvaPrenotazioni(ArrayList<Prenotazione> prenotazioni){
         JSONObject prenotazioniJson = new JSONObject();
         ArrayList<JSONObject> elencoPrenotazioni = getElencoPrenotazioniJson(prenotazioni);
         prenotazioniJson.put("prenotazioni",elencoPrenotazioni);
-        salvaSuFile(prenotazioniJson,"./prenotazioni.json");
+        salvaSuFile(prenotazioniJson,"dati/prenotazioni.json");
     }
 
     public static void salvaRegistroMagazzino(RegistroMagazzino registroMagazzino){
@@ -92,7 +91,7 @@ public class Json {
         HashMap<String, QuantitaMerce> articoliMagazzino = merceMagazzino.getArticoli();
         ArrayList<JSONObject> elencoArticoliMagazzino = getArticoliMagazzinoJson(articoliMagazzino);
         registroJson.put("articoli",elencoArticoliMagazzino);
-        salvaSuFile(registroJson,"./registroMagazzino.json");
+        salvaSuFile(registroJson,"dati/registroMagazzino.json");
     }
 
     //todo: rinominare il metodo "getArticoliMagazzinoJson"
@@ -102,7 +101,7 @@ public class Json {
         ArrayList<JSONObject> merceInCucinaJson = getArticoliMagazzinoJson(merceInCucina.getArticoli());
         cucinaJson.put("merceDaPortareInCucina",merceDaPortareInCucinaJson);
         cucinaJson.put("merceInCucina",merceInCucinaJson);
-        salvaSuFile(cucinaJson,"./cucina.json");
+        salvaSuFile(cucinaJson,"dati/cucina.json");
     }
 
     public static ArrayList<JSONObject> getArticoliMagazzinoJson(HashMap<String,QuantitaMerce> articoliMagazzino){
@@ -231,7 +230,7 @@ public class Json {
 
         Set<Piatto> piatti = new HashSet<>();
         //caricamento della configurazione del ristorante
-        try (FileReader reader = new FileReader("./config.json")) {
+        try (FileReader reader = new FileReader("dati/config.json")) {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
 
             String nomeRistorante = (String) jsonObject.get("nomeRistorante");
@@ -268,7 +267,7 @@ public class Json {
 
         Set<MenuTematico> menuTematici = new HashSet<>();
         //caricamento menù tematici del ristorante
-        try (FileReader reader = new FileReader("./menuTematici.json")) {
+        try (FileReader reader = new FileReader("dati/menuTematici.json")) {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             ArrayList<JSONObject> menuTematiciJson = (ArrayList<JSONObject>) jsonObject.get("menuTematici");
 
@@ -346,7 +345,7 @@ public class Json {
     private static RegistroMagazzino caricaRegistroMagazzino(){
         RegistroMagazzino registroMagazzino = new RegistroMagazzino();
         JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader("./registroMagazzino.json")){
+        try (FileReader reader = new FileReader("dati/registroMagazzino.json")){
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             ArrayList<JSONObject> articoliMagazzinoJson = (ArrayList<JSONObject>) jsonObject.get("articoli");
             for(JSONObject articoloJson : articoliMagazzinoJson){
@@ -365,7 +364,7 @@ public class Json {
     private static Set<Bevanda> caricaBevande(){
         Set<Bevanda> bevande = new HashSet<>();
         JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader("./consumoProCapite.json")){
+        try (FileReader reader = new FileReader("dati/consumoProCapite.json")){
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             ArrayList<JSONObject> elencoBevandeJson = (ArrayList<JSONObject>) jsonObject.get("elencoBevande");
             for(JSONObject bevandaJson : elencoBevandeJson){
@@ -382,7 +381,7 @@ public class Json {
     private static Set<GenereAlimentareExtra> caricaGeneriAlimentari(){
         Set<GenereAlimentareExtra> generiAlimentari = new HashSet<>();
         JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader("./consumoProCapite.json")){
+        try (FileReader reader = new FileReader("dati/consumoProCapite.json")){
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             ArrayList<JSONObject> elencoGeneriJson = (ArrayList<JSONObject>) jsonObject.get("elencoGeneriExtra");
             for(JSONObject genereJson : elencoGeneriJson){
@@ -400,7 +399,7 @@ public class Json {
         ConsumoProCapiteBevande consumoProCapiteBevande = new ConsumoProCapiteBevande();
         HashMap<Raggruppabile, QuantitaMerce> hashMapConsumoBevande= new HashMap<>();
         JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader("./consumoProCapite.json")){
+        try (FileReader reader = new FileReader("dati/consumoProCapite.json")){
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             ArrayList<JSONObject> elencoBevandeJson = (ArrayList<JSONObject>) jsonObject.get("elencoBevande");
             for(JSONObject bevandaJson : elencoBevandeJson){
@@ -422,7 +421,7 @@ public class Json {
         ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra = new ConsumoProCapiteGeneriExtra();
         HashMap<Raggruppabile, QuantitaMerce> hashMapConsumoGeneri= new HashMap<>();
         JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader("./consumoProCapite.json")){
+        try (FileReader reader = new FileReader("dati/consumoProCapite.json")){
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             ArrayList<JSONObject> elencoGeneriJson = (ArrayList<JSONObject>) jsonObject.get("elencoGeneriExtra");
             for(JSONObject bevandaJson : elencoGeneriJson){
@@ -443,7 +442,7 @@ public class Json {
     private static ArrayList<Prenotazione> caricaPrenotazioni(Set<MenuTematico> menuTematici, Set<Piatto> piatti){
         ArrayList<Prenotazione> prenotazioni = new ArrayList<>();
         JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader("./prenotazioni.json")){
+        try (FileReader reader = new FileReader("dati/prenotazioni.json")){
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             ArrayList<JSONObject> prenotazioniJson = (ArrayList<JSONObject>) jsonObject.get("prenotazioni");
             for(JSONObject prenotazioneJson: prenotazioniJson){
@@ -527,8 +526,11 @@ public class Json {
     }
 
     public static ArrayList<JSONObject> caricaCredenziali(String nomeFile){
+        File file = new File(nomeFile);
+        String absolutePath = file.getAbsolutePath();
+        System.out.println(absolutePath);
         JSONParser parser = new JSONParser();
-        try (FileReader reader = new FileReader(nomeFile)){
+        try (FileReader reader = new FileReader(absolutePath)){
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             ArrayList<JSONObject> elencoUtentiJson = (ArrayList<JSONObject>) jsonObject.get("elencoUtenti");
             return elencoUtentiJson;

@@ -24,24 +24,6 @@ public class Consumo {
         this.consumoProCapite = consumo;
     }
 
-    /**
-     * Metodo per il controllo della giusta corrispondeza tra bevande e generi alimentari extra e la
-     * nostra collezione "consumoProCapite"
-     */
-    public boolean controlloInsiemeGeneri(){
-        ArrayList<Raggruppabile> insiemeGeneri = new ArrayList<>();
-        insiemeGeneri.addAll(RegistroMagazzino.getGeneriAlimentariExtra());
-        insiemeGeneri.addAll(RegistroMagazzino.getBevande());
-        if(consumoProCapite.entrySet().size() != insiemeGeneri.size())
-            return false;
-        else{
-            for (Raggruppabile item : insiemeGeneri)
-                if(!consumoProCapite.containsKey(item))
-                    return false;
-            return true;
-        }
-    }
-
     @Override
     public String toString() {
         String consumo = "";
