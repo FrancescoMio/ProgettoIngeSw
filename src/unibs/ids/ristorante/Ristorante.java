@@ -319,6 +319,7 @@ public class Ristorante {
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         Json.salvaRegistroMagazzino(registroMagazzino);
         Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
+        Json.salvaListaSpesa(listaSpesa);
     }
     public void portaIngredientiInCucina(){
         HashMap<String,QuantitaMerce> prodottiDaPortareInCucina = merceDaPortareInCucina.getArticoli();
@@ -360,7 +361,7 @@ public class Ristorante {
         registroMagazzino.rimuoviProdotti(ingredientiDaAggiungere); //metodo per la rimozione dal registro magazzino degli ingredienti portati in cucina
         System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
-        //Json.salvaRegistroMagazzino(registroMagazzino);
+        Json.salvaRegistroMagazzino(registroMagazzino);
         Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
     }
     public void portaBevandaGenereInSala(){
@@ -371,7 +372,7 @@ public class Ristorante {
         registroMagazzino.rimuoviProdotti(prodottiInSala);
         System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
-        //Json.salvaRegistroMagazzino(registroMagazzino);
+        Json.salvaRegistroMagazzino(registroMagazzino);
     }
 
     public void riportaInMagazzinoNonConsumati(){
@@ -383,7 +384,7 @@ public class Ristorante {
         registroMagazzino.riportaProdotti(prodottiDaRiportare);
         System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO CON PRODOTTI RIPORTATI:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
-        //Json.salvaRegistroMagazzino(registroMagazzino);
+        Json.salvaRegistroMagazzino(registroMagazzino);
         Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
     }
 
@@ -394,7 +395,7 @@ public class Ristorante {
         registroMagazzino.rimuoviProdotti(scarti);
         System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO CON PRODOTTI SCARTATI:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
-        //Json.salvaRegistroMagazzino(registroMagazzino);
+        Json.salvaRegistroMagazzino(registroMagazzino);
     }
     public Merce getMerceInCucina() {
         return merceInCucina;

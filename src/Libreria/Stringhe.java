@@ -26,7 +26,7 @@ public class Stringhe {
     public static final String titoloMenuAuth = "\u001B[33mFASE DI AUTENTICAZIONE:\u001B[0m";
     public static String [] vociMenuAuth = {"REGISTRATI","ACCEDI"};
     public static final String titoloMenuMagazziniere = "\u001B[36mSELEZIONARE OPERAZIONE:\u001B[0m";
-    public static String [] vociMenuMagazziniere = {"Crea lista della spesa","Porta ingredienti in cucina","Porta bevanda/genere " +
+    public static String [] vociMenuMagazziniere = {"Porta ingredienti in cucina","Porta bevanda/genere " +
                                                     "alimentare in sala", "Riporta in magazzino ingredienti non consumati",
                                                     "Rimuovi scarti dal magazzino"};
 

@@ -564,6 +564,35 @@ public class Json {
         return null;
     }
 
+    public static void salvaListaSpesa(Merce listaSpesa){
+        JSONObject listaSpesaJson = new JSONObject();
+        ArrayList<JSONObject> elencoArticoliJson = getArticoliMagazzinoJson(listaSpesa.getArticoli());
+        String data = MyUtil.getDataOdierna().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        listaSpesaJson.put("giorno",data);
+        listaSpesaJson.put("elencoLista",elencoArticoliJson);
+        salvaSuFile(listaSpesaJson,"dati/listaSpesa.json");
+    }
+
+
+    public static boolean fattoListaSpesa(){
+        File file = new File("dati/listaSpesa.json");
+        String absolutePath = file.getAbsolutePath();
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader(absolutePath)){
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            String dataSpesa = (String) jsonObject.get("giorno");
+            System.out.println(dataSpesa);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            //dataSpesa = dataSpesa.replaceAll("'\\'", "");
+            LocalDate dataListaSpesa = LocalDate.parse(dataSpesa, formatter);
+            if(dataListaSpesa.isEqual(MyUtil.getDataOdierna()))
+                return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static void salvaCredenziali(JSONObject utenti,String nomeFile){
         salvaSuFile(utenti, nomeFile);
     }

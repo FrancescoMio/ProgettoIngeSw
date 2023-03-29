@@ -27,6 +27,7 @@ public class GestioneUtenza {
                     ristorante = new Ristorante();
                 } else if (scelta == 2) {
                     ristorante = Json.caricaDati();
+                    ristorante.filtraPrenotazioni();
                 } else if (scelta == 3) {
                     ristorante.visualizzaParametri();
                 } else {
@@ -64,19 +65,20 @@ public class GestioneUtenza {
             if(this.ristorante == null)
                 ristorante = Json.caricaDati();
             ristorante.filtraPrenotazioni();
+            if(!Json.fattoListaSpesa())
+                ristorante.creaListaSpesa();
+            else System.out.println("lista spesa già fatta");
             MyMenu menu = new MyMenu(titoloMenuMagazziniere, vociMenuMagazziniere);
             boolean finito = false;
             do {
                 int scelta = menu.scegli();
                 if (scelta == 1) {
-                    ristorante.creaListaSpesa();
-                } else if (scelta == 2) {
                     ristorante.portaIngredientiInCucina();
-                } else if (scelta == 3) {
+                } else if (scelta == 2) {
                     ristorante.portaBevandaGenereInSala();
-                }else if (scelta == 4) {
+                } else if (scelta == 3) {
                     ristorante.riportaInMagazzinoNonConsumati();
-                } else if (scelta == 5) {
+                }else if (scelta == 4) {
                     ristorante.rimuoviScartiDalMagazzino();
                 }else {
                     System.out.println(ANSI_GREEN + "---ARRIVEDERCI!---" + ANSI_RESET);
