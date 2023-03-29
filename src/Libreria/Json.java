@@ -528,7 +528,6 @@ public class Json {
     public static ArrayList<JSONObject> caricaCredenziali(String nomeFile){
         File file = new File(nomeFile);
         String absolutePath = file.getAbsolutePath();
-        System.out.println(absolutePath);
         JSONParser parser = new JSONParser();
         try (FileReader reader = new FileReader(absolutePath)){
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
