@@ -396,6 +396,21 @@ public class Ristorante {
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         //Json.salvaRegistroMagazzino(registroMagazzino);
     }
+    public Merce getMerceInCucina() {
+        return merceInCucina;
+    }
+
+    public Merce getMerceDaPortareInCucina() {
+        return merceDaPortareInCucina;
+    }
+
+    public void setMerceInCucina(Merce merceInCucina) {
+        this.merceInCucina = merceInCucina;
+    }
+
+    public void setMerceDaPortareInCucina(Merce merceDaPortareInCucina) {
+        this.merceDaPortareInCucina = merceDaPortareInCucina;
+    }
     @Override
     public String toString() {
         return "Ristorante{" +

@@ -321,6 +321,12 @@ public class Json {
         ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra = Json.caricaConsumoProCapiteGeneriAlimentari();
         ristorante.setConsumoProCapiteGeneriExtra(consumoProCapiteGeneriExtra);
 
+        //caricamento prodotti da portare in cucina e di quelli già presenti
+        Merce prodottiDaPortareInCucina = Json.caricaProdottiCucina("merceDaPortareInCucina");
+        Merce prodottiInCucina = Json.caricaProdottiCucina("merceInCucina");
+        ristorante.setMerceDaPortareInCucina(prodottiDaPortareInCucina);
+        ristorante.setMerceInCucina(prodottiInCucina);
+
         RegistroMagazzino registroMagazzino = Json.caricaRegistroMagazzino();
         ristorante.setRegistroMagazzino(registroMagazzino);
         System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO"+ANSI_RESET);
@@ -340,6 +346,25 @@ public class Json {
 
         System.out.println(ANSI_RESET+"\n"+ANSI_GREEN + configurazioneCaricata + ANSI_RESET);
         return ristorante;
+    }
+
+    private static Merce caricaProdottiCucina(String prodottiDaCaricare){
+        Merce prodottiDaPortare = new Merce();
+        JSONParser parser = new JSONParser();
+        try (FileReader reader = new FileReader("dati/cucina.json")){
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            ArrayList<JSONObject> prodottiCucinaJson = (ArrayList<JSONObject>) jsonObject.get(prodottiDaCaricare);
+            for(JSONObject prodottoJson : prodottiCucinaJson){
+                String nomeArticolo = (String) prodottoJson.get("nome");
+                String unitaMisura = (String) prodottoJson.get("unitaMisura");
+                double quantita = (double) prodottoJson.get("quantita");
+                QuantitaMerce quantitaProdotto = new QuantitaMerce(quantita,unitaMisura);
+                prodottiDaPortare.aggiungiMerce(nomeArticolo,quantitaProdotto);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return prodottiDaPortare;
     }
 
     private static RegistroMagazzino caricaRegistroMagazzino(){
