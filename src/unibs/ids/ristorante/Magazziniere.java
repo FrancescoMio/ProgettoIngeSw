@@ -91,9 +91,9 @@ public class Magazziniere extends Utente {
         do{
             boolean prodottoPresente = false;
             String nomeProdotto = "";
+            System.out.println(ANSI_CYAN+"MERCE IN CUCINA:"+ANSI_RESET);
+            System.out.println(prodottiInCucina);
             do {
-                System.out.println(ANSI_CYAN+"MERCE IN CUCINA:"+ANSI_RESET);
-                merceInCucina.visualizzaMerce();
                 nomeProdotto = InputDati.leggiStringaNonVuota("Inserire nome del prodotto da riportare in magazzino: ");
                 if (merceInCucina.getArticoli().containsKey(nomeProdotto))
                     prodottoPresente = true;
@@ -103,6 +103,8 @@ public class Magazziniere extends Utente {
             double quantitaInCucina = quantitaProdottoInCucina.getQuantita();
             String unitaMisura = quantitaProdottoInCucina.getUnitaMisura();
             double quantitaDaPortare = InputDati.leggiDoubleCompreso("Inserire quantita da riportare in magazzino (" + unitaMisura +"): ",0,quantitaInCucina);
+            QuantitaMerce quantitaInCucinaAggiornata = new QuantitaMerce(quantitaInCucina - quantitaDaPortare, unitaMisura);
+            prodottiInCucina.replace(nomeProdotto,quantitaInCucinaAggiornata);
             QuantitaMerce quantitaProdotto = new QuantitaMerce(quantitaDaPortare,unitaMisura);
             if(prodottiDaRiportare.containsKey(nomeProdotto)){
                 QuantitaMerce quantitaProdottoOld = prodottiDaRiportare.get(nomeProdotto);

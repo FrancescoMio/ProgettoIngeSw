@@ -342,8 +342,16 @@ public class Ristorante {
             QuantitaMerce quantitaIngredienteDaPortare = new QuantitaMerce(quantitaDaPortare, unitaMisura);
             QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaMax - quantitaDaPortare, unitaMisura);
             prodottiDaPortareInCucina.replace(nomeIngrediente, quantitaIngrediente, quantitaAggiornata);
-            ingredientiDaAggiungere.put(nomeIngrediente, quantitaIngredienteDaPortare);
+            //ingredientiDaAggiungere.put(nomeIngrediente, quantitaIngredienteDaPortare);
+            if(ingredientiDaAggiungere.containsKey(nomeIngrediente)){
+                QuantitaMerce quantitaProdottoOld = ingredientiDaAggiungere.get(nomeIngrediente);
+                double quantitaOld = quantitaProdottoOld.getQuantita();
+                QuantitaMerce quantitaAggiornataDaAggiungere = new QuantitaMerce(quantitaDaPortare+quantitaOld,unitaMisura);
+                ingredientiDaAggiungere.put(nomeIngrediente,quantitaAggiornataDaAggiungere);
+            }else ingredientiDaAggiungere.put(nomeIngrediente,quantitaIngredienteDaPortare);
         }while (InputDati.yesOrNo(ANSI_GREEN + "Portare un altro ingrediente in cucina?" + ANSI_RESET));
+        System.out.println(ANSI_CYAN+"INGREDIENTI DA AGGIUNGERE:"+ANSI_RESET);
+        System.out.println(ingredientiDaAggiungere);
         merceInCucina.aggiungiIngredienti(ingredientiDaAggiungere);
         System.out.println(ANSI_CYAN+"MERCE PORTATA IN CUCINA:"+ANSI_RESET);
         merceInCucina.visualizzaMerce();
@@ -368,7 +376,8 @@ public class Ristorante {
 
     public void riportaInMagazzinoNonConsumati(){
         HashMap<String,QuantitaMerce> prodottiDaRiportare = magazziniere.riportaInMagazzino(merceInCucina);
-        merceInCucina.rimuoviProdotti(prodottiDaRiportare);
+        System.out.println("prodotti da riportare in magazzino: ");
+        System.out.println(prodottiDaRiportare);
         System.out.println(ANSI_CYAN+"MERCE IN CUCINA RIMASTA:"+ANSI_RESET);
         merceInCucina.visualizzaMerce();
         registroMagazzino.riportaProdotti(prodottiDaRiportare);
