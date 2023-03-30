@@ -19,6 +19,8 @@ public class GestioneUtenza {
 
     public void menuGestore() throws IOException, NoSuchAlgorithmException {
         if(PasswordManager.autenticazione("dati/credenzialiGestore.json")){
+            ristorante = Json.caricaDati();
+            ristorante.filtraPrenotazioni();
             MyMenu menuIniziale = new MyMenu(titoloMenuGestore,vociMenuGestore);
             boolean finito = false;
             do {
@@ -26,11 +28,20 @@ public class GestioneUtenza {
                 if (scelta == 1) {
                     ristorante = new Ristorante();
                 } else if (scelta == 2) {
-                    ristorante = Json.caricaDati();
-                    ristorante.filtraPrenotazioni();
-                } else if (scelta == 3) {
                     ristorante.visualizzaParametri();
-                } else {
+                } else if (scelta == 3) {
+                    ristorante.impostaCaricoDiLavoroXPersona();
+                }else if (scelta == 4) {
+                    ristorante.impostaPostiAsedere();
+                }else if (scelta == 5) {
+                    ristorante.addBevanda();
+                } else if (scelta == 6) {
+                    ristorante.addGenereAlimentareExtra();
+                }else if (scelta == 7) {
+                    ristorante.addPiatto();
+                }else if (scelta == 8) {
+                    ristorante.addMenuTematico();
+                }else {
                     System.out.println(ANSI_GREEN + "---ARRIVEDERCI!---" + ANSI_RESET);
                     finito = true;
                 }

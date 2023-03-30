@@ -21,8 +21,8 @@ public class Gestore extends Utente {
      * metodo per inserire piatti a mano
      * @return set di piatti
      */
-    public Set<Piatto> inizializzaPiatti() {
-        return inserisciPiatti();
+    public Set<Piatto> inizializzaPiatti(Set<Piatto> piatti) {
+        return inserisciPiatti(piatti);
     }
 
     public String getNomeRistorante() {
@@ -45,17 +45,24 @@ public class Gestore extends Utente {
      *
      * @return set di piatti
      */
-    private Set<Piatto> inserisciPiatti() {
+    private Set<Piatto> inserisciPiatti(Set<Piatto> piattiDelMenu) {
         Set<Piatto> piatti = new HashSet<>();
         boolean scelta = true;
-        System.out.println("Inserire di seguito i piatti che comporranno i menu del ristorante: ");
+        System.out.println("Inserire di seguito i piatti che faranno parte dei menu del ristorante: ");
         do {
-            String nome = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
+            boolean presente = true;
+            String nomePiatto = "";
+            do{
+                nomePiatto = InputDati.leggiStringaConSpazi("Inserire nome del piatto: ");
+                if(!piattoGiaPresente(nomePiatto,piattiDelMenu))
+                    presente = false;
+                else System.err.println("Piatto già presente nel ristorante!");
+            }while(presente);
             LocalDate dataInizio = InputDati.leggiData("Inserire data di inizio validità: ");
             LocalDate dataFine = InputDati.leggiData("Inserire data di fine validità: ");
             int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione in minuti: ");
             Ricetta ricetta = creaRicetta();
-            Piatto piatto = new Piatto(nome, ricetta, tempoPreparazione, dataInizio, dataFine);
+            Piatto piatto = new Piatto(nomePiatto, ricetta, tempoPreparazione, dataInizio, dataFine);
             piatti.add(piatto);
             scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
         } while (scelta);
@@ -100,21 +107,45 @@ public class Gestore extends Utente {
      * @param piatti set di piatti
      * @return menun tematici del ristorante
      */
-    public Set<MenuTematico> creaMenuTematici(Set<Piatto> piatti,int caricoLavoroPersona) {
+    public Set<MenuTematico> creaMenuTematici(Set<Piatto> piatti,int caricoLavoroPersona,Set<MenuTematico> menuTematiciPresenti) {
         Set<MenuTematico> menuTematici = new HashSet<>();
         boolean scelta = true;
         do {
-            String nome = InputDati.leggiStringaConSpazi(nomeMenuTematico);
+            boolean presente = true;
+            String nomeMenu = "";
+            do{
+                nomeMenu = InputDati.leggiStringaConSpazi(nomeMenuTematico);
+                if(!menuGiaPresente( nomeMenu,menuTematiciPresenti))
+                    presente = false;
+                else System.err.println("Menù tematico già presente nel ristorante!");
+            }while(presente);
             ArrayList<LocalDate> date = new ArrayList<>();
             date = inserisciDate();
             Set<Piatto> piattiDelMenu = new HashSet<>();
             piattiDelMenu = inserisciPiattiMenuTematico(piatti,caricoLavoroPersona);
             double caricoLavoroMenu = calcoloLavoroMenuTematico(piattiDelMenu);
-            MenuTematico myMenu = new MenuTematico(nome, piattiDelMenu,date.get(0),date.get(1),caricoLavoroMenu);
+            MenuTematico myMenu = new MenuTematico( nomeMenu, piattiDelMenu,date.get(0),date.get(1),caricoLavoroMenu);
             menuTematici.add(myMenu);
         } while(InputDati.yesOrNo(nuovoMenuTematico));
         return menuTematici;
     }
+
+    private boolean menuGiaPresente(String nome, Set<MenuTematico> menuTematiciPresenti){
+        for(MenuTematico menuTematico : menuTematiciPresenti){
+            if(menuTematico.getNomeMenu().equalsIgnoreCase(nome))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean piattoGiaPresente(String nome, Set<Piatto> piattiPresenti){
+        for(Piatto piatto : piattiPresenti){
+            if(piatto.getNome().equalsIgnoreCase(nome))
+                return true;
+        }
+        return false;
+    }
+
 
     /**
      * metodo per l'aggiunta di piatti nel menù tematico
@@ -192,6 +223,67 @@ public class Gestore extends Utente {
 
     public void visualizzaMagazzino(RegistroMagazzino magazzino){
         magazzino.visualizzaMagazzino();
+    }
+
+    public int setCaricoLavoroPersona(){
+        int caricoLavoroPersona = InputDati.leggiInteroPositivo("Inserire carico lavoro per persona: ");
+        return caricoLavoroPersona;
+    }
+
+    public int setPostiAsedere(){
+        int posti = InputDati.leggiInteroPositivo("Inserire numero di posti a sedere del ristorante: ");
+        return posti;
+    }
+
+    public Bevanda creaBevanda(Set<Bevanda> bevande){
+        boolean presente = true;
+        String nome = "";
+        do{
+            nome = InputDati.leggiStringaConSpazi("Inserire nome della bevanda: ");
+            if(!bevandaPresente(nome,bevande))
+                presente = false;
+            else System.err.println("Bevanda già presente nel magazzino!");
+        }while (presente);
+        Bevanda bevanda = new Bevanda(nome);
+        return bevanda;
+    }
+    public GenereAlimentareExtra creaGenereAlimentare(Set<GenereAlimentareExtra> generi){
+        boolean presente = true;
+        String nome = "";
+        do{
+            nome = InputDati.leggiStringaConSpazi("Inserire nome del genere alimentare extra: ");
+            if(!generePresente(nome,generi))
+                presente = false;
+            else System.err.println("Genere già presente nel magazzino!");
+        }while (presente);
+        GenereAlimentareExtra genere = new GenereAlimentareExtra(nome);
+        return genere;
+    }
+
+    private boolean bevandaPresente(String nome , Set<Bevanda> bevande){
+        for(Bevanda bevanda : bevande){
+            if(bevanda.getNome().equalsIgnoreCase(nome))
+                return true;
+        }
+        return false;
+    }
+    private boolean generePresente(String nome , Set<GenereAlimentareExtra> generi){
+        for(GenereAlimentareExtra genere : generi){
+            if(genere.getNome().equalsIgnoreCase(nome))
+                return true;
+        }
+        return false;
+    }
+
+    public QuantitaMerce creaConsumoProCapiteBevanda(String nome){
+        double quantita = InputDati.leggiDoubleConMinimo("Consumo pro capite '" + nome + "' (l) : ",0.0);
+        QuantitaMerce quantitaMerce = new QuantitaMerce(quantita, "l");
+        return quantitaMerce;
+    }
+    public QuantitaMerce creaConsumoProCapiteGenere(String nome){
+        double quantita = InputDati.leggiDoubleConMinimo("Consumo pro capite '" + nome + "' (hg) : ",0.0);
+        QuantitaMerce quantitaMerce = new QuantitaMerce(quantita, "hg");
+        return quantitaMerce;
     }
 
     /**

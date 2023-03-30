@@ -99,16 +99,15 @@ public class Ristorante {
         piatti = new HashSet<>();
         nomeRistorante = gestore.getNomeRistorante();
         postiASedere = gestore.postiASedere();
-        piatti = gestore.inizializzaPiatti();
+        piatti = gestore.inizializzaPiatti(piatti);
         caricoDiLavoroXPersona = gestore.caricoXpersona();
     }
 
     public void creaMenuTematici(){
         System.out.println(lineSeparator);
         System.out.println(creazioneMenuTematici);
-        //creazione dei menù  tematici
         menuTematici = new HashSet<>();
-        menuTematici = gestore.creaMenuTematici(piatti,caricoDiLavoroXPersona);
+        menuTematici = gestore.creaMenuTematici(piatti,caricoDiLavoroXPersona,menuTematici);
     }
 
     public void creaMenuCarta(){
@@ -307,7 +306,44 @@ public class Ristorante {
         }while(!finito);
     }
 
-    //todo: fare in modo che lista della spesa venga creata una sola volta in automatico
+    public void impostaCaricoDiLavoroXPersona(){
+        this.caricoDiLavoroXPersona = gestore.setCaricoLavoroPersona();
+        Json.salvaConfigurazione(this,piatti);
+    }
+
+    public void impostaPostiAsedere(){
+        this.postiASedere = gestore.setPostiAsedere();
+        Json.salvaConfigurazione(this,piatti);
+    }
+
+    public void addBevanda(){
+        Bevanda bevanda = gestore.creaBevanda(bevande);
+        QuantitaMerce quantitaConsumo = gestore.creaConsumoProCapiteBevanda(bevanda.getNome());
+        bevande.add(bevanda);
+        consumoProCapiteBevande.addConsumo(bevanda,quantitaConsumo);
+        Json.salvaConsumiProCapite(consumoProCapiteBevande,consumoProCapiteGeneriExtra);
+    }
+
+    public void addGenereAlimentareExtra(){
+        GenereAlimentareExtra genereAlimentareExtra = gestore.creaGenereAlimentare(generiAlimentariExtra);
+        QuantitaMerce quantitaConsumo = gestore.creaConsumoProCapiteGenere(genereAlimentareExtra.getNome());
+        generiAlimentariExtra.add(genereAlimentareExtra);
+        consumoProCapiteGeneriExtra.addConsumo(genereAlimentareExtra,quantitaConsumo);
+        Json.salvaConsumiProCapite(consumoProCapiteBevande,consumoProCapiteGeneriExtra);
+    }
+
+    public void addPiatto(){
+        Set<Piatto> piattiNuovi = gestore.inizializzaPiatti(piatti);
+        piatti.addAll(piattiNuovi);
+        Json.salvaConfigurazione(this,piatti);
+    }
+
+    public void addMenuTematico(){
+        Set<MenuTematico> nuoviMenuTematici = gestore.creaMenuTematici(piatti,caricoDiLavoroXPersona,menuTematici);
+        this.menuTematici.addAll(nuoviMenuTematici);
+        Json.salvaMenuTematici(menuTematici);
+    }
+
     public void creaListaSpesa(){
         magazziniere.creaListaSpesaGiornaliera(prenotazioni,registroMagazzino,consumoProCapiteBevande,consumoProCapiteGeneriExtra);
         Merce listaSpesa = magazziniere.getListaSpesa();
@@ -354,7 +390,7 @@ public class Ristorante {
         System.out.println(ANSI_CYAN+"INGREDIENTI DA AGGIUNGERE:"+ANSI_RESET);
         System.out.println(ingredientiDaAggiungere);
         merceInCucina.aggiungiIngredienti(ingredientiDaAggiungere);
-        System.out.println(ANSI_CYAN+"MERCE PORTATA IN CUCINA:"+ANSI_RESET);
+        System.out.println(ANSI_CYAN+"MERCE PRESENTE IN CUCINA:"+ANSI_RESET);
         merceInCucina.visualizzaMerce();
         System.out.println(ANSI_CYAN+"MERCE RIMASTA DA PORTARE IN CUCINA:"+ANSI_RESET);
         merceDaPortareInCucina.visualizzaMerce();

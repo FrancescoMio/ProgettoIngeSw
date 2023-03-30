@@ -24,6 +24,10 @@ public class Consumo {
         this.consumoProCapite = consumo;
     }
 
+    public void addConsumo(Raggruppabile prodotto, QuantitaMerce quantita){
+        this.consumoProCapite.put(prodotto, quantita);
+    }
+
     @Override
     public String toString() {
         String consumo = "";

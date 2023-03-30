@@ -17,7 +17,9 @@ public class Stringhe {
     public static String [] vociMenu = {"Gestore","Addetto alle prenotazioni","Magazziniere"};
 
     public static final String titoloMenuGestore = "SELEZIONARE MODALITA' UTILIZZO: ";
-    public static String [] vociMenuGestore = {"Crea nuova configurazione","Carica configurazione","Visualizza parametri ristorante"};
+    public static String [] vociMenuGestore = {"Crea nuova configurazione","Visualizza parametri ristorante"
+                                                ,"Imposta carico lavoro per persona","Imposta posti a sedere disponibili nel ristorante","Aggiungi bevanda","Aggiungi genere alimentare extra",
+                                                "Aggiungi nuovo piatto","Aggiungi nuovo menù tematico"};
     public static String titoloMenuVisualizzazione = "\u001B[34mSELEZIONARE COSA DESIDERA VISUALIZZARE\u001B[0m";
     public static String [] vociMenuVisualizzazione = {"Carico lavoro per persona", "Posti a sedere","Insieme delle bevande",
                                                          "Insieme dei generi alimentari extra","Consumo pro-capite bevande",
