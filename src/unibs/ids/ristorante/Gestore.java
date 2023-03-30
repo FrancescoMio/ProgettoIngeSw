@@ -21,8 +21,8 @@ public class Gestore extends Utente {
      * metodo per inserire piatti a mano
      * @return set di piatti
      */
-    public Set<Piatto> inizializzaPiatti(Set<Piatto> piatti) {
-        return inserisciPiatti(piatti);
+    public Set<Piatto> inizializzaPiatti(Set<Piatto> piatti, int caricoLavoroXpersona) {
+        return inserisciPiatti(piatti, caricoLavoroXpersona);
     }
 
     public String getNomeRistorante() {
@@ -45,7 +45,7 @@ public class Gestore extends Utente {
      *
      * @return set di piatti
      */
-    private Set<Piatto> inserisciPiatti(Set<Piatto> piattiDelMenu) {
+    private Set<Piatto> inserisciPiatti(Set<Piatto> piattiDelMenu, int caricoLavoroXpersona) {
         Set<Piatto> piatti = new HashSet<>();
         boolean scelta = true;
         System.out.println("Inserire di seguito i piatti che faranno parte dei menu del ristorante: ");
@@ -61,7 +61,7 @@ public class Gestore extends Utente {
             LocalDate dataInizio = InputDati.leggiData("Inserire data di inizio validità: ");
             LocalDate dataFine = InputDati.leggiData("Inserire data di fine validità: ");
             int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione in minuti: ");
-            Ricetta ricetta = creaRicetta();
+            Ricetta ricetta = creaRicetta(caricoLavoroXpersona);
             Piatto piatto = new Piatto(nomePiatto, ricetta, tempoPreparazione, dataInizio, dataFine);
             piatti.add(piatto);
             scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
@@ -88,11 +88,10 @@ public class Gestore extends Utente {
         return ingredienti;
     }
 
-    //todo: da sistemare
-    private double controlloCaricoXPorzione(double caricoXPorzione) {
+    private double controlloCaricoXPorzione(double caricoXPorzione, int caricoLavoroXpersona) {
         boolean ok = false;
         do {
-            if (caricoXPorzione < 10000) {  //Ristorante.getCaricoXPersona()
+            if (caricoXPorzione < caricoLavoroXpersona) {
                 ok = true;
             } else {
                 System.out.println("Carico di lavoro per porzione non valido, deve essere minore del carico di lavoro per persona");
@@ -344,12 +343,12 @@ public class Gestore extends Utente {
         return consumi;
     }
 
-    //todo: da mettere a posto il carico lavoro per porzione
-    private Ricetta creaRicetta(){
+
+    private Ricetta creaRicetta(int caricoLavoroXpersona){
         HashMap<String,QuantitaMerce> ingredienti = inserisciIngredienti();
         int numeroPorzioni = InputDati.leggiIntero("Inserire numero porzioni che derivano dalla preparazione della ricetta: ");
         double caricoXPorzione = InputDati.leggiDouble("Inserire carico di lavoro per porzione: ");
-        caricoXPorzione = controlloCaricoXPorzione(caricoXPorzione);
+        caricoXPorzione = controlloCaricoXPorzione(caricoXPorzione, caricoLavoroXpersona);
         Ricetta ricetta = new Ricetta(ingredienti, numeroPorzioni, caricoXPorzione);
         return ricetta;
     }

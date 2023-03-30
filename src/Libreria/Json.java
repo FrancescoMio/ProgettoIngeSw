@@ -94,7 +94,6 @@ public class Json {
         salvaSuFile(registroJson,"dati/registroMagazzino.json");
     }
 
-    //todo: rinominare il metodo "getArticoliMagazzinoJson"
     public static void salvaCucina(Merce merceDaPortareInCucina, Merce merceInCucina){
         JSONObject cucinaJson = new JSONObject();
         ArrayList<JSONObject> merceDaPortareInCucinaJson = getArticoliMagazzinoJson(merceDaPortareInCucina.getArticoli());

@@ -99,8 +99,8 @@ public class Ristorante {
         piatti = new HashSet<>();
         nomeRistorante = gestore.getNomeRistorante();
         postiASedere = gestore.postiASedere();
-        piatti = gestore.inizializzaPiatti(piatti);
         caricoDiLavoroXPersona = gestore.caricoXpersona();
+        piatti = gestore.inizializzaPiatti(piatti,caricoDiLavoroXPersona);
     }
 
     public void creaMenuTematici(){
@@ -335,7 +335,7 @@ public class Ristorante {
     }
 
     public void addPiatto(){
-        Set<Piatto> piattiNuovi = gestore.inizializzaPiatti(piatti);
+        Set<Piatto> piattiNuovi = gestore.inizializzaPiatti(piatti,caricoDiLavoroXPersona);
         piatti.addAll(piattiNuovi);
         Json.salvaConfigurazione(this,piatti);
     }
