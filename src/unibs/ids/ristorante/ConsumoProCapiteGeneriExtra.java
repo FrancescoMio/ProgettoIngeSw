@@ -6,10 +6,4 @@ public class ConsumoProCapiteGeneriExtra extends Consumo{
     }
     public ConsumoProCapiteGeneriExtra(){}
 
-    @Override
-    public String toString() {
-        return "ConsumoProCapiteGeneriExtra{" +
-                "consumoProCapite=" + consumoProCapite +
-                '}';
-    }
 }

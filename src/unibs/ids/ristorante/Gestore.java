@@ -376,8 +376,11 @@ public class Gestore extends Utente {
         for (GenereAlimentareExtra genere : generi)
             System.out.println(genere);
     }
-    public void visualizzaConsumoProCapite(Consumo consumo){
-        System.out.println(consumo.getConsumo());
+    public void visualizzaConsumoProCapite(Consumo consumo, String tipologia){
+        System.out.println(lineSeparator);
+        System.out.println(tipologia);
+        System.out.println(consumo);
+        System.out.println(lineSeparator);
     }
 
     public void visualizzaPiattoRicetta(Set<Piatto> piatti){

@@ -306,12 +306,10 @@ public class Json {
         //caricamento delle bevande del ristorante
         Set<Bevanda> bevande = Json.caricaBevande();
         ristorante.setBevande(bevande);
-        System.out.println(ristorante.getBevande());
 
         //caricamento dei generi alimentari extra
         Set<GenereAlimentareExtra> generiAlimentari = Json.caricaGeneriAlimentari();
         ristorante.setGeneriAlimentari(generiAlimentari);
-        System.out.println(ristorante.getGeneriAlimentari());
 
         //caricamento consumo pro capite bevande
         ConsumoProCapiteBevande consumoProCapiteBevande = Json.caricaConsumoProCapiteBevande();
@@ -329,8 +327,6 @@ public class Json {
 
         RegistroMagazzino registroMagazzino = Json.caricaRegistroMagazzino();
         ristorante.setRegistroMagazzino(registroMagazzino);
-        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO"+ANSI_RESET);
-        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
 
         System.out.print("\n"+ANSI_YELLOW+"CARICAMENTO CONFIGURAZIONE IN CORSO");
         String str = "....\n";

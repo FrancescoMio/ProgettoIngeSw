@@ -114,10 +114,19 @@ public class MenuTematico extends Menu implements Ordinabile{
         return nomeMenu;
     }
 
+    private String getNomiPiatti(Set<Piatto> elencoPiatti){
+        StringBuilder sb = new StringBuilder();
+        for (Piatto piatto : elencoPiatti) {
+            sb.append("- ")
+                    .append(piatto.getNome())
+                    .append("\n");
+        }
+        return sb.toString();
+    }
     @Override
     public String toString() {
         return "- Nome: " + ANSI_CYAN + nomeMenu + ANSI_RESET + "\n- Carico lavoro: " + caricoLavoroMenuTematico
-                + "\n- Periodo validità : " + dataInizio + " -> " + dataFine + "\nElenco piatti:\n" + elencoPiatti;
+                + "\n- Periodo validità : " + dataInizio + " -> " + dataFine + "\n Elenco piatti:\n" + getNomiPiatti(elencoPiatti);
     }
 
 }

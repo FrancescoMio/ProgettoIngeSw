@@ -281,17 +281,19 @@ public class Ristorante {
                     break;
                 case 3:
                     gestore.visualizzaInsiemeBevande(bevande);
+                    break;
                 case 4:
                     gestore.visualizzaInsiemeGeneri(generiAlimentariExtra);
                     break;
                 case 5:
-                    gestore.visualizzaConsumoProCapite(consumoProCapiteBevande);
+                    gestore.visualizzaConsumoProCapite(consumoProCapiteBevande,"CONSUMO PRO CAPITE BEVANDE");
                     break;
                 case 6:
-                    gestore.visualizzaConsumoProCapite(consumoProCapiteGeneriExtra);
+                    gestore.visualizzaConsumoProCapite(consumoProCapiteGeneriExtra, "CONSUMO PRO CAPITE GENERI ALIMENTARI EXTRA");
                     break;
                 case 7:
                     gestore.visualizzaPiattoRicetta(piatti);
+                    break;
                 case 8:
                     gestore.visualizzaPiattieValidita(piatti);
                     break;

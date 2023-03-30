@@ -86,7 +86,7 @@ public class Piatto implements Ordinabile {
     }
     @Override
     public String toString() {
-        return  lineSeparator + "\n- Denominazione: " + denominazione + "\n- Tempo preparazione: " + tempoPreparazione
+        return  lineSeparator + "\n* DENOMINAZIONE: " + denominazione + "\n- Tempo preparazione: " + tempoPreparazione
                 + "min\n" + ricetta;
     }
 }

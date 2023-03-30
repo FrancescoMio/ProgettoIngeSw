@@ -2,6 +2,8 @@ package unibs.ids.ristorante;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
 import static Libreria.Stringhe.*;
 
 public class Ricetta {
@@ -28,9 +30,22 @@ public class Ricetta {
         return numeroPorzioni;
     }
 
+    public String getStrIngredienti() {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, QuantitaMerce> entry : ingredienti.entrySet()) {
+            sb.append("- ")
+                    .append(entry.getKey())
+                    .append(": ")
+                    .append(entry.getValue().getQuantita())
+                    .append(" ")
+                    .append(entry.getValue().getUnitaMisura())
+                    .append("\n");
+        }
+        return sb.toString();
+    }
     @Override
     public String toString() {
-        return ANSI_BLUE + "* RICETTA:\n"+ ANSI_RESET +"- Numero porzioni: " + numeroPorzioni + "\n- Carico lavoro per porzione: " + caricoDiLavoroXPorzione + ANSI_RESET+
-                ANSI_CYAN + "\n* Ingredienti:\n" + ANSI_RESET + ingredienti;
+        return ANSI_BLUE + "* RICETTA:\n"+ ANSI_RESET +"- Numero porzioni: " + numeroPorzioni + "\n- Carico lavoro per porzione: " + caricoDiLavoroXPorzione +
+                 "\n INGREDIENTI:\n" + ANSI_RESET + getStrIngredienti();
     }
 }
