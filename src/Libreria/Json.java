@@ -35,7 +35,8 @@ public class Json {
 
     /**
      * Metodo per il salvataggio dei menù tematici nel file JSON "menuTematici.json"
-     * @param elencoMenuTematici
+     * @param elencoMenuTematici elenco dei menù tematici da salvare
+     * precondizione: elencoMenuTematici != null
      */
     public static void salvaMenuTematici(Set<MenuTematico> elencoMenuTematici){
         JSONObject menuTematiciJson = new JSONObject();
@@ -59,6 +60,11 @@ public class Json {
     }
 
 
+    /**
+     * Metodo per il salvataggio del menù alla carta nel file JSON "menuSettimanali.json"
+     * @param menuCarta menù alla carta da salvare
+     * precondizione: menuCarta != null
+     */
     public static void salvaMenuCarta(MenuCarta menuCarta){
         JSONObject menuCartaJson = new JSONObject();
         menuCartaJson.put("nome",menuCarta.getNomeMenu());
@@ -69,6 +75,12 @@ public class Json {
         salvaSuFile(menuCartaJson, "dati/menuCarta.json");
     }
 
+    /**
+     * metodo per il salvataggio dei consumi pro capite di bevande e generi extra nel file JSON
+     * @param bevande bevande da salvare
+     * @param generi generi extra da salvare
+     * precondizione: bevande != null && generi != null
+     */
     public static void salvaConsumiProCapite(ConsumoProCapiteBevande bevande, ConsumoProCapiteGeneriExtra generi){
         JSONObject elenco = new JSONObject();
         ArrayList<JSONObject> elencoBevande = getElencoBevandeGeneriJson(bevande);
@@ -78,6 +90,11 @@ public class Json {
         salvaSuFile(elenco,"dati/consumoProCapite.json");
     }
 
+    /**
+     * Metodo per il salvataggio delle prenotazioni nel file JSON
+     * @param prenotazioni elenco delle prenotazioni da salvare
+     * precondizione: prenotazioni != null
+     */
     public static void salvaPrenotazioni(ArrayList<Prenotazione> prenotazioni){
         JSONObject prenotazioniJson = new JSONObject();
         ArrayList<JSONObject> elencoPrenotazioni = getElencoPrenotazioniJson(prenotazioni);

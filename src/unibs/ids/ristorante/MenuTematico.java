@@ -23,6 +23,8 @@ public class MenuTematico extends Menu implements Ordinabile{
      * @param elencoPiatti elenco di piatti che costituiscono il menù tematico
      * @param dataInizio  data di inzio disponibilità del menù tematico
      * @param dataFine data di fine disponibilità del menù tematico
+     * @param caricoLavoro carico lavoro del menù tematico
+     * precondizione: dataInizio < dataFine, caricoLavoro > 0, elencoPiatti != null
      */
     public MenuTematico (String nome,Set<Piatto> elencoPiatti, LocalDate dataInizio, LocalDate dataFine,double caricoLavoro) {
         super(nome,elencoPiatti);
@@ -54,9 +56,9 @@ public class MenuTematico extends Menu implements Ordinabile{
 
     /**
      * metodo per il controllo della disponibilità del menù
-     * @param dataInizio
-     * @param dataFine
-     * @return
+     * @param dataInizio data di inizio disponibilità
+     * @param dataFine data di fine disponibilità
+     * @return true se il menù è disponibile, false altrimenti
      */
     public boolean isDisponibile(LocalDate dataInizio, LocalDate dataFine){
         if(MyUtil.controlloData(dataInizio,dataFine))
@@ -78,6 +80,14 @@ public class MenuTematico extends Menu implements Ordinabile{
     public void setDataFine(LocalDate dataFine) {
         this.dataFine = dataFine;
     }
+
+    /**
+     * metodo per rilevare l'intera lista degli ingredienti necessari per la preparazione di tutti i piatti del menù tematico
+     * @param quantitaOrdine quantità di menù tematici ordinati
+     * @return lista degli ingredienti necessari per la preparazione di tutti i piatti del menù tematico
+     * precondizione: quantitaOrdine > 0
+     * postcondizione: listaIngredientiPiatti != null
+     */
     public HashMap<String,QuantitaMerce> getListaIngredienti(int quantitaOrdine) {
         HashMap<String, QuantitaMerce> listaIngredientiPiatti = new HashMap<>();
         for (Piatto piatto : elencoPiatti) {

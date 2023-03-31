@@ -13,6 +13,12 @@ public class Merce{
         articoli.put(nome, quantitaMerce);
     }
 
+    /**
+     * Metodo per rimuovere una determinata quantità di un prodotto
+     * @param prodottiDaRimuovere prodotti da rimuovere
+     * precondizione: i prodotti da rimuovere devono essere presenti nella lista della spesa
+     *                e la quantità da rimuovere deve essere minore o uguale a quella presente
+     */
     public void rimuoviProdotti(HashMap<String,QuantitaMerce> prodottiDaRimuovere) {
         for (Map.Entry<String, QuantitaMerce> entry : prodottiDaRimuovere.entrySet()){
             String nomeArticolo = entry.getKey();
@@ -57,7 +63,8 @@ public class Merce{
     /**
      * Metodo per aggiornare la lista della spesa in base alle diverse prenotazioni
      * Il valore dell'hashmap rappresenta la quantità dell'ingrediente in GRAMMI
-     * @param listaIngredienti
+     * @param listaIngredienti lista degli ingredienti
+     * precondizione: la lista degli ingredienti deve essere presente nel magazzino
      */
     public void aggiungiIngredienti(HashMap<String, QuantitaMerce> listaIngredienti){
         for (Map.Entry<String, QuantitaMerce> entry : listaIngredienti.entrySet()) {
@@ -77,6 +84,11 @@ public class Merce{
         }
     }
 
+    /**
+     * todo: da descrivere
+     * @param merceMagazzino merce del magazzino
+     * precondizione: todo: da scrivere
+     */
     public void differenzaScorte(Merce merceMagazzino){
         HashMap<String, QuantitaMerce> articoliDisponibiliMagazzino = merceMagazzino.getArticoli();
         HashMap<String, QuantitaMerce> articoliTemp = new HashMap<>();
@@ -97,6 +109,9 @@ public class Merce{
         }
     }
 
+    /**
+     * Metodo per incrementare la quantità di un articolo del 10%
+     */
     public void incrementoPercentuale(){
         for (Map.Entry<String, QuantitaMerce> entry : articoli.entrySet()){
             String nomeArticolo = entry.getKey();
@@ -108,6 +123,13 @@ public class Merce{
         }
     }
 
+    /**
+     * Metodo per aggiungere le bevande e i generi extra ad una lista
+     * @param consumoProCapiteBevande consumo delle bevande per capo
+     * @param consumoProCapiteGeneriExtra consumo dei generi extra per capo
+     * @param numeroCoperti numero di coperti
+     * precondizione: numeroCoperti > 0
+     */
     public void aggiungiBevandeGeneri(ConsumoProCapiteBevande consumoProCapiteBevande, ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra, int numeroCoperti){
         HashMap<Raggruppabile, QuantitaMerce> consumoBevande = consumoProCapiteBevande.getConsumo();
         HashMap<Raggruppabile, QuantitaMerce> consumoGeneri = consumoProCapiteGeneriExtra.getConsumo();

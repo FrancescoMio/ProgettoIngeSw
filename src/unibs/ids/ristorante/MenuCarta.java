@@ -1,8 +1,6 @@
 package unibs.ids.ristorante;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Set;
 
 public class MenuCarta extends Menu{

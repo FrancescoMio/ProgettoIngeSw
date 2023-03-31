@@ -27,11 +27,10 @@ public class AddettoPrenotazioni extends Utente {
      * @param menuAllaCarta menu alla carta del ristorante, comprensivo di tutti i piatti disponibili
      * @param menuTematici menu tematici del ristorante, ognuno comprendente piu piatti
      * @return tutte le prenotazioni create
-     * precondiizoni: copertiMax > 0, caricoMax > 0, menuAllaCarta != null, menuTematici != null, storicoPrenotazioni != null
+     * precondiizoni: copertiMax > 0, caricoMax > 0, menuAllaCarta != null, menuTematici != null, storicoPrenotazioni.size() > 0
      * postcondizioni: nuovePrenotazioni != null
      */
     public ArrayList<Prenotazione> creaPrenotazioni(int copertiMax, double caricoMax, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici, ArrayList<Prenotazione> storicoPrenotazioni) {
-
 
         System.out.println(lineSeparator);
         System.out.println(ANSI_YELLOW+"CREAZIONE NUOVE PRENOTAZIONI"+ANSI_RESET);
@@ -45,16 +44,16 @@ public class AddettoPrenotazioni extends Utente {
             else
                 System.out.println(ANSI_RED+"---LA PRENOTAZIONE E' STATA CANCELLATA!---"+ANSI_RESET);
         }while (InputDati.yesOrNo(ANSI_CYAN+"Creare un'altra prenotazione?"+ANSI_RESET));
-        //postcondizioni: nuovePrenotazioni != null
-        assert nuovePrenotazioni != null;
         return nuovePrenotazioni;
     }
 
     /**
      * Metodo che filtra i menù tematici che saranno disponibili fino alla data di prenotazione compresa
      * @param menuTematici menù tematici del ristorante (non filtrati)
-     * @param dataPrenotazione
-     * @return
+     * @param dataPrenotazione data di prenotazione
+     * @return menù tematici filtrati
+     * precondizioni: menuTematici != null, dataPrenotazione != null
+     * postcondizioni: menuTematiciDisponibili != null
      */
     private Set<MenuTematico> filtraMenutematici(Set<MenuTematico> menuTematici, LocalDate dataPrenotazione){
         Set<MenuTematico> menuTematiciDisponibili = new HashSet<>();
@@ -70,7 +69,7 @@ public class AddettoPrenotazioni extends Utente {
      * e comprende tutti i controlli su carico di lavoro e numero di coperti
      * @param copertiMax numero massimo di coperti del ristorante
      * @param caricoMax massimo carico sostenibile del ristorante
-     * precondizioni: copertiMax > 0, caricoMax > 0, menuAllaCarta != null, menuTematici != null, storicoPrenotazioni != null
+     * precondizioni: copertiMax > 0, caricoMax > 0, menuAllaCarta != null, menuTematici != null, storicoPrenotazioni.size() > 0
      * postcondizioni: prenotazione != null
      */
     private Prenotazione creaPrenotazione(ArrayList<Prenotazione> storicoPrenotazioni, int copertiMax, double caricoMax,MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
@@ -143,7 +142,7 @@ public class AddettoPrenotazioni extends Utente {
      * @param ordine coppia menu/piatto e quantità associata
      * @param caricoMax carico massimo raggiungibile in una giornata
      * @return true se il carico di lavoro è accettabile, false altrimenti
-     * precondizioni: dataPrenotazione != null, ordine != null, caricoMax > 0
+     * precondizioni: dataPrenotazione != null, ordine != null, caricoMax > 0, prenotazioni.size() >= 0
      * postcondizioni: caricoLavorodellaGiornata >= 0
      */
     private boolean controlloCaricoLavoro(ArrayList<Prenotazione> prenotazioni, LocalDate dataPrenotazione, HashMap<Ordinabile,Integer> ordine, double caricoMax){
@@ -165,7 +164,7 @@ public class AddettoPrenotazioni extends Utente {
      * metodo che permette di calcolare il carico di lavoro delle prenotazioni già presenti in una data
      * @param dataPrenotazione data della prenotazione
      * @return carico di lavoro delle prenotazioni già presenti in una data
-     * precondizioni: dataPrenotazione != null, prenotazioni != null
+     * precondizioni: dataPrenotazione != null, prenotazioni.size() > 0
      * postcondizioni: sommaCarichiLavoro >= 0
      */
     private double caricoLavoroInData(ArrayList<Prenotazione> prenotazioni ,LocalDate dataPrenotazione){
@@ -190,7 +189,7 @@ public class AddettoPrenotazioni extends Utente {
      * @param dataPrenotazione data della prenotazione
      * @param copertiMax  numero massimo di coperti raggiungibili in una giornata
      * @return true se il numero di coperti inseriti è accettabile, false altrimenti
-     * precondizioni: numeroCoperti > 0, dataPrenotazione != null, copertiMax > 0
+     * precondizioni: numeroCoperti > 0, dataPrenotazione != null, copertiMax > 0, storicoPrenotazioni.size() > 0
      * postcondizioni: numeroCopertiGiaPrenotati >= 0
      */
     private boolean controlloCoperti(ArrayList<Prenotazione> storicoPrenotazioni, int numeroCoperti, LocalDate dataPrenotazione, int copertiMax){
@@ -213,8 +212,8 @@ public class AddettoPrenotazioni extends Utente {
      * metodo che permette di eliminare automaticamente le prenotazioni scadute
      * @param prenotazioni prenotazioni da controllare
      * @return prenotazioni aggiornate
-     * precondizioni: prenotazioni != null
-     * postcondizioni: prenotazioniAggiornate != null
+     * precondizioni: prenotazioni.size() > 0
+     * postcondizioni: prenotazioniAggiornate.size() >= 0
      */
     public ArrayList<Prenotazione> togliPrenotazioniScadute(ArrayList<Prenotazione> prenotazioni){
         ArrayList<Prenotazione> prenotazioniAggiornate = new ArrayList<>();
@@ -222,7 +221,6 @@ public class AddettoPrenotazioni extends Utente {
             if(!p.getDataPrenotazione().isBefore(LocalDate.now()))
                 prenotazioniAggiornate.add(p);
         }
-        assert prenotazioniAggiornate != null : "prenotazioniAggiornate non può essere null";
         return prenotazioniAggiornate;
     }
 
@@ -264,7 +262,6 @@ public class AddettoPrenotazioni extends Utente {
             }
             else return null;
         }
-        assert ordine != null : "ordine non può essere null";
         return ordine;
     }
 

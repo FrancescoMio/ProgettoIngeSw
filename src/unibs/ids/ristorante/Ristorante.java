@@ -308,6 +308,7 @@ public class Ristorante {
         }while(!finito);
     }
 
+
     public void impostaCaricoDiLavoroXPersona(){
         this.caricoDiLavoroXPersona = gestore.setCaricoLavoroPersona();
         Json.salvaConfigurazione(this,piatti);
@@ -318,6 +319,9 @@ public class Ristorante {
         Json.salvaConfigurazione(this,piatti);
     }
 
+    /**
+     * metodo che aggiunge una bevanda a quelle disponibili nel ristorante
+     */
     public void addBevanda(){
         Bevanda bevanda = gestore.creaBevanda(bevande);
         QuantitaMerce quantitaConsumo = gestore.creaConsumoProCapiteBevanda(bevanda.getNome());
@@ -326,6 +330,9 @@ public class Ristorante {
         Json.salvaConsumiProCapite(consumoProCapiteBevande,consumoProCapiteGeneriExtra);
     }
 
+    /**
+     * metodo che aggiunge un genere alimentare extra a quelli disponibili nel ristorante
+     */
     public void addGenereAlimentareExtra(){
         GenereAlimentareExtra genereAlimentareExtra = gestore.creaGenereAlimentare(generiAlimentariExtra);
         QuantitaMerce quantitaConsumo = gestore.creaConsumoProCapiteGenere(genereAlimentareExtra.getNome());
@@ -334,18 +341,27 @@ public class Ristorante {
         Json.salvaConsumiProCapite(consumoProCapiteBevande,consumoProCapiteGeneriExtra);
     }
 
+    /**
+     * metodo che aggiunge un piatto a quelli disponibili nel menù alla carta
+     */
     public void addPiatto(){
         Set<Piatto> piattiNuovi = gestore.inizializzaPiatti(piatti,caricoDiLavoroXPersona);
         piatti.addAll(piattiNuovi);
         Json.salvaConfigurazione(this,piatti);
     }
 
+    /**
+     * metodo che aggiunge un menu tematico a quelli disponibili nel ristorante
+     */
     public void addMenuTematico(){
         Set<MenuTematico> nuoviMenuTematici = gestore.creaMenuTematici(piatti,caricoDiLavoroXPersona,menuTematici);
         this.menuTematici.addAll(nuoviMenuTematici);
         Json.salvaMenuTematici(menuTematici);
     }
 
+    /**
+     * metodo che crea la lista della spesa giornaliera e la aggiunge al registro magazzino
+     */
     public void creaListaSpesa(){
         magazziniere.creaListaSpesaGiornaliera(prenotazioni,registroMagazzino,consumoProCapiteBevande,consumoProCapiteGeneriExtra);
         Merce listaSpesa = magazziniere.getListaSpesa();
@@ -359,6 +375,10 @@ public class Ristorante {
         Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
         Json.salvaListaSpesa(listaSpesa);
     }
+
+    /**
+     * metodo che simula il flusso di ingredienti dal magazzino alla cucina, e salva tutti i valori nei file json
+     */
     public void portaIngredientiInCucina(){
         HashMap<String,QuantitaMerce> prodottiDaPortareInCucina = merceDaPortareInCucina.getArticoli();
         HashMap<String,QuantitaMerce> ingredientiDaAggiungere = new HashMap<>();
@@ -402,6 +422,10 @@ public class Ristorante {
         Json.salvaRegistroMagazzino(registroMagazzino);
         Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
     }
+
+    /**
+     * metodo che simula il flusso di bevande e generi extra dal magazzino alla sala, e salva tutti i valori nei file json
+     */
     public void portaBevandaGenereInSala(){
         Set<Raggruppabile> bevandeEGeneri = new HashSet<>();
         bevandeEGeneri.addAll(bevande);
@@ -413,6 +437,9 @@ public class Ristorante {
         Json.salvaRegistroMagazzino(registroMagazzino);
     }
 
+    /**
+     * metodo che simula il flusso di prodotti non consumati dalla cucina alla sala, e salva tutti i valori nei file json
+     */
     public void riportaInMagazzinoNonConsumati(){
         HashMap<String,QuantitaMerce> prodottiDaRiportare = magazziniere.riportaInMagazzino(merceInCucina);
         System.out.println("prodotti da riportare in magazzino: ");
@@ -426,6 +453,9 @@ public class Ristorante {
         Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
     }
 
+    /**
+     * metodo che simula il flusso di prodotti scartati dal magazzino a causa di scadenza, e salva tutti i valori nei file json
+     */
     public void rimuoviScartiDalMagazzino(){
         HashMap<String,QuantitaMerce> scarti = magazziniere.rimuoviScarti(registroMagazzino);
         System.out.println(ANSI_CYAN+"PRDOTTI DA SCARTARE:"+ANSI_RESET);

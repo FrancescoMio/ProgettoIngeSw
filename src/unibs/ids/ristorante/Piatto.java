@@ -62,8 +62,10 @@ public class Piatto implements Ordinabile {
         return this.denominazione;
     }
     /**
-     * metodo che ritorna la lista degli ingredienti
-     * @return
+     * metodo che ritorna la lista degli ingredienti di un piatto
+     * @return listaIngredienti lista degli ingredienti
+     * @param quantitaOrdine quantità del piatto ordinato
+     * precondizione: quantitaOrdine > 0
      */
     public HashMap<String,QuantitaMerce> getListaIngredienti(int quantitaOrdine){
         int numeroPorzioni = ricetta.getNumeroPorzioni();

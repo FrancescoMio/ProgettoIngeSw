@@ -43,8 +43,11 @@ public class Gestore extends Utente {
 
     /**
      * metodo per inserire piatti uno ad uno dall'utente
-     *
      * @return set di piatti
+     * @param piattiDelMenu set di piatti del ristorante
+     * @param caricoLavoroXpersona carico di lavoro per persona
+     * precondizione: caricoLavoroXpersona > 0, piattiDelMenu != null
+     * postcondizione: piatti != null
      */
     private Set<Piatto> inserisciPiatti(Set<Piatto> piattiDelMenu, int caricoLavoroXpersona) {
         Set<Piatto> piatti = new HashSet<>();
@@ -74,6 +77,7 @@ public class Gestore extends Utente {
      * metodo di utlita' per inserire gli ingredienti di un piatto
      *
      * @return hashmap con nome ingrediente e dose
+     * postcondizione: ingredienti != null
      */
     public HashMap<String, QuantitaMerce> inserisciIngredienti() {
         HashMap<String, QuantitaMerce> ingredienti = new HashMap<>();
@@ -96,6 +100,13 @@ public class Gestore extends Utente {
         return ingredienti;
     }
 
+    /**
+     * metodo di utilità per controllare che il carico di lavoro per porzione sia una frazione del carico di lavoro per persona
+     * @param caricoXPorzione carico di lavoro per porzione
+     * @param caricoLavoroXpersona carico di lavoro per persona
+     * @return carico di lavoro per porzione
+     * precondizione: caricoXPorzione > 0, caricoLavoroXpersona > 0
+     */
     private double controlloCaricoXPorzione(double caricoXPorzione, int caricoLavoroXpersona) {
         boolean ok = false;
         do {
@@ -113,10 +124,11 @@ public class Gestore extends Utente {
      * Metodo per l'aggiunta di un menù tematico
      * @param piatti set di piatti
      * @return menun tematici del ristorante
+     * precondizione: piatti != null, caricoLavoroPersona > 0, menuTematiciPresenti != null
+     * postcondizione: menuTematici != null
      */
     public Set<MenuTematico> creaMenuTematici(Set<Piatto> piatti,int caricoLavoroPersona,Set<MenuTematico> menuTematiciPresenti) {
         Set<MenuTematico> menuTematici = new HashSet<>();
-        boolean scelta = true;
         do {
             boolean presente = true;
             String nomeMenu = "";
@@ -137,6 +149,13 @@ public class Gestore extends Utente {
         return menuTematici;
     }
 
+    /**
+     * metodo di utilità per controllare che il menù tematico non sia già presente nel ristorante
+     * @param nome nome del menù tematico
+     * @param menuTematiciPresenti lista dei menù tematici presenti nel ristorante
+     * @return true se il menù è già presente, false altrimenti
+     * precondizione: nome != null, menuTematiciPresenti != null
+     */
     private boolean menuGiaPresente(String nome, Set<MenuTematico> menuTematiciPresenti){
         for(MenuTematico menuTematico : menuTematiciPresenti){
             if(menuTematico.getNomeMenu().equalsIgnoreCase(nome))
@@ -145,6 +164,13 @@ public class Gestore extends Utente {
         return false;
     }
 
+    /**
+     * metodo di utilità per controllare che il piatto non sia già presente nel menù
+     * @param nome nome del piatto
+     * @param piattiPresenti lista dei piatti presenti nel menù
+     * @return true se il piatto è già presente, false altrimenti
+     * precondizione: nome != null, piattiPresenti != null
+     */
     private boolean piattoGiaPresente(String nome, Set<Piatto> piattiPresenti){
         for(Piatto piatto : piattiPresenti){
             if(piatto.getNome().equalsIgnoreCase(nome))
@@ -158,6 +184,8 @@ public class Gestore extends Utente {
      * metodo per l'aggiunta di piatti nel menù tematico
      * @param elencoPiatti set di piatti
      * @return set di piatti del menù tematico
+     * precondizione: elencoPiatti != null, caricoLavoroPersona > 0
+     * postcondizione: piattiDelMenu != null
      */
     public Set<Piatto> inserisciPiattiMenuTematico(Set<Piatto> elencoPiatti,int caricoLavoroPersona) {
         Piatto[] piatti = elencoPiatti.toArray(new Piatto[elencoPiatti.size()]);
@@ -194,6 +222,7 @@ public class Gestore extends Utente {
      * Metodc per il calcolo del carico di lavoro del menù tematico
      * @param piattiDelMenuTematico set di piatti del menù tematico
      * @return carico di lavoro del menù tematico
+     * precondizione: piattiDelMenuTematico != null
      */
     public double calcoloLavoroMenuTematico(Set<Piatto> piattiDelMenuTematico){
         double somma = 0;
@@ -256,6 +285,12 @@ public class Gestore extends Utente {
         return posti;
     }
 
+    /**
+     * metodo di creazione di una nuova bevanda
+     * @param bevande set di bevande
+     * @return nuova bevanda
+     * precondizione: bevande != null
+     */
     public Bevanda creaBevanda(Set<Bevanda> bevande){
         boolean presente = true;
         String nome = "";
@@ -268,6 +303,13 @@ public class Gestore extends Utente {
         Bevanda bevanda = new Bevanda(nome);
         return bevanda;
     }
+
+    /**
+     * metodo di creazione di un nuovo genere alimentare extra
+     * @param generi set di generi alimentari extra
+     * @return nuovo genere alimentare extra
+     * precondizione: generi != null
+     */
     public GenereAlimentareExtra creaGenereAlimentare(Set<GenereAlimentareExtra> generi){
         boolean presente = true;
         String nome = "";
@@ -281,6 +323,13 @@ public class Gestore extends Utente {
         return genere;
     }
 
+    /**
+     * metodo per controllare che una nuova bevanda creata non sia uguale ad una già presente
+     * @param nome nome della bevanda
+     * @param bevande set di bevande
+     * @return true se la bevanda è già presente, false altrimenti
+     * precondizione: bevande != null
+     */
     private boolean bevandaPresente(String nome , Set<Bevanda> bevande){
         for(Bevanda bevanda : bevande){
             if(bevanda.getNome().equalsIgnoreCase(nome))
@@ -288,6 +337,14 @@ public class Gestore extends Utente {
         }
         return false;
     }
+
+    /**
+     * metodo per controllare che un nuovo genere alimentare extra creato non sia uguale ad uno già presente
+     * @param nome nome del genere alimentare extra
+     * @param generi set di generi alimentari extra
+     * @return true se il genere è già presente, false altrimenti
+     * precondizione: generi != null
+     */
     private boolean generePresente(String nome , Set<GenereAlimentareExtra> generi){
         for(GenereAlimentareExtra genere : generi){
             if(genere.getNome().equalsIgnoreCase(nome))
@@ -310,6 +367,7 @@ public class Gestore extends Utente {
     /**
      * metodo per l'inserimento di bevande e generi alimentari extra
      * @return set di bevande e generi alimentari extra
+     * postcondizione: insieme != null
      */
     public Set<Raggruppabile> inizializzaBevandeEgeneri(){
         Set<Raggruppabile> insieme = new HashSet<>();
@@ -342,6 +400,8 @@ public class Gestore extends Utente {
      * @param bevande set di bevande
      * @param generi set di generi alimentari extra
      * @return arraylist di hashMap contenenti i consumi di bevande e generi alimentari extra
+     * precondizione: bevande != null, generi != null
+     * postcondizione: consumi != null
      */
     public ArrayList<HashMap<Raggruppabile,QuantitaMerce>> inizializzaConsumi(Set<Bevanda> bevande, Set<GenereAlimentareExtra> generi){
         ArrayList<HashMap<Raggruppabile,QuantitaMerce>> consumi = new ArrayList<>();
@@ -366,6 +426,11 @@ public class Gestore extends Utente {
     }
 
 
+    /**
+     * metodo per la creazione di una nuova ricetta
+     * @return Ricetta
+     * precondizione: caricoLavoroXpersona > 0, ingredienti != null
+     */
     private Ricetta creaRicetta(int caricoLavoroXpersona){
         HashMap<String,QuantitaMerce> ingredienti = inserisciIngredienti();
         int numeroPorzioni = InputDati.leggiIntero("Inserire numero porzioni che derivano dalla preparazione della ricetta: ");

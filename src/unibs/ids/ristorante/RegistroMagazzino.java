@@ -39,6 +39,7 @@ public class RegistroMagazzino {
     /**
      * Compito di registro magazzino di aggiungere gli ingredienti acquistati alla lista dei prodotti disponibili
      * In particolare se gli ingredienti sono gia in magazzino si aggiorna la quantita'
+     * @param listaSpesa lista degli ingredienti acquistati
      */
     public void aggiungiArticoliComprati(Merce listaSpesa){
         HashMap<String, QuantitaMerce> articoliAcquistati = listaSpesa.getArticoli();
@@ -74,7 +75,8 @@ public class RegistroMagazzino {
 
     /**
      * Metodo per la rimozione dei prodotti dal magazzino
-     * @param prodottiDaRimuovere
+     * @param prodottiDaRimuovere lista dei prodotti da rimuovere
+     * precondizione: i prodotti da rimuovere sono presenti nel magazzino, prodottiDaRimuovere != null
      */
     public void rimuoviProdotti(HashMap<String,QuantitaMerce> prodottiDaRimuovere){
         HashMap<String,QuantitaMerce> articoliMagazzino = articoliDisponibili.getArticoli();
@@ -103,6 +105,7 @@ public class RegistroMagazzino {
 
     /**
      * Compito di registro magazzino di poter visualizzare le bevande disponibili
+     * precondizione: bevandeEExtra != null
      */
     private void visualizzaBevande(){
         System.out.println("Le bevande disponibili sono:");
@@ -119,6 +122,7 @@ public class RegistroMagazzino {
 
     /**
      * Compito di registro magazzino di poter visualizzare le bevande disponibili
+     * precondizione: bevandeEExtra != null
      */
     private void visualizzaGeneriExtra(){
         System.out.println("I generi extra disponibili sono:");

@@ -18,6 +18,15 @@ public class Magazziniere extends Utente {
     public Magazziniere(){
         super();
     }
+
+    /**
+     * Metodo che crea la lista della spesa ogni giorno
+     * @param prenotazioni lista delle prenotazioni
+     * @param registro registro magazzino
+     * @param consumoProCapiteBevande consumo pro capite delle bevande
+     * @param consumoProCapiteGeneriExtra consumo pro capite dei generi extra
+     * precondizioni: prenotazioni.size() > 0, registro != null, consumoProCapiteBevande != null, consumoProCapiteGeneriExtra != null
+     */
     public void creaListaSpesaGiornaliera(ArrayList<Prenotazione> prenotazioni, RegistroMagazzino registro, ConsumoProCapiteBevande consumoProCapiteBevande, ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra){
         listaSpesa = new Merce();
         int numeroCoperti = 0;
@@ -40,6 +49,13 @@ public class Magazziniere extends Utente {
         listaSpesa.visualizzaMerce();
     }
 
+    /**
+     * Metodo che simula il flusso di ingredienti in uscita dal magazzino verso la cucina
+     * @param prenotazioni lista delle prenotazioni
+     * @return merce da portare in cucina
+     * precondizioni: prenotazioni.size() > 0
+     * postcondizioni: prodottiDaPortareInCucina != null
+     */
     public Merce portaIngredientiInCucina(ArrayList<Prenotazione> prenotazioni){
         Merce prodottiDaPortareInCucina = new Merce();
         ArrayList<Prenotazione> prenotazioniGiornaliere = filtraPrenotazioniGiornaliere(prenotazioni);
@@ -56,6 +72,12 @@ public class Magazziniere extends Utente {
         return prodottiDaPortareInCucina;
     }
 
+    /**
+     * metodo che simula la rimozione degli scarti a discrezione del magazziniere
+     * @param registroMagazzino registro magazzino
+     * @return scarti rimossi
+     * precondizioni: registroMagazzino != null
+     */
     public HashMap<String,QuantitaMerce> rimuoviScarti(RegistroMagazzino registroMagazzino){
         HashMap<String,QuantitaMerce> articoliMagazzino = registroMagazzino.getArticoliDisponibili().getArticoli();
         HashMap<String,QuantitaMerce> scarti = new HashMap<>();
@@ -85,6 +107,12 @@ public class Magazziniere extends Utente {
         return scarti;
     }
 
+    /**
+     * metodo che simula i prodotti riportati in magazzino dalla cucina
+     * @param merceInCucina merce in cucina
+     * @return prodotti da riportare in magazzino
+     * precondizioni: merceInCucina != null
+     */
     public HashMap<String,QuantitaMerce> riportaInMagazzino(Merce merceInCucina){
         HashMap<String,QuantitaMerce> prodottiDaRiportare = new HashMap<>();
         HashMap<String,QuantitaMerce> prodottiInCucina = merceInCucina.getArticoli();
@@ -116,6 +144,14 @@ public class Magazziniere extends Utente {
         return prodottiDaRiportare;
     }
 
+    /**
+     * metodo che simula il flusso in uscita verso la cucina delle bevande e dei generi extra
+     * @param registroMagazzino registro magazzino
+     * @param insieme insieme di bevande e generi alimentari extra
+     * @return prodotti in sala
+     * precondizioni: registroMagazzino != null && insieme != null
+     * postcondizioni: prodottiInSala != null
+     */
     public HashMap<String,QuantitaMerce> portaBevandaGenereInSala(RegistroMagazzino registroMagazzino, Set<Raggruppabile> insieme){
         HashMap<String, QuantitaMerce> prodottiInSala = new HashMap<>();
         HashMap<String,QuantitaMerce> articoliInMagazzino = registroMagazzino.getArticoliDisponibili().getArticoli();
@@ -153,8 +189,10 @@ public class Magazziniere extends Utente {
 
     /**
      * Metodo che filtra tutte le prenotazioni del ristorante e ritorna solo quelle corrispondenti al giorno odierno
-     * @param prenotazioni
-     * @return
+     * @param prenotazioni lista di tutte le prenotazioni
+     * @return prenotazioniGiornaliere lista di prenotazioni corrispondenti al giorno odierno
+     * precondizioni: prenotazioni.size() > 0
+     * postcondizioni: prenotazioniGiornaliere.size() >= 0
      */
     private ArrayList<Prenotazione> filtraPrenotazioniGiornaliere(ArrayList<Prenotazione> prenotazioni){
         ArrayList<Prenotazione> prenotazioniGiornaliere = new ArrayList<>();

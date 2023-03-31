@@ -17,10 +17,17 @@ public class GestioneUtenza {
     private Ristorante ristorante;
     public GestioneUtenza(){}
 
+    /**
+     * Metodo per la gestione del menu iniziale
+     * @throws IOException se il file non esiste
+     * @throws NoSuchAlgorithmException se l'algoritmo non esiste
+     * precondizione: il file credenzialiGestore.json deve esistere
+     */
     public void menuGestore() throws IOException, NoSuchAlgorithmException {
         if(PasswordManager.autenticazione("dati/credenzialiGestore.json")){
             ristorante = Json.caricaDati();
             ristorante.filtraPrenotazioni();
+            assert ristorante != null;
             MyMenu menuIniziale = new MyMenu(titoloMenuGestore,vociMenuGestore);
             boolean finito = false;
             do {
@@ -49,6 +56,11 @@ public class GestioneUtenza {
         }
     }
 
+    /**
+     * Metodo per la gestione del menu per l'addetto alla sala
+     * @throws NoSuchAlgorithmException se l'algoritmo non esiste
+     * precondizione: il file credenzialiAddettoSala.json deve esistere
+     */
     public void menuAddettoPrenotazioni() throws NoSuchAlgorithmException {
         if(PasswordManager.autenticazione("dati/credenzialiAddettoPrenotazioni.json")){
             if(this.ristorante == null)
@@ -71,6 +83,11 @@ public class GestioneUtenza {
         }
     }
 
+    /**
+     * Metodo per la gestione del menu per il magazziniere
+     * @throws NoSuchAlgorithmException se l'algoritmo non esiste
+     * precondizione: il file credenzialiCuoco.json deve esistere
+     */
     public void menuMagazziniere() throws NoSuchAlgorithmException {
         if(PasswordManager.autenticazione("dati/credenzialiMagazziniere.json")){
             if(this.ristorante == null)
