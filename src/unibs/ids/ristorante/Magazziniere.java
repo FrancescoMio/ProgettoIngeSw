@@ -120,7 +120,7 @@ public class Magazziniere extends Utente {
             boolean prodottoPresente = false;
             String nomeProdotto = "";
             System.out.println(ANSI_CYAN+"MERCE IN CUCINA:"+ANSI_RESET);
-            System.out.println(prodottiInCucina);
+            merceInCucina.visualizzaMerce();
             do {
                 nomeProdotto = InputDati.leggiStringaNonVuota("Inserire nome del prodotto da riportare in magazzino: ");
                 if (merceInCucina.getArticoli().containsKey(nomeProdotto))
@@ -161,7 +161,8 @@ public class Magazziniere extends Utente {
             boolean prodottoPresente = false;
             do{
                 System.out.println(ANSI_BLUE + "---BEVANDE/GENERI ALIMENTARI NEL MAGAZZINO---" + ANSI_RESET);
-                System.out.println(insieme);
+                for(Raggruppabile raggruppabile : insieme)
+                    System.out.println(raggruppabile);
                 nomeArticolo = InputDati.leggiStringaConSpazi("Inserire nome della bevanda/genere alimentare extra: ");
                 for(Raggruppabile item : insieme) {
                     if (item.getNome().equalsIgnoreCase(nomeArticolo)){

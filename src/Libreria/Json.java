@@ -593,7 +593,6 @@ public class Json {
         try (FileReader reader = new FileReader(absolutePath)){
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             String dataSpesa = (String) jsonObject.get("giorno");
-            System.out.println(dataSpesa);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             //dataSpesa = dataSpesa.replaceAll("'\\'", "");
             LocalDate dataListaSpesa = LocalDate.parse(dataSpesa, formatter);

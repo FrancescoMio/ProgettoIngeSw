@@ -17,6 +17,6 @@ public class Bevanda implements Raggruppabile{
 
     @Override
     public String toString() {
-        return "- " + nome + "\n";
+        return "- " + nome;
     }
 }
