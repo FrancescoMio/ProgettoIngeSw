@@ -366,10 +366,12 @@ public class Ristorante {
         magazziniere.creaListaSpesaGiornaliera(prenotazioni,registroMagazzino,consumoProCapiteBevande,consumoProCapiteGeneriExtra);
         Merce listaSpesa = magazziniere.getListaSpesa();
         registroMagazzino.aggiungiArticoliComprati(listaSpesa);
+        System.out.println("LISTA DELLA SPESA:");
+        listaSpesa.visualizzaMerce();
         merceDaPortareInCucina = magazziniere.portaIngredientiInCucina(prenotazioni);
         System.out.println(ANSI_CYAN+"MERCE DA PORTARE IN CUCINA:"+ANSI_RESET);
         merceDaPortareInCucina.visualizzaMerce();
-        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO:"+ANSI_RESET);
+        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO AGGIORNATO CON ARTICOLI COMPRATI:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         Json.salvaRegistroMagazzino(registroMagazzino);
         Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
@@ -401,7 +403,6 @@ public class Ristorante {
             QuantitaMerce quantitaIngredienteDaPortare = new QuantitaMerce(quantitaDaPortare, unitaMisura);
             QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaMax - quantitaDaPortare, unitaMisura);
             prodottiDaPortareInCucina.replace(nomeIngrediente, quantitaIngrediente, quantitaAggiornata);
-            //ingredientiDaAggiungere.put(nomeIngrediente, quantitaIngredienteDaPortare);
             if(ingredientiDaAggiungere.containsKey(nomeIngrediente)){
                 QuantitaMerce quantitaProdottoOld = ingredientiDaAggiungere.get(nomeIngrediente);
                 double quantitaOld = quantitaProdottoOld.getQuantita();
@@ -409,15 +410,11 @@ public class Ristorante {
                 ingredientiDaAggiungere.put(nomeIngrediente,quantitaAggiornataDaAggiungere);
             }else ingredientiDaAggiungere.put(nomeIngrediente,quantitaIngredienteDaPortare);
         }while (InputDati.yesOrNo(ANSI_GREEN + "Portare un altro ingrediente in cucina?" + ANSI_RESET));
-        System.out.println(ANSI_CYAN+"INGREDIENTI DA AGGIUNGERE:"+ANSI_RESET);
-        System.out.println(ingredientiDaAggiungere);
         merceInCucina.aggiungiIngredienti(ingredientiDaAggiungere);
         System.out.println(ANSI_CYAN+"MERCE PRESENTE IN CUCINA:"+ANSI_RESET);
         merceInCucina.visualizzaMerce();
-        System.out.println(ANSI_CYAN+"MERCE RIMASTA DA PORTARE IN CUCINA:"+ANSI_RESET);
-        merceDaPortareInCucina.visualizzaMerce();
         registroMagazzino.rimuoviProdotti(ingredientiDaAggiungere); //metodo per la rimozione dal registro magazzino degli ingredienti portati in cucina
-        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
+        System.out.println(ANSI_CYAN+"\nREGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         Json.salvaRegistroMagazzino(registroMagazzino);
         Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
@@ -432,7 +429,7 @@ public class Ristorante {
         bevandeEGeneri.addAll(generiAlimentariExtra);
         HashMap<String, QuantitaMerce> prodottiInSala = magazziniere.portaBevandaGenereInSala(registroMagazzino,bevandeEGeneri);
         registroMagazzino.rimuoviProdotti(prodottiInSala);
-        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
+        System.out.println(ANSI_CYAN+"\nREGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         Json.salvaRegistroMagazzino(registroMagazzino);
     }
@@ -441,13 +438,13 @@ public class Ristorante {
      * metodo che simula il flusso di prodotti non consumati dalla cucina alla sala, e salva tutti i valori nei file json
      */
     public void riportaInMagazzinoNonConsumati(){
+        merceInCucina.togliProdottiQuantitaZero();
         HashMap<String,QuantitaMerce> prodottiDaRiportare = magazziniere.riportaInMagazzino(merceInCucina);
-        System.out.println("prodotti da riportare in magazzino: ");
-        System.out.println(prodottiDaRiportare);
-        System.out.println(ANSI_CYAN+"MERCE IN CUCINA RIMASTA:"+ANSI_RESET);
+        System.out.println(ANSI_CYAN+"MERCE RIMASTA IN CUCINA:"+ANSI_RESET);
+        merceInCucina.togliProdottiQuantitaZero();
         merceInCucina.visualizzaMerce();
         registroMagazzino.riportaProdotti(prodottiDaRiportare);
-        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO CON PRODOTTI RIPORTATI:"+ANSI_RESET);
+        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         Json.salvaRegistroMagazzino(registroMagazzino);
         Json.salvaCucina(merceDaPortareInCucina,merceInCucina);

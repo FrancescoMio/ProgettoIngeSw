@@ -95,7 +95,7 @@ public class GestioneUtenza {
             ristorante.filtraPrenotazioni();
             if(!Json.fattoListaSpesa())
                 ristorante.creaListaSpesa();
-            else System.out.println("lista spesa già fatta");
+            else System.out.println("LISTA SPESA GIA' FATTA PER OGGI!");
             MyMenu menu = new MyMenu(titoloMenuMagazziniere, vociMenuMagazziniere);
             boolean finito = false;
             do {

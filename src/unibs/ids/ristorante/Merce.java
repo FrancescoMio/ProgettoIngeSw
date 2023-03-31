@@ -1,5 +1,7 @@
 package unibs.ids.ristorante;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -150,13 +152,28 @@ public class Merce{
         }
     }
 
+    public void togliProdottiQuantitaZero(){
+        ArrayList<String> prodottiDaRimuovere = new ArrayList<>();
+        for (Map.Entry<String, QuantitaMerce> entry : articoli.entrySet()){
+            if(entry.getValue().getQuantita() == 0.0)
+                prodottiDaRimuovere.add(entry.getKey());
+        }
+        togliProdottiQuantitaZero(prodottiDaRimuovere);
+    }
+
+    private void togliProdottiQuantitaZero(ArrayList<String> prodottiDaRimuovere){
+        for(String nomeProdotto : prodottiDaRimuovere)
+            if(articoli.containsKey(nomeProdotto))
+                articoli.remove(nomeProdotto);
+    }
+
     public void visualizzaMerce() {
-        System.out.println("MERCE:");
+        DecimalFormat df = new DecimalFormat("#.##");
         for (Map.Entry<String, QuantitaMerce> entry : articoli.entrySet()) {
             String nome = entry.getKey();
             QuantitaMerce quantitaMerce = entry.getValue();
             System.out.println("Nome: " + nome +
-                                "\nQuantità: " + quantitaMerce.getQuantita() + quantitaMerce.getUnitaMisura());
+                                " -> Quantità: " + df.format(quantitaMerce.getQuantita()) + quantitaMerce.getUnitaMisura());
         }
     }
 }
