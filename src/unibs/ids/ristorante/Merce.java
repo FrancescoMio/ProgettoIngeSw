@@ -85,9 +85,10 @@ public class Merce{
     }
 
     /**
-     * todo: da descrivere
+     * Metodo che calcola la differenza tra la lista della spesa e la merce disponibile nel magazzino, in modo che venga
+     * comprata solo quella necessaria
      * @param merceMagazzino merce del magazzino
-     * precondizione: todo: da scrivere
+     * postcondizione: la lista della spesa viene aggiornata con la quantità di merce necessaria
      */
     public void differenzaScorte(Merce merceMagazzino){
         HashMap<String, QuantitaMerce> articoliDisponibiliMagazzino = merceMagazzino.getArticoli();
