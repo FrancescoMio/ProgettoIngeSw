@@ -59,11 +59,11 @@ public class Gestore extends Utente {
                     presente = false;
                 else System.err.println("Piatto già presente nel ristorante!");
             }while(presente);
-            LocalDate dataInizio = InputDati.leggiData("Inserire data di inizio validità: ");
-            LocalDate dataFine = InputDati.leggiData("Inserire data di fine validità: ");
+            ArrayList<LocalDate> date = new ArrayList<>();
+            date = inserisciDate();
             int tempoPreparazione = InputDati.leggiIntero("Inserire tempo di preparazione in minuti: ");
             Ricetta ricetta = creaRicetta(caricoLavoroXpersona);
-            Piatto piatto = new Piatto(nomePiatto, ricetta, tempoPreparazione, dataInizio, dataFine);
+            Piatto piatto = new Piatto(nomePiatto, ricetta, tempoPreparazione, date.get(0), date.get(1));
             piatti.add(piatto);
             scelta = InputDati.yesOrNo("Vuoi inserire un altro piatto?");
         } while (scelta);
@@ -81,7 +81,14 @@ public class Gestore extends Utente {
         do {
             String nomIngrediente = InputDati.leggiStringa("Inserire nome ingrediente: ");
             double dose = InputDati.leggiDoubleConMinimo("Inserire dose opportuna dell'ingrediente: ",0);
-            String unitaMisura = InputDati.leggiStringaNonVuota("Inserire unità di misura: ");
+            boolean unitaMisuraGiusta = false;
+            String unitaMisura = "";
+            do{
+                unitaMisura = InputDati.leggiStringaNonVuota("Inserire unità di misura: ");
+                if(MyUtil.controlloUnitaMisura(unitaMisura))
+                    unitaMisuraGiusta = true;
+                else System.err.println("Unità di misura inserita non valida!");
+            }while (!unitaMisuraGiusta);
             QuantitaMerce quantitaIngrediente = new QuantitaMerce(dose,unitaMisura);
             ingredienti.put(nomIngrediente,quantitaIngrediente);
             scelta = InputDati.yesOrNo("Vuoi inserire un altro ingrediente?");

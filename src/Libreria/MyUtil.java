@@ -25,6 +25,13 @@ public class MyUtil {
         return true;
     }
 
+    public static boolean controlloUnitaMisura(String unitaMisura){
+        if(unitaMisura.equalsIgnoreCase("kg") || unitaMisura.equalsIgnoreCase("hg") || unitaMisura.equalsIgnoreCase("g")
+           || unitaMisura.equalsIgnoreCase("l") || unitaMisura.equalsIgnoreCase("ml"))
+            return true;
+        return false;
+    }
+
     public static LocalDate getDataOdierna(){
         LocalDate oggi = LocalDate.now();
         return oggi;
