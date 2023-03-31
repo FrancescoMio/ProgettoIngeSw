@@ -5,6 +5,14 @@ import java.util.Date;
 import java.time.LocalDate;
 
 public class MyUtil {
+
+    /**
+     * Metodo per controllare se la data di inizio e di fine siano valide
+     * @param dataInizio data di inizio
+     * @param dataFine data di fine
+     * @return true se la data di inizio e di fine sono valide, false altrimenti
+     * precondizione: dataInizio < dataFine
+     */
     public static boolean controlloData(LocalDate dataInizio, LocalDate dataFine){
         LocalDate oggi = LocalDate.now();
         if((oggi.isEqual(dataInizio) || oggi.isAfter(dataInizio)) && ( oggi.isBefore(dataFine) || oggi.isEqual(dataFine)))

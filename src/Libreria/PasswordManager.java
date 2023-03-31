@@ -19,8 +19,8 @@ public class PasswordManager {
     /**
      * La password in input viene convertita in un array di byte, e quindi l'algoritmo SHA-256 viene applicato a questo
      * array di byte per produrre un hash. L'hash viene quindi convertito in una stringa esadecimale e restituito.
-     * @param password
-     * @return
+     * @param password password in chiaro
+     * @return hash della password
      * @throws NoSuchAlgorithmException
      */
     public static String hashPassword(String password) throws NoSuchAlgorithmException {
@@ -44,7 +44,7 @@ public class PasswordManager {
      * Sistemare il metodo: sostituire gli if con un switch case, circondare il tutto con do-while, creare due metodi separati
      * per la registrazione ed uno per l'accesso, creare un metodo unico per la lettura dal file JSON per la verifica della presenza
      * delle credenziali
-     * @return
+     * @return true se l'utente è autenticato, false altrimenti
      * @throws NoSuchAlgorithmException
      */
     public static boolean autenticazione(String nomeFile) throws NoSuchAlgorithmException {
@@ -113,8 +113,8 @@ public class PasswordManager {
 
     /**
      * Metodo per mascherare la password
-     * @param messaggio
-     * @return
+     * @param messaggio messaggio da visualizzare
+     * @return password inserita dall'utente
      */
     public static String leggiPassword (String messaggio) {
         EraserThread et = new EraserThread(messaggio);
