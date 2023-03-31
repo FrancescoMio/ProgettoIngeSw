@@ -282,7 +282,7 @@ public class Json {
                 // Parsing della stringa in un oggetto LocalDate
                 LocalDate dataInizio = LocalDate.parse(dataInizioStr, formatter);
 
-                String dataFineStr = (String) menuTematicoJson.get("dataInizio");
+                String dataFineStr = (String) menuTematicoJson.get("dataFine");
                 dataFineStr = dataFineStr.replaceAll("'\\'", "");
                 LocalDate dataFine = LocalDate.parse(dataFineStr, formatter);
 

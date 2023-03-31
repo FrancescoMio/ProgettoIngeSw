@@ -45,6 +45,21 @@ public class AddettoPrenotazioni extends Utente {
     }
 
     /**
+     * Metodo che filtra i menù tematici che saranno disponibili fino alla data di prenotazione compresa
+     * @param menuTematici menù tematici del ristorante (non filtrati)
+     * @param dataPrenotazione
+     * @return
+     */
+    private Set<MenuTematico> filtraMenutematici(Set<MenuTematico> menuTematici, LocalDate dataPrenotazione){
+        Set<MenuTematico> menuTematiciDisponibili = new HashSet<>();
+        for(MenuTematico menuTematico : menuTematici){
+            if(menuTematico.getDataFine().isAfter(dataPrenotazione) || menuTematico.getDataFine().isEqual(dataPrenotazione))
+                menuTematiciDisponibili.add(menuTematico);
+        }
+        return menuTematiciDisponibili;
+    }
+
+    /**
      * Metodo principale di addettoPrenotazioni, permette di creare una prenotazione effettiva per una data in particolare
      * e comprende tutti i controlli su carico di lavoro e numero di coperti
      * @param copertiMax numero massimo di coperti del ristorante
@@ -59,12 +74,12 @@ public class AddettoPrenotazioni extends Utente {
             do{
                 dataPrenotazione = InputDati.leggiData("Inserire data prenotazione (dd/MM/yyyy): ");
             }while(!prenotazioneValida(dataPrenotazione));
-
+            Set<MenuTematico> menuTematiciDisponibili = filtraMenutematici(menuTematici,dataPrenotazione);
             Prenotazione prenotazione;
             //richiamo metodo che controlla se il numero di coperti inseriti supera il numero massimo di coperti raggiungibili in una giornata
             if(controlloCoperti(storicoPrenotazioni, numeroCoperti, dataPrenotazione, copertiMax)){
                 //se numero di coperti è accettabile, creo l'ordine
-                ordine = chiediOrdine(numeroCoperti, menuAllaCarta, menuTematici);
+                ordine = chiediOrdine(numeroCoperti, menuAllaCarta, menuTematiciDisponibili);
                 if(ordine.equals(null))
                     return null;
                 //richiamo metodo che controlla se il carico di lavoro supera il carico massimo raggiungibile in una giornata
@@ -199,12 +214,15 @@ public class AddettoPrenotazioni extends Utente {
             System.out.println("\n"+ANSI_CYAN+"-ORDINE PERSONA " + (i+1) + ":"+ANSI_RESET);
             int scelta = menuOrdine.scegli();
             if(scelta == 1){
-                MenuTematico menu = chiediMenu(menuTematici);
-                if(presenteInOrdine(ordine,menu)){
-                    int quantita = ordine.get(menu);
-                    ordine.put(menu,quantita+1);
+                if(!menuTematici.isEmpty()){
+                    MenuTematico menu = chiediMenu(menuTematici);
+                    if(presenteInOrdine(ordine,menu)){
+                        int quantita = ordine.get(menu);
+                        ordine.put(menu,quantita+1);
+                    }
+                    else ordine.put(menu,1);
                 }
-                else ordine.put(menu,1);
+                else System.out.println("Non sono presenti menù tematici disponibili!");
             } else if (scelta == 2) {
                 do{
                     Piatto piatto = chiediPiatto(menuAllaCarta);
@@ -296,7 +314,7 @@ public class AddettoPrenotazioni extends Utente {
         int numeroMenu;
         boolean sceltaCorretta = false;
         for (MenuTematico m : elencoMenuTematici) {
-            System.out.println(i + "-" + m.getNomeMenu());
+            System.out.println(i + " " + m.menuCliente());
             i++;
         }
         do {

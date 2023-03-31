@@ -117,11 +117,15 @@ public class MenuTematico extends Menu implements Ordinabile{
     private String getNomiPiatti(Set<Piatto> elencoPiatti){
         StringBuilder sb = new StringBuilder();
         for (Piatto piatto : elencoPiatti) {
-            sb.append("- ")
+            sb.append("  - ")
                     .append(piatto.getNome())
                     .append("\n");
         }
         return sb.toString();
+    }
+
+    public String menuCliente() {
+        return "- Nome: " + ANSI_CYAN + nomeMenu + ANSI_RESET + "\n    Elenco piatti:\n" + getNomiPiatti(elencoPiatti);
     }
     @Override
     public String toString() {
