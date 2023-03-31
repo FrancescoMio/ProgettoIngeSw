@@ -27,8 +27,12 @@ public class AddettoPrenotazioni extends Utente {
      * @param menuAllaCarta menu alla carta del ristorante, comprensivo di tutti i piatti disponibili
      * @param menuTematici menu tematici del ristorante, ognuno comprendente piu piatti
      * @return tutte le prenotazioni create
+     * precondiizoni: copertiMax > 0, caricoMax > 0, menuAllaCarta != null, menuTematici != null, storicoPrenotazioni != null
+     * postcondizioni: nuovePrenotazioni != null
      */
     public ArrayList<Prenotazione> creaPrenotazioni(int copertiMax, double caricoMax, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici, ArrayList<Prenotazione> storicoPrenotazioni) {
+
+
         System.out.println(lineSeparator);
         System.out.println(ANSI_YELLOW+"CREAZIONE NUOVE PRENOTAZIONI"+ANSI_RESET);
         ArrayList<Prenotazione> nuovePrenotazioni = new ArrayList<>();
@@ -41,6 +45,8 @@ public class AddettoPrenotazioni extends Utente {
             else
                 System.out.println(ANSI_RED+"---LA PRENOTAZIONE E' STATA CANCELLATA!---"+ANSI_RESET);
         }while (InputDati.yesOrNo(ANSI_CYAN+"Creare un'altra prenotazione?"+ANSI_RESET));
+        //postcondizioni: nuovePrenotazioni != null
+        assert nuovePrenotazioni != null;
         return nuovePrenotazioni;
     }
 
@@ -64,6 +70,8 @@ public class AddettoPrenotazioni extends Utente {
      * e comprende tutti i controlli su carico di lavoro e numero di coperti
      * @param copertiMax numero massimo di coperti del ristorante
      * @param caricoMax massimo carico sostenibile del ristorante
+     * precondizioni: copertiMax > 0, caricoMax > 0, menuAllaCarta != null, menuTematici != null, storicoPrenotazioni != null
+     * postcondizioni: prenotazione != null
      */
     private Prenotazione creaPrenotazione(ArrayList<Prenotazione> storicoPrenotazioni, int copertiMax, double caricoMax,MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
         LocalDate dataOdierna = LocalDate.now();
@@ -101,6 +109,12 @@ public class AddettoPrenotazioni extends Utente {
         return null;
     }
 
+    /**
+     * metodo che controlla la validità della prenotazione riguardo i giorni festivi e la data corrente
+     * @param dataPrenotazione data della prenotazione
+     * @return true se la prenotazione è valida, false altrimenti
+     * precondizioni: dataPrenotazione != null
+     */
     private boolean prenotazioneValida(LocalDate dataPrenotazione){
         LocalDate dataOdierna = MyUtil.getDataOdierna();
         if(dataPrenotazione.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
@@ -129,6 +143,8 @@ public class AddettoPrenotazioni extends Utente {
      * @param ordine coppia menu/piatto e quantità associata
      * @param caricoMax carico massimo raggiungibile in una giornata
      * @return true se il carico di lavoro è accettabile, false altrimenti
+     * precondizioni: dataPrenotazione != null, ordine != null, caricoMax > 0
+     * postcondizioni: caricoLavorodellaGiornata >= 0
      */
     private boolean controlloCaricoLavoro(ArrayList<Prenotazione> prenotazioni, LocalDate dataPrenotazione, HashMap<Ordinabile,Integer> ordine, double caricoMax){
         //salvo il carico delle prenotazioni già presenti nella data in questione
@@ -138,6 +154,7 @@ public class AddettoPrenotazioni extends Utente {
             //aggiungo il carico di lavoro dell'ordine
             caricoLavorodellaGiornata += o.getCaricoLavoro()*ordine.get(o);
         }
+        assert caricoLavorodellaGiornata >= 0 : "caricoLavorodellaGiornata non può essere negativo";
         if(caricoLavorodellaGiornata > caricoMax)
             return false;
         else
@@ -148,6 +165,8 @@ public class AddettoPrenotazioni extends Utente {
      * metodo che permette di calcolare il carico di lavoro delle prenotazioni già presenti in una data
      * @param dataPrenotazione data della prenotazione
      * @return carico di lavoro delle prenotazioni già presenti in una data
+     * precondizioni: dataPrenotazione != null, prenotazioni != null
+     * postcondizioni: sommaCarichiLavoro >= 0
      */
     private double caricoLavoroInData(ArrayList<Prenotazione> prenotazioni ,LocalDate dataPrenotazione){
         double sommaCarichiLavoro = 0;
@@ -160,6 +179,7 @@ public class AddettoPrenotazioni extends Utente {
         for (Prenotazione p : prenotazioniUtili){
             sommaCarichiLavoro += p.getCaricoLavoro();
         }
+        assert sommaCarichiLavoro >= 0 : "sommaCarichiLavoro non può essere negativo";
         return sommaCarichiLavoro;
     }
 
@@ -170,6 +190,8 @@ public class AddettoPrenotazioni extends Utente {
      * @param dataPrenotazione data della prenotazione
      * @param copertiMax  numero massimo di coperti raggiungibili in una giornata
      * @return true se il numero di coperti inseriti è accettabile, false altrimenti
+     * precondizioni: numeroCoperti > 0, dataPrenotazione != null, copertiMax > 0
+     * postcondizioni: numeroCopertiGiaPrenotati >= 0
      */
     private boolean controlloCoperti(ArrayList<Prenotazione> storicoPrenotazioni, int numeroCoperti, LocalDate dataPrenotazione, int copertiMax){
         int numeroCopertiGiaPrenotati = 0;
@@ -189,6 +211,10 @@ public class AddettoPrenotazioni extends Utente {
 
     /**
      * metodo che permette di eliminare automaticamente le prenotazioni scadute
+     * @param prenotazioni prenotazioni da controllare
+     * @return prenotazioni aggiornate
+     * precondizioni: prenotazioni != null
+     * postcondizioni: prenotazioniAggiornate != null
      */
     public ArrayList<Prenotazione> togliPrenotazioniScadute(ArrayList<Prenotazione> prenotazioni){
         ArrayList<Prenotazione> prenotazioniAggiornate = new ArrayList<>();
@@ -196,6 +222,7 @@ public class AddettoPrenotazioni extends Utente {
             if(!p.getDataPrenotazione().isBefore(LocalDate.now()))
                 prenotazioniAggiornate.add(p);
         }
+        assert prenotazioniAggiornate != null : "prenotazioniAggiornate non può essere null";
         return prenotazioniAggiornate;
     }
 
@@ -206,6 +233,8 @@ public class AddettoPrenotazioni extends Utente {
      * @param menuAllaCarta menu alla carta
      * @param menuTematici menu tematici
      * @return ordine per ogni persona al tavolo
+     * precondizioni: numeroCoperti > 0, menuAllaCarta != null, menuTematici != null
+     * postcondizioni: ordine != null
      */
     private HashMap<Ordinabile,Integer> chiediOrdine(int numeroCoperti, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
@@ -235,9 +264,18 @@ public class AddettoPrenotazioni extends Utente {
             }
             else return null;
         }
+        assert ordine != null : "ordine non può essere null";
         return ordine;
     }
 
+    /**
+     * metodo di supporto a chiediOrdine che permette di controllare se un Ordinabile
+     * è già presente nell'ordine
+     * @param ordine ordine
+     * @param item ordinabile da controllare
+     * @return true se l'ordinabile è già presente nell'ordine, false altrimenti
+     * precondizioni: ordine != null, item != null
+     */
     private boolean presenteInOrdine(HashMap<Ordinabile, Integer> ordine, Ordinabile item){
         for (Map.Entry<Ordinabile, Integer> entry : ordine.entrySet()) {
             Ordinabile key = entry.getKey();
@@ -280,6 +318,8 @@ public class AddettoPrenotazioni extends Utente {
      * il singolo piatto dal menu alla carta che si desidera ordinare
      * @param menuAllaCarta menu alla carta
      * @return piatto scelto
+     * precondizioni: menuAllaCarta != null
+     * postcondizioni: piatto != null
      */
     private Piatto chiediPiatto(MenuCarta menuAllaCarta) {
         Set<Piatto> elencoPiatti = menuAllaCarta.getElencoPiatti();
@@ -307,6 +347,8 @@ public class AddettoPrenotazioni extends Utente {
      * il menu tematico che si desidera ordinare
      * @param menuTematici menu tematici
      * @return menu tematico scelto
+     * precondizioni: menuTematici != null
+     * postcondizioni: menu != null
      */
     private MenuTematico chiediMenu(Set<MenuTematico> menuTematici) {
         MenuTematico[] elencoMenuTematici = menuTematici.toArray(new MenuTematico[menuTematici.size()]);
