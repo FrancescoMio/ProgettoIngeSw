@@ -1,6 +1,7 @@
 package unibs.ids.ristorante;
 
 import Libreria.InputDati;
+import Libreria.MyUtil;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -200,8 +201,22 @@ public class Gestore extends Utente {
      */
     public ArrayList<LocalDate> inserisciDate(){
         ArrayList<LocalDate> date = new ArrayList<>();
-        LocalDate dataInizio = InputDati.leggiData(inserisciDataInizio);
-        LocalDate dataFine = InputDati.leggiData(inserisciDataFine);
+        LocalDate dataInizio = null;
+        LocalDate dataFine = null;
+        boolean dataIGiusta = false;
+        do{
+            dataInizio = InputDati.leggiData(inserisciDataInizio);
+            if(MyUtil.controlloDataIniziale(dataInizio))
+                dataIGiusta = true;
+            else System.err.println("Data inserita non valida!");
+        }while (!dataIGiusta);
+        boolean dataFGiusta = false;
+        do{
+            dataFine = InputDati.leggiData(inserisciDataFine);
+            if(MyUtil.controlloDataFinale(dataFine,dataInizio))
+                dataFGiusta = true;
+            else System.err.println("Data inserita non valida!");
+        }while (!dataFGiusta);
         date.add(dataInizio);
         date.add(dataFine);
         return date;
