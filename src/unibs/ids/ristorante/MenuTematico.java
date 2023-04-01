@@ -135,11 +135,11 @@ public class MenuTematico extends Menu implements Ordinabile{
     }
 
     public String menuCliente() {
-        return "- Nome: " + ANSI_CYAN + nomeMenu + ANSI_RESET + "\n    Elenco piatti:\n" + getNomiPiatti(elencoPiatti);
+        return "- Nome: "  + nomeMenu  + "\n    Elenco piatti:\n" + getNomiPiatti(elencoPiatti);
     }
     @Override
     public String toString() {
-        return "- Nome: " + ANSI_CYAN + nomeMenu + ANSI_RESET + "\n- Carico lavoro: " + caricoLavoroMenuTematico
+        return "- Nome: "  + nomeMenu  + "\n- Carico lavoro: " + caricoLavoroMenuTematico
                 + "\n- Periodo validità : " + dataInizio + " -> " + dataFine + "\n Elenco piatti:\n" + getNomiPiatti(elencoPiatti);
     }
 

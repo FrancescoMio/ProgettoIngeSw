@@ -366,12 +366,10 @@ public class Ristorante {
         magazziniere.creaListaSpesaGiornaliera(prenotazioni,registroMagazzino,consumoProCapiteBevande,consumoProCapiteGeneriExtra);
         Merce listaSpesa = magazziniere.getListaSpesa();
         registroMagazzino.aggiungiArticoliComprati(listaSpesa);
-        System.out.println("LISTA DELLA SPESA:");
+        System.out.println("\nLISTA DELLA SPESA:");
         listaSpesa.visualizzaMerce();
         merceDaPortareInCucina = magazziniere.portaIngredientiInCucina(prenotazioni);
-        System.out.println(ANSI_CYAN+"MERCE DA PORTARE IN CUCINA:"+ANSI_RESET);
-        merceDaPortareInCucina.visualizzaMerce();
-        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO AGGIORNATO CON ARTICOLI COMPRATI:"+ANSI_RESET);
+        System.out.println("\nREGISTRO MAGAZZINO AGGIORNATO CON ARTICOLI COMPRATI:");
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         Json.salvaRegistroMagazzino(registroMagazzino);
         Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
@@ -381,43 +379,49 @@ public class Ristorante {
     /**
      * metodo che simula il flusso di ingredienti dal magazzino alla cucina, e salva tutti i valori nei file json
      */
-    public void portaIngredientiInCucina(){
-        HashMap<String,QuantitaMerce> prodottiDaPortareInCucina = merceDaPortareInCucina.getArticoli();
-        HashMap<String,QuantitaMerce> ingredientiDaAggiungere = new HashMap<>();
-        do {
-            System.out.println(lineSeparator);
-            System.out.println(ANSI_BLUE + "---INGREDIENTI DA PORTARE IN CUCINA---" + ANSI_RESET);
-            merceDaPortareInCucina.visualizzaMerce();
-            boolean ingredientePresente = false;
-            String nomeIngrediente = "";
+    public void portaIngredientiInCucina() {
+        merceDaPortareInCucina.togliProdottiQuantitaZero();
+        HashMap<String, QuantitaMerce> prodottiDaPortareInCucina = merceDaPortareInCucina.getArticoli();
+        HashMap<String, QuantitaMerce> ingredientiDaAggiungere = new HashMap<>();
+        if (prodottiDaPortareInCucina.isEmpty())
+            System.out.println("\nNessun prodotto da portare in cucina!");
+        else {
             do {
-                nomeIngrediente = InputDati.leggiStringaNonVuota("Inserire nome ingrediente da portare in cucina: ");
-                if (prodottiDaPortareInCucina.containsKey(nomeIngrediente))
-                    ingredientePresente = true;
-                else System.err.println("Ingrediente non presente nella lista!");
-            } while (!ingredientePresente);
-            QuantitaMerce quantitaIngrediente = prodottiDaPortareInCucina.get(nomeIngrediente);
-            double quantitaMax = quantitaIngrediente.getQuantita();
-            String unitaMisura = quantitaIngrediente.getUnitaMisura();
-            double quantitaDaPortare = InputDati.leggiDoubleCompreso("Inserire quantità ingrediente da portare in cucina ("+unitaMisura+"): ", 0, quantitaMax);
-            QuantitaMerce quantitaIngredienteDaPortare = new QuantitaMerce(quantitaDaPortare, unitaMisura);
-            QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaMax - quantitaDaPortare, unitaMisura);
-            prodottiDaPortareInCucina.replace(nomeIngrediente, quantitaIngrediente, quantitaAggiornata);
-            if(ingredientiDaAggiungere.containsKey(nomeIngrediente)){
-                QuantitaMerce quantitaProdottoOld = ingredientiDaAggiungere.get(nomeIngrediente);
-                double quantitaOld = quantitaProdottoOld.getQuantita();
-                QuantitaMerce quantitaAggiornataDaAggiungere = new QuantitaMerce(quantitaDaPortare+quantitaOld,unitaMisura);
-                ingredientiDaAggiungere.put(nomeIngrediente,quantitaAggiornataDaAggiungere);
-            }else ingredientiDaAggiungere.put(nomeIngrediente,quantitaIngredienteDaPortare);
-        }while (InputDati.yesOrNo(ANSI_GREEN + "Portare un altro ingrediente in cucina?" + ANSI_RESET));
-        merceInCucina.aggiungiIngredienti(ingredientiDaAggiungere);
-        System.out.println(ANSI_CYAN+"MERCE PRESENTE IN CUCINA:"+ANSI_RESET);
-        merceInCucina.visualizzaMerce();
-        registroMagazzino.rimuoviProdotti(ingredientiDaAggiungere); //metodo per la rimozione dal registro magazzino degli ingredienti portati in cucina
-        System.out.println(ANSI_CYAN+"\nREGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
-        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
-        Json.salvaRegistroMagazzino(registroMagazzino);
-        Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
+                System.out.println(lineSeparator);
+                System.out.println("---INGREDIENTI DA PORTARE IN CUCINA---");
+                merceDaPortareInCucina.visualizzaMerce();
+                boolean ingredientePresente = false;
+                String nomeIngrediente = "";
+                do {
+                    nomeIngrediente = InputDati.leggiStringaNonVuota("Inserire nome ingrediente da portare in cucina: ");
+                    if (prodottiDaPortareInCucina.containsKey(nomeIngrediente))
+                        ingredientePresente = true;
+                    else System.err.println("Ingrediente non presente nella lista!");
+                } while (!ingredientePresente);
+                QuantitaMerce quantitaIngrediente = prodottiDaPortareInCucina.get(nomeIngrediente);
+                double quantitaMax = quantitaIngrediente.getQuantita();
+                String unitaMisura = quantitaIngrediente.getUnitaMisura();
+                double quantitaDaPortare = InputDati.leggiDoubleCompreso("Inserire quantità ingrediente da portare in cucina (" + unitaMisura + "): ", 0, quantitaMax);
+                QuantitaMerce quantitaIngredienteDaPortare = new QuantitaMerce(quantitaDaPortare, unitaMisura);
+                QuantitaMerce quantitaAggiornata = new QuantitaMerce(quantitaMax - quantitaDaPortare, unitaMisura);
+                prodottiDaPortareInCucina.replace(nomeIngrediente, quantitaIngrediente, quantitaAggiornata);
+                if (ingredientiDaAggiungere.containsKey(nomeIngrediente)) {
+                    QuantitaMerce quantitaProdottoOld = ingredientiDaAggiungere.get(nomeIngrediente);
+                    double quantitaOld = quantitaProdottoOld.getQuantita();
+                    QuantitaMerce quantitaAggiornataDaAggiungere = new QuantitaMerce(quantitaDaPortare + quantitaOld, unitaMisura);
+                    ingredientiDaAggiungere.put(nomeIngrediente, quantitaAggiornataDaAggiungere);
+                } else ingredientiDaAggiungere.put(nomeIngrediente, quantitaIngredienteDaPortare);
+            } while (InputDati.yesOrNo("Portare un altro ingrediente in cucina?"));
+            merceInCucina.aggiungiIngredienti(ingredientiDaAggiungere);
+            System.out.println("\nMERCE PRESENTE IN CUCINA:");
+            merceInCucina.visualizzaMerce();
+            registroMagazzino.rimuoviProdotti(ingredientiDaAggiungere);
+            registroMagazzino.getArticoliDisponibili().togliProdottiQuantitaZero();
+            System.out.println("\nREGISTRO MAGAZZINO AGGIORNATO:");
+            registroMagazzino.getArticoliDisponibili().visualizzaMerce();
+            Json.salvaRegistroMagazzino(registroMagazzino);
+            Json.salvaCucina(merceDaPortareInCucina, merceInCucina);
+        }
     }
 
     /**
@@ -429,7 +433,8 @@ public class Ristorante {
         bevandeEGeneri.addAll(generiAlimentariExtra);
         HashMap<String, QuantitaMerce> prodottiInSala = magazziniere.portaBevandaGenereInSala(registroMagazzino,bevandeEGeneri);
         registroMagazzino.rimuoviProdotti(prodottiInSala);
-        System.out.println(ANSI_CYAN+"\nREGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
+        registroMagazzino.getArticoliDisponibili().togliProdottiQuantitaZero();
+        System.out.println("\nREGISTRO MAGAZZINO AGGIORNATO:");
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         Json.salvaRegistroMagazzino(registroMagazzino);
     }
@@ -439,35 +444,32 @@ public class Ristorante {
      */
     public void riportaInMagazzinoNonConsumati(){
         merceInCucina.togliProdottiQuantitaZero();
-        HashMap<String,QuantitaMerce> prodottiDaRiportare = magazziniere.riportaInMagazzino(merceInCucina);
-        System.out.println(ANSI_CYAN+"MERCE RIMASTA IN CUCINA:"+ANSI_RESET);
-        merceInCucina.togliProdottiQuantitaZero();
-        merceInCucina.visualizzaMerce();
-        registroMagazzino.riportaProdotti(prodottiDaRiportare);
-        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO AGGIORNATO:"+ANSI_RESET);
-        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
-        Json.salvaRegistroMagazzino(registroMagazzino);
-        Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
+        if(!merceInCucina.getArticoli().isEmpty()){
+            HashMap<String,QuantitaMerce> prodottiDaRiportare = magazziniere.riportaInMagazzino(merceInCucina);
+            System.out.println("MERCE RIMASTA IN CUCINA:");
+            merceInCucina.togliProdottiQuantitaZero();
+            merceInCucina.visualizzaMerce();
+            registroMagazzino.riportaProdotti(prodottiDaRiportare);
+            System.out.println("REGISTRO MAGAZZINO AGGIORNATO:");
+            registroMagazzino.getArticoliDisponibili().visualizzaMerce();
+            Json.salvaRegistroMagazzino(registroMagazzino);
+            Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
+        }else System.out.println("Nessun ingrediente presente in cucina!");
     }
 
     /**
      * metodo che simula il flusso di prodotti scartati dal magazzino a causa di scadenza, e salva tutti i valori nei file json
      */
     public void rimuoviScartiDalMagazzino(){
+        registroMagazzino.getArticoliDisponibili().togliProdottiQuantitaZero();
         HashMap<String,QuantitaMerce> scarti = magazziniere.rimuoviScarti(registroMagazzino);
-        System.out.println(ANSI_CYAN+"PRDOTTI DA SCARTARE:"+ANSI_RESET);
+        System.out.println("PRDOTTI DA SCARTARE:");
         System.out.println(scarti);
         registroMagazzino.rimuoviProdotti(scarti);
-        System.out.println(ANSI_CYAN+"REGISTRO MAGAZZINO CON PRODOTTI SCARTATI:"+ANSI_RESET);
+        registroMagazzino.getArticoliDisponibili().togliProdottiQuantitaZero();
+        System.out.println("REGISTRO MAGAZZINO AGGIORNATO:");
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         Json.salvaRegistroMagazzino(registroMagazzino);
-    }
-    public Merce getMerceInCucina() {
-        return merceInCucina;
-    }
-
-    public Merce getMerceDaPortareInCucina() {
-        return merceDaPortareInCucina;
     }
 
     public void setMerceInCucina(Merce merceInCucina) {

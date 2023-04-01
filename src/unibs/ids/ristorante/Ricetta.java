@@ -45,7 +45,7 @@ public class Ricetta {
     }
     @Override
     public String toString() {
-        return ANSI_BLUE + "* RICETTA:\n"+ ANSI_RESET +"- Numero porzioni: " + numeroPorzioni + "\n- Carico lavoro per porzione: " + caricoDiLavoroXPorzione +
-                 "\n INGREDIENTI:\n" + ANSI_RESET + getStrIngredienti();
+        return  "* RICETTA:\n" +"- Numero porzioni: " + numeroPorzioni + "\n- Carico lavoro per porzione: " + caricoDiLavoroXPorzione +
+                 "\n INGREDIENTI:\n" + getStrIngredienti();
     }
 }

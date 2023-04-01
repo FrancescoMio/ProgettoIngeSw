@@ -67,7 +67,7 @@ public class PasswordManager {
                     elencoUtenti.add(utenteJson);
                     utentiJson.put("elencoUtenti", elencoUtenti);
                     Json.salvaCredenziali(utentiJson,nomeFile);
-                    System.out.println(ANSI_GREEN + "REGISTRAZIONE EFFETTUATA CORRETTAMENTE!" + ANSI_RESET);
+                    System.out.println("REGISTRAZIONE EFFETTUATA CORRETTAMENTE!");
                     return true;
                 }
             } else if (scelta == 2) {
@@ -77,9 +77,9 @@ public class PasswordManager {
                 String hashPassword = hashPassword(password);
                 if(controlloEsistenza(nome,cognome,hashPassword,"login",nomeFile))
                     return true;
-                System.err.println(ANSI_RED + "\nACCESSO NEGATO\n" + ANSI_RESET);
+                System.err.println("\nACCESSO NEGATO\n");
             } else {
-                System.out.println(ANSI_YELLOW + "---ARRIVEDERCI---" + ANSI_RESET);
+                System.out.println("---ARRIVEDERCI---");
                 auth = true;
             }
         }while (!auth) ;
@@ -93,7 +93,7 @@ public class PasswordManager {
                 String nomeUtente = (String) utente.get("nome");
                 String cognomeUtente = (String) utente.get("cognome");
                 if (nome.equalsIgnoreCase(nomeUtente) && cognome.equalsIgnoreCase(cognomeUtente)) {
-                    System.out.println(ANSI_RED + "\nUTENTE GIA' REGISTRATO\n" + ANSI_RESET);
+                    System.out.println("\nUTENTE GIA' REGISTRATO\n");
                     return true;
                 }
             }
@@ -103,7 +103,7 @@ public class PasswordManager {
                 String cognomeUtente = (String) utente.get("cognome");
                 String hashPasswordUtente = (String) utente.get("hashPassword");
                 if (nome.equalsIgnoreCase(nomeUtente) && cognome.equalsIgnoreCase(cognomeUtente) && hashPasswordUtente.equalsIgnoreCase(password)) {
-                    System.out.println(ANSI_GREEN + "\nACCESSO EFFETUATO\n" + ANSI_RESET);
+                    System.out.println("\nACCESSO EFFETUATO\n" );
                     return true;
                 }
             }

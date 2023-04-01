@@ -34,14 +34,4 @@ public class MenuCarta extends Menu{
                 ", elencoPiatti=" + elencoPiatti/*visualizzaPiatti() */+
                 '}';
     }
-
-    public String visualizzaPiatti(){
-        String piatti = "";
-        for(Piatto p : elencoPiatti){
-            int i = 1;
-            System.out.println("Piatto " + i + ": " + p.getDenominazione());
-            i++;
-        }
-        return piatti;
-    }
 }

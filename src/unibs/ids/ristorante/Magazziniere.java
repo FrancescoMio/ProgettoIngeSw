@@ -46,7 +46,6 @@ public class Magazziniere extends Utente {
         listaSpesa.aggiungiBevandeGeneri(consumoProCapiteBevande,consumoProCapiteGeneriExtra, numeroCoperti);
         listaSpesa.incrementoPercentuale();
         listaSpesa.differenzaScorte(registro.getArticoliDisponibili());
-        listaSpesa.visualizzaMerce();
     }
 
     /**
@@ -81,7 +80,7 @@ public class Magazziniere extends Utente {
     public HashMap<String,QuantitaMerce> rimuoviScarti(RegistroMagazzino registroMagazzino){
         HashMap<String,QuantitaMerce> articoliMagazzino = registroMagazzino.getArticoliDisponibili().getArticoli();
         HashMap<String,QuantitaMerce> scarti = new HashMap<>();
-        System.out.println(ANSI_CYAN+"MERCE IN MAGAZZINO:"+ANSI_RESET);
+        System.out.println("\nMERCE IN MAGAZZINO:");
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         do{
             boolean prodottoPresente = false;
@@ -119,7 +118,7 @@ public class Magazziniere extends Utente {
         do{
             boolean prodottoPresente = false;
             String nomeProdotto = "";
-            System.out.println(ANSI_CYAN+"MERCE IN CUCINA:"+ANSI_RESET);
+            System.out.println("MERCE IN CUCINA:");
             merceInCucina.visualizzaMerce();
             do {
                 nomeProdotto = InputDati.leggiStringaNonVuota("Inserire nome del prodotto da riportare in magazzino: ");
@@ -160,7 +159,7 @@ public class Magazziniere extends Utente {
             String nomeArticolo = "";
             boolean prodottoPresente = false;
             do{
-                System.out.println(ANSI_BLUE + "---BEVANDE/GENERI ALIMENTARI NEL MAGAZZINO---" + ANSI_RESET);
+                System.out.println( "---BEVANDE/GENERI ALIMENTARI NEL MAGAZZINO---" );
                 for(Raggruppabile raggruppabile : insieme)
                     System.out.println(raggruppabile);
                 nomeArticolo = InputDati.leggiStringaConSpazi("Inserire nome della bevanda/genere alimentare extra: ");

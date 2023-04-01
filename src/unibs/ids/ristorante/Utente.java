@@ -4,7 +4,7 @@ public class Utente {
     protected String nome;
     protected String cognome;
 
-    public Utente(String nome, String cognome) {//Costruttore
+    public Utente(String nome, String cognome) {
         this.nome = nome;
         this.cognome = cognome;
     }

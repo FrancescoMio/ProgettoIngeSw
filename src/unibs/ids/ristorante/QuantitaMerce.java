@@ -6,26 +6,9 @@ public class QuantitaMerce {
     private double quantita;
     private String unitaMisura;
 
-    public QuantitaMerce(double quantita, String unitaMisura) {//Costruttore
+    public QuantitaMerce(double quantita, String unitaMisura) {
         this.quantita = quantita;
-        //this.unitaMisura = controlloUnitaMisura(unitaMisura);
         this.unitaMisura = unitaMisura;
-    }
-
-    /**
-     * controllo unita di misura inserita, se non è valida chiede di inserirla di nuovo
-     * @return the quantita
-     */
-    private String controlloUnitaMisura(String unitaMisura) {
-        if (unitaMisura.equals("kg") || unitaMisura.equals("hg")|| unitaMisura.equals("g") || unitaMisura.equals("l")) {
-            return unitaMisura;
-        } else {
-            while(!unitaMisura.equals("kg") || !unitaMisura.equals("hg")|| !unitaMisura.equals("g") || !unitaMisura.equals("l")) {
-                System.out.println("Unità di misura non valida");
-                unitaMisura = Libreria.InputDati.leggiStringa("Inserire unità di misura valida: ");
-            }
-            return unitaMisura;
-        }
     }
 
     public double getQuantita() {

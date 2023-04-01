@@ -38,30 +38,8 @@ public class Prenotazione {
         }
         return caricoLavoro;
     }
-
-    public void setDataPrenotazione(LocalDate dataPrenotazione) {
-        this.dataPrenotazione = dataPrenotazione;
-    }
-
     public HashMap<Ordinabile, Integer> getOrdine() {
         return ordine;
-    }
-
-    public void setOrdine(HashMap<Ordinabile, Integer> ordine) {
-        this.ordine = ordine;
-    }
-
-    //probabilmente da togliere
-    public boolean controlloCoperti(){
-        int somma = 0;
-        Iterator<Map.Entry<Ordinabile, Integer>> iterator = ordine.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Ordinabile, Integer> entry = iterator.next();
-            somma += entry.getValue();
-        }
-        if(somma >= numeroCoperti)
-            return true;
-        return false;
     }
 
     public void visualizzaPrenotazione(){

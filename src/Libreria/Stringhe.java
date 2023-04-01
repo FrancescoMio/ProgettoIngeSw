@@ -13,21 +13,21 @@ public class Stringhe {
     public static final String nuovaConfigurazione = "COMPILARE LA CONFIGURAZIONE DEL RISTORANTE";
     public static final String lineSeparator = "--------------------------------------------------";
     public static final String creazioneMenuTematici = "CREAZIONE MENU' TEMATICI: ";
-    public static final String titoloMenu = "\u001B[34mSELEZIONARE TIPOLOGIA DI UTENTE: \u001B[0m";
+    public static final String titoloMenu = "SELEZIONARE TIPOLOGIA DI UTENTE:";
     public static String [] vociMenu = {"Gestore","Addetto alle prenotazioni","Magazziniere"};
 
     public static final String titoloMenuGestore = "SELEZIONARE MODALITA' UTILIZZO: ";
     public static String [] vociMenuGestore = {"Crea nuova configurazione","Visualizza parametri ristorante"
                                                 ,"Imposta carico lavoro per persona","Imposta posti a sedere disponibili nel ristorante","Aggiungi bevanda","Aggiungi genere alimentare extra",
                                                 "Aggiungi nuovo piatto","Aggiungi nuovo menù tematico"};
-    public static String titoloMenuVisualizzazione = "\u001B[34mSELEZIONARE COSA DESIDERA VISUALIZZARE\u001B[0m";
+    public static String titoloMenuVisualizzazione = "SELEZIONARE COSA DESIDERA VISUALIZZARE";
     public static String [] vociMenuVisualizzazione = {"Carico lavoro per persona", "Posti a sedere","Insieme delle bevande",
                                                          "Insieme dei generi alimentari extra","Consumo pro-capite bevande",
                                                         "Consumo pro-capite generi alimentari extra","Corrispondenza piatto-ricetta",
                                                         "Denominazione e periodo validità di ciascun piatto","Ricette","Menù tematici"};
-    public static final String titoloMenuAuth = "\u001B[33mFASE DI AUTENTICAZIONE:\u001B[0m";
+    public static final String titoloMenuAuth = "FASE DI AUTENTICAZIONE:";
     public static String [] vociMenuAuth = {"REGISTRATI","ACCEDI"};
-    public static final String titoloMenuMagazziniere = "\u001B[36mSELEZIONARE OPERAZIONE:\u001B[0m";
+    public static final String titoloMenuMagazziniere = "SELEZIONARE OPERAZIONE:";
     public static String [] vociMenuMagazziniere = {"Porta ingredienti in cucina","Porta bevanda/genere " +
                                                     "alimentare in sala", "Riporta in magazzino ingredienti non consumati",
                                                     "Rimuovi scarti dal magazzino"};
@@ -35,29 +35,11 @@ public class Stringhe {
     public static final String erroreSceltaPiatto = "Numero piatto inserito non valido!";
     public static final String erroreSceltaMenu = "Numero menù inserito non valido!";
 
-    public static final String titoloMenuAddetto = "\u001B[36mSELEZIONARE OPERAZIONE:\u001B[0m";
+    public static final String titoloMenuAddetto = "SELEZIONARE OPERAZIONE:";
     public static String [] vociMenuAddetto = {"Crea nuova prenotazione"};
     public static String configurazioneCaricata = "CONFIGURAZIONE CARICATA CORRETTAMENTE";
     public static String titoloOrdine = "SELEZIONA ORDINE:";
     public static String [] vociOrdine = {"Menù tematico","Piatto del menù alla carta"};
-    public static final String ANSI_GREEN = "\u001B[32m";
-    //ANSI escape sequences. These escape sequences are special character sequences that are interpreted by the console as instructions to change the text color
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_CYAN = "\u001B[36m";
 
-    public static void presentazione(){
-        String presentazione = "PROGETTO INGEGNERIA DEL SOFTWARE (A.A 2022/2023)\nAUTORI:\n-Francesco Mio\n-Matteo Cropelli";
-        incorniciaStringa(presentazione);
-    }
-    public static void incorniciaStringa(String stringa){
-        String stringaa = "Stringa da incornici";
-        String cornice = "╔════════════════════════╗\n";
-        cornice += "║                        ║\n";
-        cornice += "╚════════════════════════╝\n";
-        String stringaIncorniciata = String.format("%s║ %-22s ║\n%s", cornice, stringaa, cornice);
-        System.out.println(stringaIncorniciata);
-    }
+
 }

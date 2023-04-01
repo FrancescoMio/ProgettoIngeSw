@@ -446,19 +446,19 @@ public class Gestore extends Utente {
     }
 
     public void visualizzaCaricoLavoroPersona(int caricoLavoroPersona){
-        System.out.println(ANSI_CYAN + "Carico lavoro per persona: " + ANSI_RESET + caricoLavoroPersona);
+        System.out.println("Carico lavoro per persona: " + caricoLavoroPersona);
     }
 
     public void visualizzaPostiSedere(int posti){
-        System.out.println(ANSI_CYAN + "Posti a sedere disponibili nel ristorante: " + ANSI_RESET + posti);
+        System.out.println("Posti a sedere disponibili nel ristorante: " + posti);
     }
     public void visualizzaInsiemeBevande(Set<Bevanda> bevande){
-        System.out.println(ANSI_CYAN + "Insieme delle bevande:" + ANSI_RESET);
+        System.out.println("Insieme delle bevande:" );
         for (Bevanda bevanda : bevande)
             System.out.println(bevanda);
     }
     public void visualizzaInsiemeGeneri(Set<GenereAlimentareExtra> generi){
-        System.out.println(ANSI_CYAN + "Insieme dei generi alimentari extra:" + ANSI_RESET);
+        System.out.println( "Insieme dei generi alimentari extra:" );
         for (GenereAlimentareExtra genere : generi)
             System.out.println(genere);
     }

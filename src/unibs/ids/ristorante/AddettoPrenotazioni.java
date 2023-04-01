@@ -33,17 +33,17 @@ public class AddettoPrenotazioni extends Utente {
     public ArrayList<Prenotazione> creaPrenotazioni(int copertiMax, double caricoMax, MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici, ArrayList<Prenotazione> storicoPrenotazioni) {
 
         System.out.println(lineSeparator);
-        System.out.println(ANSI_YELLOW+"CREAZIONE NUOVE PRENOTAZIONI"+ANSI_RESET);
+        System.out.println("CREAZIONE NUOVE PRENOTAZIONI");
         ArrayList<Prenotazione> nuovePrenotazioni = new ArrayList<>();
         do{
             Prenotazione prenotazione = creaPrenotazione(storicoPrenotazioni, copertiMax, caricoMax, menuAllaCarta, menuTematici);
             if(prenotazione != null){
                 nuovePrenotazioni.add(prenotazione);
-                System.out.println(ANSI_GREEN+"---PRENOTAZIONE CREATA CORRETTAMENTE---"+ANSI_RESET);
+                System.out.println("---PRENOTAZIONE CREATA CORRETTAMENTE---");
             }
             else
-                System.out.println(ANSI_RED+"---LA PRENOTAZIONE E' STATA CANCELLATA!---"+ANSI_RESET);
-        }while (InputDati.yesOrNo(ANSI_CYAN+"Creare un'altra prenotazione?"+ANSI_RESET));
+                System.out.println("---LA PRENOTAZIONE E' STATA CANCELLATA!---");
+        }while (InputDati.yesOrNo("Creare un'altra prenotazione?"));
         return nuovePrenotazioni;
     }
 
@@ -101,8 +101,8 @@ public class AddettoPrenotazioni extends Utente {
                 }
             }
             else{
-                System.out.println(ANSI_YELLOW+"Prenotazione non effettuata, carico di coperti troppo elevato"+ANSI_RESET);
-                System.out.println(ANSI_YELLOW+"Tornate un altro giorno e saremo lieti di servirvi!"+ANSI_RESET);
+                System.out.println("Prenotazione non effettuata, carico di coperti troppo elevato");
+                System.out.println("Tornate un altro giorno e saremo lieti di servirvi!");
             }
         }
         return null;
@@ -201,7 +201,7 @@ public class AddettoPrenotazioni extends Utente {
         }
         if(numeroCopertiGiaPrenotati + numeroCoperti > copertiMax){
             System.err.println("Il numero di coperti inseriti supera il numero massimo di coperti raggiungibili in una giornata!");
-            System.out.println(ANSI_YELLOW+"Creare una nuova prenotazione con un numero di coperti inferiore!"+ANSI_RESET);
+            System.out.println("Creare una nuova prenotazione con un numero di coperti inferiore!");
             return false;
         }
         else
@@ -238,7 +238,7 @@ public class AddettoPrenotazioni extends Utente {
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
         MyMenu menuOrdine = new MyMenu(titoloOrdine, vociOrdine);
         for(int i = 0; i < numeroCoperti; i++){
-            System.out.println("\n"+ANSI_CYAN+"-ORDINE PERSONA " + (i+1) + ":"+ANSI_RESET);
+            System.out.println("\n"+"-ORDINE PERSONA " + (i+1) + ":");
             int scelta = menuOrdine.scegli();
             if(scelta == 1){
                 if(!menuTematici.isEmpty()){

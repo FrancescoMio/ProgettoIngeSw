@@ -49,7 +49,7 @@ public class GestioneUtenza {
                 }else if (scelta == 8) {
                     ristorante.addMenuTematico();
                 }else {
-                    System.out.println(ANSI_GREEN + "---ARRIVEDERCI!---" + ANSI_RESET);
+                    System.out.println("---ARRIVEDERCI!---");
                     finito = true;
                 }
             }while (!finito);
@@ -75,7 +75,7 @@ public class GestioneUtenza {
                         ristorante.creaNuovaPrenotazione();
                         break;
                     default:
-                        System.out.println(ANSI_GREEN + "---ARRIVEDERCI!---" + ANSI_RESET);
+                        System.out.println("---ARRIVEDERCI!---");
                         finito = true;
                         break;
                 }
@@ -109,7 +109,7 @@ public class GestioneUtenza {
                 }else if (scelta == 4) {
                     ristorante.rimuoviScartiDalMagazzino();
                 }else {
-                    System.out.println(ANSI_GREEN + "---ARRIVEDERCI!---" + ANSI_RESET);
+                    System.out.println("---ARRIVEDERCI!---");
                     finito = true;
                 }
             }while (!finito);

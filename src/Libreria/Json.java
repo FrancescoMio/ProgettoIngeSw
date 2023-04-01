@@ -344,7 +344,7 @@ public class Json {
         RegistroMagazzino registroMagazzino = Json.caricaRegistroMagazzino();
         ristorante.setRegistroMagazzino(registroMagazzino);
 
-        System.out.print("\n"+ANSI_YELLOW+"CARICAMENTO CONFIGURAZIONE IN CORSO");
+        System.out.print("\nCARICAMENTO CONFIGURAZIONE IN CORSO");
         String str = "....\n";
         int delay = 500; // ritardo in millisecondi tra i caratteri
         for (int i = 0; i < str.length(); i++) {
@@ -356,7 +356,7 @@ public class Json {
             }
         }
 
-        System.out.println(ANSI_RESET+"\n"+ANSI_GREEN + configurazioneCaricata + ANSI_RESET);
+        System.out.println("\n" + configurazioneCaricata + "\n");
         return ristorante;
     }
 
@@ -594,7 +594,6 @@ public class Json {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             String dataSpesa = (String) jsonObject.get("giorno");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            //dataSpesa = dataSpesa.replaceAll("'\\'", "");
             LocalDate dataListaSpesa = LocalDate.parse(dataSpesa, formatter);
             if(dataListaSpesa.isEqual(MyUtil.getDataOdierna()))
                 return true;

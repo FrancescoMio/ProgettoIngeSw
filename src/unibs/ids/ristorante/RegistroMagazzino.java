@@ -45,7 +45,7 @@ public class RegistroMagazzino {
         HashMap<String, QuantitaMerce> articoliAcquistati = listaSpesa.getArticoli();
         HashMap<String, QuantitaMerce> hashMaparticoliDisponibili = articoliDisponibili.getArticoli();
         if(articoliAcquistati.isEmpty())
-            System.out.println(ANSI_YELLOW + "ATTENZIONE: Nessun prodotto acquistato perchè il magazzino dispone di scorte sufficienti" + ANSI_RESET);
+            System.out.println("ATTENZIONE: Nessun prodotto acquistato perchè il magazzino dispone di scorte sufficienti" );
         else {
             for (Map.Entry<String, QuantitaMerce> entry : articoliAcquistati.entrySet()){
                 String nomeArticolo = entry.getKey();
