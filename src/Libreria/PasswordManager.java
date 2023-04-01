@@ -110,27 +110,4 @@ public class PasswordManager {
         }
         return false;
     }
-
-    /**
-     * Metodo per mascherare la password
-     * @param messaggio messaggio da visualizzare
-     * @return password inserita dall'utente
-     */
-    public static String leggiPassword (String messaggio) {
-        EraserThread et = new EraserThread(messaggio);
-        Thread mask = new Thread(et);
-        mask.start();
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-
-        try {
-            String password = in.readLine();
-            et.stopMasking();
-            System.out.println(password);
-            return password;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }
