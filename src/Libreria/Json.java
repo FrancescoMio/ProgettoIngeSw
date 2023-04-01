@@ -102,6 +102,11 @@ public class Json {
         salvaSuFile(prenotazioniJson,"dati/prenotazioni.json");
     }
 
+    /**
+     * Metodo per il salvataggio dei dati del registro magazzino nel file JSON
+     * @param registroMagazzino registro magazzino da salvare
+     *                          precondizione: registroMagazzino != null
+     */
     public static void salvaRegistroMagazzino(RegistroMagazzino registroMagazzino){
         JSONObject registroJson = new JSONObject();
         Merce merceMagazzino = registroMagazzino.getArticoliDisponibili();
@@ -110,6 +115,7 @@ public class Json {
         registroJson.put("articoli",elencoArticoliMagazzino);
         salvaSuFile(registroJson,"dati/registroMagazzino.json");
     }
+
 
     public static void salvaCucina(Merce merceDaPortareInCucina, Merce merceInCucina){
         JSONObject cucinaJson = new JSONObject();
@@ -120,6 +126,12 @@ public class Json {
         salvaSuFile(cucinaJson,"dati/cucina.json");
     }
 
+    /**
+     * metodo che ritorna un ArrayList di JSONObject contenente gli articoli in magazzino
+     * @param articoliMagazzino articoli in magazzino
+     * @return ArrayList di JSONObject contenente gli articoli in magazzino
+     * precondizione: articoliMagazzino != null
+     */
     public static ArrayList<JSONObject> getArticoliMagazzinoJson(HashMap<String,QuantitaMerce> articoliMagazzino){
         ArrayList<JSONObject> elencoArticoliMagazzino = new ArrayList<>();
         for (Map.Entry<String, QuantitaMerce> entry : articoliMagazzino.entrySet()){
@@ -136,6 +148,12 @@ public class Json {
         return elencoArticoliMagazzino;
     }
 
+    /**
+     * metodo che ritorna un ArrayList di JSONObject contenente le prenotazioni salvate nel file JSON
+     * @param prenotazioni prenotazioni da salvare
+     * @return ArrayList di JSONObject contenente le prenotazioni salvate nel file JSON
+     * precondizione: prenotazioni != null
+     */
     public static ArrayList<JSONObject> getElencoPrenotazioniJson(ArrayList<Prenotazione> prenotazioni){
         ArrayList<JSONObject> elencoPrenotazioni = new ArrayList<>();
         for (Prenotazione p: prenotazioni) {
@@ -163,6 +181,12 @@ public class Json {
     }
 
 
+    /**
+     * metodo che ritorna un ArrayList di JSONObject contenente le bevande e i generi alimentari
+     * @param consumi consumi da salvare
+     * @return ArrayList di JSONObject contenente le bevande e i generi alimentari
+     * precondizione: consumi != null
+     */
     public static ArrayList<JSONObject> getElencoBevandeGeneriJson(Consumo consumi){
         ArrayList<JSONObject> elenco = new ArrayList<>();
         HashMap<Raggruppabile,QuantitaMerce> hashMapConsumi = consumi.getConsumo();
@@ -182,8 +206,9 @@ public class Json {
 
     /**
      * Metodo grazie al quale passando come parametro un elenco di piatti ritorna l'elenco di tali piatti in formato JSON
-     * @param elencoPiatti
-     * @return
+     * @param elencoPiatti elenco di piatti da salvare
+     * @return ArrayList di JSONObject contenente i piatti
+     * precondizione: elencoPiatti != null
      */
     public static ArrayList<JSONObject> getElencoPiattiJson(Set<Piatto> elencoPiatti){
         ArrayList<JSONObject> elencoPiattiJson = new ArrayList<>();
@@ -207,6 +232,13 @@ public class Json {
         return elencoPiattiJson;
     }
 
+    /**
+     * Metodo grazie al quale, passando come parametro una ricetta,
+     * ritorna l'elenco di ingredienti della ricetta
+     * @param ricetta ricetta
+     * @return ArrayList di JSONObject contenente gli ingredienti della ricetta
+     * precondizione: ricetta != null
+     */
     public static ArrayList<JSONObject> setRicettaJson(Ricetta ricetta){
         ArrayList<JSONObject> ingredientiJson = new ArrayList<>();
 
@@ -238,7 +270,8 @@ public class Json {
 
     /**
      * Metodo per la lettura del file JSON e caricamento della configurazione del ristorante
-     * @return
+     * @return ristorante caricato
+     * precondizione: il file config.json deve essere presente nella cartella dati
      */
     public static Ristorante caricaDati(){
         Ristorante ristorante = new Ristorante("caricaDati");
@@ -360,6 +393,12 @@ public class Json {
         return ristorante;
     }
 
+    /**
+     * Metodo che carica i piatti dal file JSON
+     * @param prodottiDaCaricare nome
+     * @return prodottiDaPortare prodotti da portare in cucina
+     * precondizioni: prodottiDaCaricare != null
+     */
     private static Merce caricaProdottiCucina(String prodottiDaCaricare){
         Merce prodottiDaPortare = new Merce();
         JSONParser parser = new JSONParser();
@@ -379,6 +418,10 @@ public class Json {
         return prodottiDaPortare;
     }
 
+    /**
+     * Metodo che carica il registro magazzino dal file JSON
+     * @return registroMagazzino registro magazzino
+     */
     private static RegistroMagazzino caricaRegistroMagazzino(){
         RegistroMagazzino registroMagazzino = new RegistroMagazzino();
         JSONParser parser = new JSONParser();
@@ -398,6 +441,10 @@ public class Json {
         return registroMagazzino;
     }
 
+    /**
+     * Metodo che carica le bevande dal file JSON
+     * @return bevande bevande
+     */
     private static Set<Bevanda> caricaBevande(){
         Set<Bevanda> bevande = new HashSet<>();
         JSONParser parser = new JSONParser();
@@ -415,6 +462,10 @@ public class Json {
         return bevande;
     }
 
+    /**
+     * metodo che carica i generi alimentari dal file JSON
+     * @return generiAlimentari generi alimentari
+     */
     private static Set<GenereAlimentareExtra> caricaGeneriAlimentari(){
         Set<GenereAlimentareExtra> generiAlimentari = new HashSet<>();
         JSONParser parser = new JSONParser();
@@ -432,6 +483,10 @@ public class Json {
         return generiAlimentari;
     }
 
+    /**
+     * Metodo che carica il consumo pro capite delle bevande dal file JSON
+     * @return consumoProCapiteBevande consumo pro capite delle bevande
+     */
     private static ConsumoProCapiteBevande caricaConsumoProCapiteBevande(){
         ConsumoProCapiteBevande consumoProCapiteBevande = new ConsumoProCapiteBevande();
         HashMap<Raggruppabile, QuantitaMerce> hashMapConsumoBevande= new HashMap<>();
@@ -454,6 +509,10 @@ public class Json {
         return consumoProCapiteBevande;
     }
 
+    /**
+     * Metodo che carica il consumo pro capite dei generi alimentari dal file JSON
+     * @return consumoProCapiteGeneriExtra consumo pro capite dei generi alimentari
+     */
     private static ConsumoProCapiteGeneriExtra caricaConsumoProCapiteGeneriAlimentari(){
         ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra = new ConsumoProCapiteGeneriExtra();
         HashMap<Raggruppabile, QuantitaMerce> hashMapConsumoGeneri= new HashMap<>();
@@ -476,6 +535,14 @@ public class Json {
         return consumoProCapiteGeneriExtra;
     }
 
+    /**
+     * Metodo che carica le prenotazioni salvate precedentemente nel file JSON
+     * @param menuTematici menu tematici
+     * @param piatti piatti
+     * @return prenotazioni prenotazioni
+     * precondition: menuTematici != null && piatti != null
+     * postcondition: prenotazioni != null, prenotazioni.size() >= 0
+     */
     private static ArrayList<Prenotazione> caricaPrenotazioni(Set<MenuTematico> menuTematici, Set<Piatto> piatti){
         ArrayList<Prenotazione> prenotazioni = new ArrayList<>();
         JSONParser parser = new JSONParser();
@@ -499,6 +566,15 @@ public class Json {
         return prenotazioni;
     }
 
+    /**
+     * metodo che restituisce l'ordine di una prenotazione
+     * @param portate portate
+     * @param menuTematici  menu tematici
+     * @param piatti piatti
+     * @return ordine ordine
+     * precondizioni: portate != null && menuTematici != null && piatti != null
+     * postcondizioni: ordine != null, ordine.size() >= 0
+     */
     private static HashMap<Ordinabile,Integer> getOrdine(ArrayList<JSONObject> portate, Set<MenuTematico> menuTematici, Set<Piatto>piatti){
         HashMap<Ordinabile,Integer> ordine = new HashMap<>();
         for(JSONObject portata : portate){
@@ -510,6 +586,15 @@ public class Json {
         return ordine;
     }
 
+    /**
+     * Metodo che restituisce l'ordinabile dato il nome
+     * @param nomePortata nome portata
+     * @param menuTematici menu tematici
+     * @param piatti piatti
+     * @return ordinabile ordinabile
+     * precondizioni: nomePortata != null && menuTematici != null && piatti != null
+     * postcondizioni: ordinabile != null
+     */
     private static Ordinabile getOrdinabile(String nomePortata,Set<MenuTematico> menuTematici, Set<Piatto>piatti){
         for (MenuTematico menu : menuTematici)
             if(menu.getNomeMenu().equalsIgnoreCase(nomePortata))
@@ -523,8 +608,10 @@ public class Json {
     /**
      * Metodo che partendo dall' ArrayList di oggetti JSON dei piatti ritorna il Set<Piatto> dei piatti da caricare
      * nel ristorante
-     * @param elencoPiatti
-     * @return
+     * @param elencoPiatti ArrayList di oggetti JSON dei piatti
+     * @return piatti Set<Piatto> dei piatti da caricare nel ristorante
+     * precondizioni: elencoPiatti != null
+     * postcondizioni: piatti != null, piatti.size() >= 0
      */
     public static Set<Piatto> getPiatti(ArrayList<JSONObject> elencoPiatti){
         Set<Piatto> piatti = new HashSet<>();
@@ -562,6 +649,12 @@ public class Json {
         return piatti;
     }
 
+    /**
+     * metodo che restituisce la lista di credenziali salvate in memoria in file json
+     * @param nomeFile nome del file json
+     * @return lista di credenziali
+     * precondizioni: nomeFile != null esistente
+     */
     public static ArrayList<JSONObject> caricaCredenziali(String nomeFile){
         File file = new File(nomeFile);
         String absolutePath = file.getAbsolutePath();
