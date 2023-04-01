@@ -1,6 +1,5 @@
 package unibs.ids.ristorante;
 
-//classe che crea l'oggetto quantitaMerce per la lista della spesa
 
 public class QuantitaMerce {
     private double quantita;

@@ -11,8 +11,6 @@ public class Ricetta {
     private int numeroPorzioni;
     private double caricoDiLavoroXPorzione; //sarà una frazione<1 di carico per persona, controllo poi in Ristorante
 
-    public Ricetta() {
-    }
     public Ricetta( HashMap<String, QuantitaMerce> ingredienti, int numeroPorzioni, double caricoDiLavoroXPorzione) {
         this.ingredienti = ingredienti;
         this.numeroPorzioni = numeroPorzioni;

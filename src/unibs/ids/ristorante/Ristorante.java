@@ -463,11 +463,9 @@ public class Ristorante {
     public void rimuoviScartiDalMagazzino(){
         registroMagazzino.getArticoliDisponibili().togliProdottiQuantitaZero();
         HashMap<String,QuantitaMerce> scarti = magazziniere.rimuoviScarti(registroMagazzino);
-        System.out.println("PRDOTTI DA SCARTARE:");
-        System.out.println(scarti);
         registroMagazzino.rimuoviProdotti(scarti);
         registroMagazzino.getArticoliDisponibili().togliProdottiQuantitaZero();
-        System.out.println("REGISTRO MAGAZZINO AGGIORNATO:");
+        System.out.println("\nREGISTRO MAGAZZINO AGGIORNATO:");
         registroMagazzino.getArticoliDisponibili().visualizzaMerce();
         Json.salvaRegistroMagazzino(registroMagazzino);
     }

@@ -146,7 +146,6 @@ public class AddettoPrenotazioni extends Utente {
      * postcondizioni: caricoLavorodellaGiornata >= 0
      */
     private boolean controlloCaricoLavoro(ArrayList<Prenotazione> prenotazioni, LocalDate dataPrenotazione, HashMap<Ordinabile,Integer> ordine, double caricoMax){
-        //salvo il carico delle prenotazioni già presenti nella data in questione
         double caricoLavorodellaGiornata = caricoLavoroInData(prenotazioni, dataPrenotazione);
 
         for(Ordinabile o : ordine.keySet()){
@@ -281,34 +280,6 @@ public class AddettoPrenotazioni extends Utente {
         }
         return false;
     }
-
-    /**
-     * metodo di supporto a chiediOrdine che permette di chiedere all'utente
-     * il singolo piatto dal Menu alla Carta o il Menu Tematico
-     * @param menuAllaCarta menu alla carta
-     * @param menuTematici menu tematici
-     * @return piatto o menu tematico scelto
-     */
-    /*private Ordinabile chiediOrdinabile(MenuCarta menuAllaCarta, Set<MenuTematico> menuTematici){
-        Ordinabile ordinabile = null;
-        int scelta = 0;
-
-        do{
-            scelta = InputDati.leggiIntero("Inserire:\n1 per scegliere un piatto dal menu alla carta\n2 per scegliere un menu tematico");
-            switch (scelta){
-                case 1:
-                    ordinabile = chiediPiatto(menuAllaCarta);
-                    break;
-                case 2:
-                    ordinabile = chiediMenu(menuTematici);
-                    break;
-                default:
-                    System.out.println("Scelta non valida");
-            }
-        }while(scelta != 1 && scelta != 2);
-        return ordinabile;
-    }*/
-
 
     /**
      * Metodo di supporto a chiediOrdinabile che permette di chiedere all'utente

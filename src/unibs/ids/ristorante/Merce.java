@@ -41,27 +41,6 @@ public class Merce{
         this.articoli = articoli;
     }
 
-    public Merce aggregaMerci(Merce listaSpesa, Merce aggiunta){
-        for(String nome : aggiunta.getArticoli().keySet()) {
-            if(listaSpesa.getArticoli().containsKey(nome)) {
-                double quantita = listaSpesa.getArticoli().get(nome).getQuantita() + aggiunta.getArticoli().get(nome).getQuantita();
-                listaSpesa.getArticoli().get(nome).setQuantita(quantita);
-            } else {
-                listaSpesa.aggiungiMerce(nome, aggiunta.getArticoli().get(nome));
-            }
-        }
-        return listaSpesa;
-    }
-
-    public Merce aggiungiIngrediente(HashMap<String, Double> ingrediente){
-        Merce lista = new Merce();
-        for(String nome : ingrediente.keySet()) {
-            QuantitaMerce quantita = new QuantitaMerce(ingrediente.get(nome), "g");
-            lista.aggiungiMerce(nome, quantita);
-        }
-        return lista;
-    }
-
     /**
      * Metodo per aggiornare la lista della spesa in base alle diverse prenotazioni
      * Il valore dell'hashmap rappresenta la quantità dell'ingrediente in GRAMMI

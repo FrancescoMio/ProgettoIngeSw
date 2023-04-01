@@ -10,30 +10,9 @@ import java.util.Set;
 
 public class RegistroMagazzino {
     private Merce articoliDisponibili; //lista dei prodotti disponibili nel magazzino
-    private Consumo bevandeEExtra;
 
     public RegistroMagazzino(){
         articoliDisponibili = new Merce();
-        bevandeEExtra = new Consumo();
-    }
-
-    public RegistroMagazzino(Merce disponibili, Consumo bevandeEExtra) {
-        this.articoliDisponibili = disponibili;
-        this.bevandeEExtra = bevandeEExtra;
-    }
-
-    public void visualizzaMagazzino(){
-        comunicaQuantitaIngredienti();
-        visualizzaBevande();
-        visualizzaGeneriExtra();
-    }
-
-    /**
-     * Compito di registro magazzino di visualizzare gli ingredienti presenti in magazzino
-     */
-    private void comunicaQuantitaIngredienti(){
-        System.out.println("I prodotti disponibili con le rispettive quantita' sono:");
-        articoliDisponibili.visualizzaMerce();
     }
 
     /**
@@ -103,39 +82,6 @@ public class RegistroMagazzino {
         articoliDisponibili.aggiungiMerce(nomeArticolo,quantitaArticolo);
     }
 
-    /**
-     * Compito di registro magazzino di poter visualizzare le bevande disponibili
-     * precondizione: bevandeEExtra != null
-     */
-    private void visualizzaBevande(){
-        System.out.println("Le bevande disponibili sono:");
-        HashMap<Raggruppabile, QuantitaMerce> bevande = bevandeEExtra.getConsumo();
-        Iterator<Map.Entry<Raggruppabile, QuantitaMerce>> iterator = bevande.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Raggruppabile, QuantitaMerce> entry = iterator.next();
-            Raggruppabile key = entry.getKey();
-            QuantitaMerce value = entry.getValue();
-            if(value.getUnitaMisura().equalsIgnoreCase("l"))
-                System.out.println("Bevanda: " + key.getNome() + " Quantita': " + value.getQuantita() + " " + value.getUnitaMisura());
-        }
-    }
-
-    /**
-     * Compito di registro magazzino di poter visualizzare le bevande disponibili
-     * precondizione: bevandeEExtra != null
-     */
-    private void visualizzaGeneriExtra(){
-        System.out.println("I generi extra disponibili sono:");
-        HashMap<Raggruppabile, QuantitaMerce> extra = bevandeEExtra.getConsumo();
-        Iterator<Map.Entry<Raggruppabile, QuantitaMerce>> iterator = extra.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Raggruppabile, QuantitaMerce> entry = iterator.next();
-            Raggruppabile key = entry.getKey();
-            QuantitaMerce value = entry.getValue();
-            if(!value.getUnitaMisura().equalsIgnoreCase("l"))
-                System.out.println("Generi extra disponibili: " + key.getNome() + " Quantita': " + value.getQuantita() + " " + value.getUnitaMisura());
-        }
-    }
     public void setArticoliDisponibili(Merce articoliDisponibili) {
         this.articoliDisponibili = articoliDisponibili;
     }

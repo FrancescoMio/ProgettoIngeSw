@@ -270,11 +270,6 @@ public class Gestore extends Utente {
         System.out.println("MENU' ALLA CARTA: ");
         System.out.println(menuAllaCarta.toString());
     }
-
-    public void visualizzaMagazzino(RegistroMagazzino magazzino){
-        magazzino.visualizzaMagazzino();
-    }
-
     public int setCaricoLavoroPersona(){
         int caricoLavoroPersona = InputDati.leggiInteroPositivo("Inserire carico lavoro per persona: ");
         return caricoLavoroPersona;

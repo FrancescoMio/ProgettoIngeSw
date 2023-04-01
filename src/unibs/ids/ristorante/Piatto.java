@@ -17,8 +17,6 @@ public class Piatto implements Ordinabile {
     private LocalDate dataInizio;
     private LocalDate dataFine;
 
-
-    //Costruttore
     public Piatto(String denominazione, Ricetta ricetta, int tempoPreparazione, LocalDate dataInizio, LocalDate dataFine) {
         this.denominazione = denominazione;
         this.ricetta = ricetta;
