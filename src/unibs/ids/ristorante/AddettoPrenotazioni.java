@@ -250,14 +250,16 @@ public class AddettoPrenotazioni extends Utente {
                 }
                 else System.out.println("Non sono presenti menù tematici disponibili!");
             } else if (scelta == 2) {
-                do{
-                    Piatto piatto = chiediPiatto(menuAllaCarta);
-                    if(presenteInOrdine(ordine,piatto)){
-                        int quantita = ordine.get(piatto);
-                        ordine.put(piatto,quantita+1);
-                    }
-                    else ordine.put(piatto, 1);
-                }while(InputDati.yesOrNo("INSERIRE ANCORA UN PIATTO ALL'ORDINE?"));
+                if(!menuAllaCarta.getElencoPiatti().isEmpty()){
+                    do{
+                        Piatto piatto = chiediPiatto(menuAllaCarta);
+                        if(presenteInOrdine(ordine,piatto)){
+                            int quantita = ordine.get(piatto);
+                            ordine.put(piatto,quantita+1);
+                        }
+                        else ordine.put(piatto, 1);
+                    }while(InputDati.yesOrNo("INSERIRE ANCORA UN PIATTO ALL'ORDINE?"));
+                }else System.out.println("Non sono presenti piatti disponibili!");
             }
             else return null;
         }

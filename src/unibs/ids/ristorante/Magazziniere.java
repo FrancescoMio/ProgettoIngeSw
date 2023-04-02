@@ -30,10 +30,9 @@ public class Magazziniere extends Utente {
     public void creaListaSpesaGiornaliera(ArrayList<Prenotazione> prenotazioni, RegistroMagazzino registro, ConsumoProCapiteBevande consumoProCapiteBevande, ConsumoProCapiteGeneriExtra consumoProCapiteGeneriExtra){
         listaSpesa = new Merce();
         int numeroCoperti = 0;
-        ArrayList<Prenotazione> prenotazioniGiornaliere = filtraPrenotazioniGiornaliere(prenotazioni);
-        for(Prenotazione prenotazione: prenotazioniGiornaliere)
+        for(Prenotazione prenotazione: prenotazioni)
             prenotazione.visualizzaPrenotazione();
-        for(Prenotazione prenotazione : prenotazioniGiornaliere){
+        for(Prenotazione prenotazione : prenotazioni){
             numeroCoperti += prenotazione.getNumeroCoperti();
             HashMap<Ordinabile, Integer> ordinePrenotazione = prenotazione.getOrdine();
             for (Map.Entry<Ordinabile, Integer> entry : ordinePrenotazione.entrySet()) {
@@ -57,8 +56,7 @@ public class Magazziniere extends Utente {
      */
     public Merce portaIngredientiInCucina(ArrayList<Prenotazione> prenotazioni){
         Merce prodottiDaPortareInCucina = new Merce();
-        ArrayList<Prenotazione> prenotazioniGiornaliere = filtraPrenotazioniGiornaliere(prenotazioni);
-        for(Prenotazione prenotazione : prenotazioniGiornaliere){
+        for(Prenotazione prenotazione : prenotazioni){
             HashMap<Ordinabile, Integer> ordinePrenotazione = prenotazione.getOrdine();
             for (Map.Entry<Ordinabile, Integer> entry : ordinePrenotazione.entrySet()) {
                 Ordinabile ordinabile = entry.getKey();
@@ -194,7 +192,7 @@ public class Magazziniere extends Utente {
      * precondizioni: prenotazioni.size() > 0
      * postcondizioni: prenotazioniGiornaliere.size() >= 0
      */
-    private ArrayList<Prenotazione> filtraPrenotazioniGiornaliere(ArrayList<Prenotazione> prenotazioni){
+    public ArrayList<Prenotazione> filtraPrenotazioniGiornaliere(ArrayList<Prenotazione> prenotazioni){
         ArrayList<Prenotazione> prenotazioniGiornaliere = new ArrayList<>();
         for(Prenotazione prenotazione : prenotazioni){
             LocalDate dataPrenotazione = prenotazione.getDataPrenotazione();

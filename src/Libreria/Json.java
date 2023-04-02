@@ -257,12 +257,8 @@ public class Json {
 
     public static void salvaSuFile(JSONObject object, String nomeFile){
         try (FileWriter file = new FileWriter(nomeFile)) {
-            // Scrivi il JSON nel file
             file.write(object.toJSONString());
             file.flush();
-            file.close();
-            //System.out.println("Il file JSON '"+ nomeFile + "' è stato scritto con successo!");
-
         } catch (Exception e) {
             System.err.println("Errore durante la scrittura del file JSON: " + e.getMessage());
         }
@@ -389,7 +385,7 @@ public class Json {
             }
         }
 
-        System.out.println("\n" + configurazioneCaricata + "\n");
+        //System.out.println("\n" + configurazioneCaricata + "\n");
         return ristorante;
     }
 
@@ -686,10 +682,12 @@ public class Json {
         try (FileReader reader = new FileReader(absolutePath)){
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             String dataSpesa = (String) jsonObject.get("giorno");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dataListaSpesa = LocalDate.parse(dataSpesa, formatter);
-            if(dataListaSpesa.isEqual(MyUtil.getDataOdierna()))
-                return true;
+            if(!dataSpesa.equalsIgnoreCase("")){
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate dataListaSpesa = LocalDate.parse(dataSpesa, formatter);
+                if(dataListaSpesa.isEqual(MyUtil.getDataOdierna()))
+                    return true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

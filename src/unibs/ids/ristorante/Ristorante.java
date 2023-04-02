@@ -36,18 +36,16 @@ public class Ristorante {
         registroMagazzino = new RegistroMagazzino();
         merceInCucina = new Merce();
         merceDaPortareInCucina = new Merce();
+        prenotazioni = new ArrayList<>();
         creaGestore();
         creaConfigurazione();
         creaMenuTematici();
         creaMenuCarta();
         creaInsiemeBevandeEGeneri();
         creaConsumoProCapite();
-
         creaAddettoPrenotazioni();
         creaMagazziniere();
         caricoDiLavoroSostenibile = this.caricoDiLavoroXPersona * this.postiASedere * 120 / 100;
-        gestore.visualizzaMenuTematici(menuTematici);
-        gestore.visualizzaMenuAllaCarta(menuAllaCarta);
         Json.salvaConfigurazione(this,piatti);
         Json.salvaMenuTematici(menuTematici);
         Json.salvaMenuCarta(menuAllaCarta);
@@ -363,17 +361,20 @@ public class Ristorante {
      * metodo che crea la lista della spesa giornaliera e la aggiunge al registro magazzino
      */
     public void creaListaSpesa(){
-        magazziniere.creaListaSpesaGiornaliera(prenotazioni,registroMagazzino,consumoProCapiteBevande,consumoProCapiteGeneriExtra);
-        Merce listaSpesa = magazziniere.getListaSpesa();
-        registroMagazzino.aggiungiArticoliComprati(listaSpesa);
-        System.out.println("\nLISTA DELLA SPESA:");
-        listaSpesa.visualizzaMerce();
-        merceDaPortareInCucina = magazziniere.portaIngredientiInCucina(prenotazioni);
-        System.out.println("\nREGISTRO MAGAZZINO AGGIORNATO CON ARTICOLI COMPRATI:");
-        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
-        Json.salvaRegistroMagazzino(registroMagazzino);
-        Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
-        Json.salvaListaSpesa(listaSpesa);
+        ArrayList<Prenotazione> prenotazioniGiornaliere = magazziniere.filtraPrenotazioniGiornaliere(prenotazioni);
+        if(!prenotazioniGiornaliere.isEmpty()){
+            magazziniere.creaListaSpesaGiornaliera(prenotazioniGiornaliere,registroMagazzino,consumoProCapiteBevande,consumoProCapiteGeneriExtra);
+            Merce listaSpesa = magazziniere.getListaSpesa();
+            registroMagazzino.aggiungiArticoliComprati(listaSpesa);
+            System.out.println("\nLISTA DELLA SPESA:");
+            listaSpesa.visualizzaMerce();
+            merceDaPortareInCucina = magazziniere.portaIngredientiInCucina(prenotazioniGiornaliere);
+            System.out.println("\nREGISTRO MAGAZZINO AGGIORNATO CON ARTICOLI COMPRATI:");
+            registroMagazzino.getArticoliDisponibili().visualizzaMerce();
+            Json.salvaRegistroMagazzino(registroMagazzino);
+            Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
+            Json.salvaListaSpesa(listaSpesa);
+        }else System.out.println("NESSUNA LISTA DELLA SPESA CREATA PERCHE' NON ESISTONO PRENOTAZIONI PER LA DATA ODIERNA!");
     }
 
     /**
@@ -428,15 +429,17 @@ public class Ristorante {
      * metodo che simula il flusso di bevande e generi extra dal magazzino alla sala, e salva tutti i valori nei file json
      */
     public void portaBevandaGenereInSala(){
-        Set<Raggruppabile> bevandeEGeneri = new HashSet<>();
-        bevandeEGeneri.addAll(bevande);
-        bevandeEGeneri.addAll(generiAlimentariExtra);
-        HashMap<String, QuantitaMerce> prodottiInSala = magazziniere.portaBevandaGenereInSala(registroMagazzino,bevandeEGeneri);
-        registroMagazzino.rimuoviProdotti(prodottiInSala);
-        registroMagazzino.getArticoliDisponibili().togliProdottiQuantitaZero();
-        System.out.println("\nREGISTRO MAGAZZINO AGGIORNATO:");
-        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
-        Json.salvaRegistroMagazzino(registroMagazzino);
+        if(!registroMagazzino.getArticoliDisponibili().getArticoli().isEmpty()){
+            Set<Raggruppabile> bevandeEGeneri = new HashSet<>();
+            bevandeEGeneri.addAll(bevande);
+            bevandeEGeneri.addAll(generiAlimentariExtra);
+            HashMap<String, QuantitaMerce> prodottiInSala = magazziniere.portaBevandaGenereInSala(registroMagazzino,bevandeEGeneri);
+            registroMagazzino.rimuoviProdotti(prodottiInSala);
+            registroMagazzino.getArticoliDisponibili().togliProdottiQuantitaZero();
+            System.out.println("\nREGISTRO MAGAZZINO AGGIORNATO:");
+            registroMagazzino.getArticoliDisponibili().visualizzaMerce();
+            Json.salvaRegistroMagazzino(registroMagazzino);
+        }else System.out.println("NON E' POSSIBILIE PORTARE BEVANDE/GENERI ALIMENTARI EXTRA IN SALA PERCHE' IL MAGAZZINO E' VUOTO!");
     }
 
     /**
@@ -454,7 +457,7 @@ public class Ristorante {
             registroMagazzino.getArticoliDisponibili().visualizzaMerce();
             Json.salvaRegistroMagazzino(registroMagazzino);
             Json.salvaCucina(merceDaPortareInCucina,merceInCucina);
-        }else System.out.println("Nessun ingrediente presente in cucina!");
+        }else System.out.println("NESSUN INGREDIENTE PRESENTE IN CUCINA!");
     }
 
     /**
@@ -462,12 +465,14 @@ public class Ristorante {
      */
     public void rimuoviScartiDalMagazzino(){
         registroMagazzino.getArticoliDisponibili().togliProdottiQuantitaZero();
-        HashMap<String,QuantitaMerce> scarti = magazziniere.rimuoviScarti(registroMagazzino);
-        registroMagazzino.rimuoviProdotti(scarti);
-        registroMagazzino.getArticoliDisponibili().togliProdottiQuantitaZero();
-        System.out.println("\nREGISTRO MAGAZZINO AGGIORNATO:");
-        registroMagazzino.getArticoliDisponibili().visualizzaMerce();
-        Json.salvaRegistroMagazzino(registroMagazzino);
+        if(!registroMagazzino.getArticoliDisponibili().getArticoli().isEmpty()){
+            HashMap<String,QuantitaMerce> scarti = magazziniere.rimuoviScarti(registroMagazzino);
+            registroMagazzino.rimuoviProdotti(scarti);
+            registroMagazzino.getArticoliDisponibili().togliProdottiQuantitaZero();
+            System.out.println("\nREGISTRO MAGAZZINO AGGIORNATO:");
+            registroMagazzino.getArticoliDisponibili().visualizzaMerce();
+            Json.salvaRegistroMagazzino(registroMagazzino);
+        }else System.out.println("NESSUN SCARTO DA RIMUOVERE: MAGAZZINO VUOTO!");
     }
 
     public void setMerceInCucina(Merce merceInCucina) {
